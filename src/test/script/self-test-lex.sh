@@ -8,7 +8,7 @@ cd "$(dirname "$0")"/../../.. || exit 1
 
 PATH=./src/test/script/launchers:"$PATH"
 
-rouge='\e[31m'
+rouge='\e[33m'
 vert='\e[32m'
 blanc='\e[0;m'
 
@@ -17,31 +17,16 @@ status=0
 
 # Gestion des cas valide
 
-for i in ./src/test/deca/syntax/valid/provided/*.deca
+for i in ./src/test/deca/syntax/valid/*.deca
 do
   if test_lex "$i" 2>&1 | grep -q -e 'Error'
   then
-    test_lex "$i" >& "${i%.deca}".lis
+    test_lex "$i" >& "${i%.lis}"
     echo -e "$i ${rouge} FAILED ${blanc} (failure)"
     tail -2 $i
     status=1
   else
-    test_lex "$i" >& "${i%.deca}".lis
-    echo -e "$i ${vert} PASSED ${blanc}"
-
-  fi
-done
-
-for i in ./src/test/deca/syntax/valid/self/*.deca
-do
-  if test_lex "$i" 2>&1 | grep -q -e 'Error'
-  then
-    test_lex "$i" >& "${i%.deca}".lis
-    echo -e "$i ${rouge} FAILED ${blanc} (failure)"
-    tail -2 $i
-    status=1
-  else
-    test_lex "$i" >& "${i%.deca}".lis
+    test_lex "$i" >& "${i%.lis}"
     echo -e "$i ${vert} PASSED ${blanc}"
 
   fi
@@ -49,27 +34,14 @@ done
 
 #Gestion des cas non valide
 
-for i in ./src/test/deca/syntax/invalid/provided/*.deca
+for i in ./src/test/deca/syntax/invalid/*.deca
 do
   if test_lex "$i" 2>&1 | grep -q -e 'Error'
   then
-    test_lex "$i" >& "${i%.deca}".lis
+    test_lex "$i" >& "${i%.lis}"
     echo -e "$i ${vert} PASSED ${blanc} (failure)"
   else
-    test_lex "$i" >& "${i%.deca}".lis
-    echo -e "$i ${rouge} FAILED ${blanc} (no failure)"
-    status=1
-  fi
-done
-
-for i in ./src/test/deca/syntax/invalid/self/*.deca
-do
-  if test_lex "$i" 2>&1 | grep -q -e 'Error'
-  then
-    test_lex "$i" >& "${i%.deca}".lis
-    echo -e "$i ${vert} PASSED ${blanc} (failure)"
-  else
-    test_lex "$i" >& "${i%.deca}".lis
+    test_lex "$i" >& "${i%.lis}"
     echo -e "$i ${rouge} FAILED ${blanc} (no failure)"
     status=1
   fi
