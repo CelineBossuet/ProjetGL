@@ -27,7 +27,7 @@ do
   then
     test_lex "$i" >& "${i%.deca}".lis
     echo -e "$fichier ${rouge} FAILED ${blanc} (failure)"
-    tail -2 $i
+    tail -2 "${i%.deca}".lis
     status=1
   else
     test_lex "$i" >& "${i%.deca}".lis
@@ -45,7 +45,7 @@ do
   then
     test_lex "$i" >& "${i%.deca}".lis
     echo -e "$fichier ${rouge} FAILED ${blanc} (failure)"
-    tail -2 $i
+    tail -2 "${i%.deca}".lis
     status=1
   else
     test_lex "$i" >& "${i%.deca}".lis
