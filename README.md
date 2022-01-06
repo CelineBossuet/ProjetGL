@@ -74,6 +74,11 @@ Il peut être de différentes manières :
 
 Ces fichiers contiendront ou bien la réponse du programme justifiant leurs bons fonctionnement, ou bien les erreurs rencontrées par le programme.
 
+Pour supprimer ces fichiers dans les répertoires de tests il suffit de lancer le script
+
+``
+suppression-log.sh
+``
 
 
 
