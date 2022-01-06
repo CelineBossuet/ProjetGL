@@ -128,6 +128,9 @@ public class DecacCompiler {
         String destFile = null;
         // A FAIRE: calculer le nom du fichier .ass à partir du nom du
         // A FAIRE: fichier .deca.
+
+        destFile=sourceFile.substring(0, sourceFile.lastIndexOf('.')) + ".ass";
+
         PrintStream err = System.err;
         PrintStream out = System.out;
         LOG.debug("Compiling file " + sourceFile + " to assembly file " + destFile);
@@ -176,11 +179,11 @@ public class DecacCompiler {
             LOG.info("Parsing failed");
             return true;
         }
-        assert(prog.checkAllLocations());
+        //assert(prog.checkAllLocations()); pour etape B
 
 
         prog.verifyProgram(this);
-        assert(prog.checkAllDecorations());
+        //assert(prog.checkAllDecorations()); pour etape B
 
         addComment("start main program");
         prog.codeGenProgram(this);
