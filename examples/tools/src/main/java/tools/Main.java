@@ -29,7 +29,7 @@ public class Main {
             LOG.debug("Nous allons parler français");
             sayHello = new DireBonjour();
             // Oops, forgot to set the variable 'name' :-(
-            // name = "Pierre Dupont";
+            name = "Pierre Dupont";
         }
         LOG.info("object sayHello instanciated");
         sayHello.sayIt();
@@ -47,7 +47,7 @@ public class Main {
 
     private static void computeAnswer() {
         // A FAIRE : Alice remplace "print" par "println"
-        System.out.print("I'm computing the answer");
+        System.out.println("I'm computing the answer");
 
         System.out.println("I'm thinking");
 
