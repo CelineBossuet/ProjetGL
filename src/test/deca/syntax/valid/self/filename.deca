@@ -1,0 +1,12 @@
+// Description:
+//    tests de programme correct lexicalement
+//
+// Resultats:
+//    Bonne lecture de fichier
+//
+// Historique:
+//    cree le 01/01/2022
+
+{
+#include "other.deca"
+}

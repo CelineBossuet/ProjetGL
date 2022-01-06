@@ -8,3 +8,8 @@
 .project
 .metadata
 .settings
+.idea/
+
+.lis
+.res
+.ass

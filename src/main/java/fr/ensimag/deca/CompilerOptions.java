@@ -6,6 +6,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+
+import fr.ensimag.deca.syntax.DecaLexer;
+import org.antlr.v4.runtime.ANTLRInputStream;
+import org.antlr.v4.runtime.CommonTokenStream;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
@@ -36,14 +40,43 @@ public class CompilerOptions {
         return Collections.unmodifiableList(sourceFiles);
     }
 
+    public boolean getParser(){return parser;}
+
+    public boolean getVerif(){return verif;}
+
     private int debug = 0;
     private boolean parallel = false;
     private boolean printBanner = false;
     private List<File> sourceFiles = new ArrayList<File>();
+    private boolean parser=false;
+    private boolean verif=false;
 
-    
+
     public void parseArgs(String[] args) throws CLIException {
         // A FAIRE : parcourir args pour positionner les options correctement.
+        for (String arg : args){
+            switch (arg){
+                case "-b":
+                    printBanner=true;
+                    break;
+                case "-p":
+                    parser=true;
+                    break;
+                case "-v":
+                    verif=true;
+                    break;
+                case "-n":
+                    //des trucs
+                    break;
+                case "-r":
+                case "-d":
+                case "-P":
+                    parallel=true;
+                    break;
+                default:
+                    sourceFiles.add(new File(arg));
+            }
+        }
         Logger logger = Logger.getRootLogger();
         // map command-line debug option to log4j's level.
         switch (getDebug()) {
@@ -67,7 +100,7 @@ public class CompilerOptions {
             logger.info("Java assertions disabled");
         }
 
-        throw new UnsupportedOperationException("not yet implemented");
+
     }
 
     protected void displayUsage() {
