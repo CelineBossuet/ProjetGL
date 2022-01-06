@@ -1,5 +1,5 @@
 // Description:
-//    tests de programme lexicalement correct.
+//    tests de programme lexicalement correct mais syntaxiquement incorect
 //
 // Resultats:
 //    Ligne 11 : Erreur de syntaxe.
