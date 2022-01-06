@@ -1,0 +1,10 @@
+// Description:
+//    tests de programme incorrect lexicalement (nom de fichier incorect)
+//
+// Resultats:
+//    ligne 10 : Erreur
+//
+// Historique:
+//    cree le 06/01/2022
+
+#include "12#12.deca"
