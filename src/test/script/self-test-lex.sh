@@ -21,12 +21,12 @@ for i in ./src/test/deca/syntax/valid/provided/*.deca
 do
   if test_lex "$i" 2>&1 | grep -q -e 'Error'
   then
-    test_lex "$i" >& "${i%.lis}"
+    test_lex "$i" >& "${i%.deca}".lis
     echo -e "$i ${rouge} FAILED ${blanc} (failure)"
     tail -2 $i
     status=1
   else
-    test_lex "$i" >& "${i%.lis}"
+    test_lex "$i" >& "${i%.deca}".lis
     echo -e "$i ${vert} PASSED ${blanc}"
 
   fi
@@ -36,12 +36,12 @@ for i in ./src/test/deca/syntax/valid/self/*.deca
 do
   if test_lex "$i" 2>&1 | grep -q -e 'Error'
   then
-    test_lex "$i" >& "${i%.lis}"
+    test_lex "$i" >& "${i%.deca}".lis
     echo -e "$i ${rouge} FAILED ${blanc} (failure)"
     tail -2 $i
     status=1
   else
-    test_lex "$i" >& "${i%.lis}"
+    test_lex "$i" >& "${i%.deca}".lis
     echo -e "$i ${vert} PASSED ${blanc}"
 
   fi
@@ -53,10 +53,10 @@ for i in ./src/test/deca/syntax/invalid/provided/*.deca
 do
   if test_lex "$i" 2>&1 | grep -q -e 'Error'
   then
-    test_lex "$i" >& "${i%.lis}"
+    test_lex "$i" >& "${i%.deca}".lis
     echo -e "$i ${vert} PASSED ${blanc} (failure)"
   else
-    test_lex "$i" >& "${i%.lis}"
+    test_lex "$i" >& "${i%.deca}".lis
     echo -e "$i ${rouge} FAILED ${blanc} (no failure)"
     status=1
   fi
@@ -66,10 +66,10 @@ for i in ./src/test/deca/syntax/invalid/self/*.deca
 do
   if test_lex "$i" 2>&1 | grep -q -e 'Error'
   then
-    test_lex "$i" >& "${i%.lis}"
+    test_lex "$i" >& "${i%.deca}".lis
     echo -e "$i ${vert} PASSED ${blanc} (failure)"
   else
-    test_lex "$i" >& "${i%.lis}"
+    test_lex "$i" >& "${i%.deca}".lis
     echo -e "$i ${rouge} FAILED ${blanc} (no failure)"
     status=1
   fi
