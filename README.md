@@ -107,6 +107,9 @@ Pour tester le bon fonctionnement du contexte (étape B) :
 self-test-context.sh
 ``
 
+``
+suppression-log.sh
+``
 
 
 
