@@ -20,7 +20,7 @@ status=0
 
 echo -e "${jaune}Cas valide donné ${blanc}"
 
-for i in ./src/test/deca/syntax/valid/provided/*.deca
+for i in ./src/test/deca/lexing/valid/provided/*.deca
 do
   fichier=$(basename $i)
   if test_lex "$i" 2>&1 | grep -q -e "$fichier"
@@ -38,7 +38,7 @@ done
 
 echo -e "${jaune}Cas valide créé ${blanc}"
 
-for i in ./src/test/deca/syntax/valid/self/*.deca
+for i in ./src/test/deca/lexing/valid/self/*.deca
 do
   fichier=$(basename $i)
   if test_lex "$i" 2>&1 | grep -q -e "$fichier"
@@ -58,7 +58,7 @@ done
 
 echo -e "${jaune}Cas non valide donné ${blanc}"
 
-for i in ./src/test/deca/syntax/invalid/provided/*.deca
+for i in ./src/test/deca/lexing/invalid/provided/*.deca
 do
   fichier=$(basename $i)
   if test_lex "$i" 2>&1 | grep -q -e "$fichier"
@@ -74,7 +74,7 @@ done
 
 echo -e "${jaune}Cas non valide créé ${blanc}"
 
-for i in ./src/test/deca/syntax/invalid/self/*.deca
+for i in ./src/test/deca/lexing/invalid/self/*.deca
 do
   fichier=$(basename $i)
   if test_lex "$i" 2>&1 | grep -q -e "$fichier"
