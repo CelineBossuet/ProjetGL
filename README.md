@@ -54,6 +54,12 @@ si une erreur de droit apparait, vous pouvez vous rendre dans le répertoire du 
 chmod 0755 nom-du-test.sh
 ``
 
+Le chemin du test est:
+
+``
+./src/test/script
+``
+
 vous pourrez alors relancer le test.  
 Ce dernier ce décompose en 4 partie :
 - Les tests valides fournis
@@ -79,6 +85,27 @@ Pour supprimer ces fichiers dans les répertoires de tests il suffit de lancer l
 ``
 suppression-log.sh
 ``
+
+Les tests exécutent chaque test unitaire dans les répertoires concernés.
+
+Pour tester le bon fonctionnement du lexer, on utilise:
+
+``
+self-test-lex.sh
+``
+
+Pour tester le bon fonctionnement du parser, on utilise:
+
+``
+self-test-pars.sh
+``
+
+Pour tester le bon fonctionnement du contexte (étape B) :
+
+``
+self-test-context.sh
+``
+
 
 
 
