@@ -1,0 +1,14 @@
+// Description:
+//    Programme vérifiant le bon fonctionnement d'un calcul
+//
+// Resultats:
+//    Bonne vérification du contexte avec l'arbre se déroulant
+//
+// Historique:
+//    cree le 06/01/2022
+
+{
+    x = 10;
+    x+= 12;
+    println(x);
+}
