@@ -25,7 +25,7 @@ echo -e "${jaune}Cas valide donné ${blanc}"
 for i in ./src/test/deca/syntax/valid/provided/*.deca
 do
   fichier=$(basename $i)
-  if test_synt "$i" 2>&1 | grep -q -e "$fichier"
+  if test_synt "$i" 2>&1 | grep -q -e "$fichier" -e 'Error'
   then
     test_synt "$i" >& "${i%.deca}".lis
     echo -e "$fichier ${rouge} FAILED ${blanc} (failure)"
@@ -43,7 +43,7 @@ echo -e "${jaune}Cas valide créé ${blanc}"
 for i in ./src/test/deca/syntax/valid/self/*.deca
 do
   fichier=$(basename $i)
-  if test_synt "$i" 2>&1 | grep -q -e "$fichier"
+  if test_synt "$i" 2>&1 | grep -q -e "$fichier" -e 'Error'
   then
     test_synt "$i" >& "${i%.deca}".lis
     echo -e "$fichier ${rouge} FAILED ${blanc} (failure)"
@@ -63,7 +63,7 @@ echo -e "${jaune}Cas non valide donné ${blanc}"
 for i in ./src/test/deca/syntax/invalid/provided/*.deca
 do
   fichier=$(basename $i)
-  if test_synt "$i" 2>&1 | grep -q -e "$fichier"
+  if test_synt "$i" 2>&1 | grep -q -e "$fichier" -e 'Error'
   then
     test_synt "$i" >& "${i%.deca}".lis
     echo -e "$fichier ${vert} PASSED ${blanc} (failure)"
@@ -79,7 +79,7 @@ echo -e "${jaune}Cas non valide créé ${blanc}"
 for i in ./src/test/deca/syntax/invalid/self/*.deca
 do
   fichier=$(basename $i)
-  if test_synt "$i" 2>&1 | grep -q -e "$fichier"
+  if test_synt "$i" 2>&1 | grep -q -e "$fichier" -e 'Error'
   then
     test_synt "$i" >& "${i%.deca}".lis
     echo -e "$fichier ${vert} PASSED ${blanc} (failure)"
