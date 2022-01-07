@@ -1,32 +1,33 @@
 
 # Projet Génie Logiciel, Ensimag.
-gl13, 01/01/2022.
-
-
+Équipe 13
 
 #### Présentation de l'Equipe
-Notre équipe est composée de 5 étudiants :
+Composition de l'équipe :
+  - Titouan Lecamp (filière ISI)
+  - Romain Pigret Cadou (filière SEOC)
+  - Céline Bossuet (filière ISI)
+  - Ayoub Miguil (filière IF) 
+  - Pedro Alfonso Deitos Regis (filière SEOC) 
 
 
-  Titouan Lecamp (filière ISI)
-  
-  
-  Romain Pigret Cadou (filière SEOC)
-  
-  
-  Céline Bossuet (filière ISI)
-  
-  
-  Ayoub Miguil (filière IF) 
-  
-  
-  Pedro Alfonso Deitos Regis (filière SEOC) 
-  
-  
-Notre équipe est donc plutôt homogène et formée a une très grande majorité d'étudiants ISI/SEOC donc de filière à dominance informatique. Nous nous connaissons tous à grand majorité, nous fréquentons les mêmes associations et nous avons donc une bonne inertie de groupe.
+### Environnement
+
+Prérequis :
+- [maven 3.8.4](https://maven.apache.org/download.cgi)
+- [Java 16](https://openjdk.java.net/install/)
+
+Il est nécessaire d'ajouter le dossier `bin` de maven au *PATH*.
+Également celui de java si besoin suivant la méthode d'installation.
+
+Pour pouvoir utiliser les commandes du projet directement dans le terminal :
+```
+source env_settup.sh
+```
+A exécuter dans chaque terminal
 
 
-#### Compilation 
+### Compilation 
 
 Pour compiler avec Maven il suffit de tapper dans le terminal 
 
@@ -40,7 +41,7 @@ ensuite on peut ouvrir le compilateur avec la commande avec ensuite soit le nom 
 ./src/main/bin/decac
 ``
 
-#### Exécution des tests
+### Exécution des tests
 
 Vous pouvez lancer n'importe quel test en tapant en ligne de commande depuis n'importe quel répertoire.
 
