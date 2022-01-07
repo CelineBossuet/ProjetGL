@@ -5,27 +5,43 @@ import java.util.Map;
 
 /**
  * Manage unique symbols.
- * 
+ *
  * A Symbol contains the same information as a String, but the SymbolTable
  * ensures the uniqueness of a Symbol for a given String value. Therefore,
  * Symbol comparison can be done by comparing references, and the hashCode()
  * method of Symbols can be used to define efficient HashMap (no string
  * comparison or hashing required).
- * 
+ *
  * @author gl13
  * @date 01/01/2022
  */
 public class SymbolTable {
     private Map<String, Symbol> map = new HashMap<String, Symbol>();
 
+    public SymbolTable(){
+        map = new HashMap<String, Symbol>();
+        Symbol symb = new Symbol("int");
+        map.put("int", symb);
+    }
     /**
      * Create or reuse a symbol.
-     * 
+     *
      * If a symbol already exists with the same name in this table, then return
      * this Symbol. Otherwise, create a new Symbol and add it to the table.
      */
     public Symbol create(String name) {
-        throw new UnsupportedOperationException("Symbol creation");
+        System.out.println("create");
+
+        if (this.map.get(name)==null){
+            System.out.println("null");
+            Symbol symb = new Symbol(name);
+            this.map.put(name, symb);
+            return symb;
+        }
+        else {
+            return this.map.get(name);
+        }
+        //throw new UnsupportedOperationException("Symbol creation");
     }
 
     public static class Symbol {

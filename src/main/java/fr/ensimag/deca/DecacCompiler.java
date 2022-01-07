@@ -1,14 +1,14 @@
 package fr.ensimag.deca;
 
+
 import fr.ensimag.deca.syntax.DecaLexer;
 import fr.ensimag.deca.syntax.DecaParser;
 import fr.ensimag.deca.tools.DecacInternalError;
+import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.deca.tree.AbstractProgram;
 import fr.ensimag.deca.tree.LocationException;
-import fr.ensimag.ima.pseudocode.AbstractLine;
-import fr.ensimag.ima.pseudocode.IMAProgram;
-import fr.ensimag.ima.pseudocode.Instruction;
-import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.*;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -35,7 +35,7 @@ import org.apache.log4j.Logger;
  */
 public class DecacCompiler {
     private static final Logger LOG = Logger.getLogger(DecacCompiler.class);
-    
+
     /**
      * Portable newline character.
      */
@@ -101,22 +101,26 @@ public class DecacCompiler {
     public void addInstruction(Instruction instruction, String comment) {
         program.addInstruction(instruction, comment);
     }
-    
+
     /**
-     * @see 
+     * @see
      * fr.ensimag.ima.pseudocode.IMAProgram#display()
      */
     public String displayIMAProgram() {
         return program.display();
     }
-    
+
     private final CompilerOptions compilerOptions;
     private final File source;
     /**
      * The main program. Every instruction generated will eventually end up here.
      */
     private final IMAProgram program = new IMAProgram();
- 
+    private final SymbolTable symbolTable = new SymbolTable();
+
+
+    public SymbolTable getSymbolTable() {return symbolTable;}
+
 
     /**
      * Run the compiler (parse source file, generate code)
@@ -127,9 +131,9 @@ public class DecacCompiler {
         String sourceFile = source.getAbsolutePath();
         String destFile = null;
         // A FAIRE: calculer le nom du fichier .ass à partir du nom du
-        // A FAIRE: fichier .deca.
+        // A FAIRE: fichier .deca. FAIT
 
-        destFile=sourceFile.substring(0, sourceFile.lastIndexOf('.')) + ".ass";
+        destFile = sourceFile.substring(0, sourceFile.lastIndexOf('.')) + ".ass";
 
         PrintStream err = System.err;
         PrintStream out = System.out;
@@ -171,7 +175,7 @@ public class DecacCompiler {
      * @return true on error
      */
     private boolean doCompile(String sourceName, String destName,
-            PrintStream out, PrintStream err)
+                              PrintStream out, PrintStream err)
             throws DecacFatalError, LocationException {
         AbstractProgram prog = doLexingAndParsing(sourceName, err);
 
@@ -233,4 +237,5 @@ public class DecacCompiler {
         return parser.parseProgramAndManageErrors(err);
     }
 
+    //TODO methods addPUSH, addADDSP, addSUBSP, ...
 }
