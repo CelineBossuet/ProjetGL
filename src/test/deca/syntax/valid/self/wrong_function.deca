@@ -1,0 +1,11 @@
+// Description:
+//    tests de programme incorrect syntaxiquement mais correct lexicalement
+//
+// Resultats:
+//    erreur à la ligne 10 : token non reconnu
+//    pas d'erreur pour le test-lex
+//
+// Historique:
+//    cree le 01/01/2022
+
+{ ifnot }
