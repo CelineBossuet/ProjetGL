@@ -1,11 +1,12 @@
 // Description:
-//    tests de programme incorrect syntaxiquement mais correct lexicalement
+//    tests de programme correct lexicalement
 //
 // Resultats:
-//    erreur à la ligne 10 : token non reconnu
+//    erreur à la ligne 12 : token non reconnu
 //    pas d'erreur pour le test-lex
+//    test-lex -> création d'un if et d'un ident not
 //
 // Historique:
 //    cree le 01/01/2022
 
-{ ifnot }
+{ if not }
