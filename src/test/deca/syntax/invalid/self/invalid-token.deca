@@ -1,0 +1,11 @@
+// Description:
+//    tests de programme incorrect lexicalement
+//
+// Resultats:
+//    erreur à la ligne 11 : token non reconnu
+//
+//
+// Historique:
+//    cree le 06/01/2022
+
+{ 1.}
