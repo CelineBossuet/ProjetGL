@@ -1,0 +1,14 @@
+// Description:
+//    Affectation
+//
+// Resultats:
+//    Ligne 13 : c n'existe pas
+//
+// Historique:
+//    cree le 06/01/2022
+
+{
+   int a;
+   int b;
+   a = b + c;
+}
