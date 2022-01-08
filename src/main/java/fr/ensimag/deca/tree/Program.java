@@ -5,6 +5,7 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.instructions.*;
 import java.io.PrintStream;
+
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
@@ -39,7 +40,11 @@ public class Program extends AbstractProgram {
     public void verifyProgram(DecacCompiler compiler) throws ContextualError {
         LOG.debug("verify program: start");
 
-        LOG.debug("Pass 1 verification"); // A FAIRE passe 1
+        LOG.debug("Pass 1 verification");
+
+        // A FAIRE
+        getClasses().verifyListClass(compiler);
+        getMain().verifyMain(compiler);
 
         LOG.debug("Pass 2 verification"); // A FAIRE passe 2
 
