@@ -23,12 +23,12 @@ do
   fichier=$(basename $i)
   if test_context "$i" 2>&1 | grep -q -e "$fichier" -e 'Error'
   then
-    test_lex "$i" > "${i%.deca}".lis 2>&1 &
+    test_context "$i" > "${i%.deca}".lis 2>&1 &
     echo -e "$fichier ${rouge} FAILED ${blanc} (failure)"
     head -1 "${i%.deca}".lis
     status=1
   else
-    test_lex "$i" > "${i%.deca}".lis 2>&1 &
+    test_context "$i" > "${i%.deca}".lis 2>&1 &
     echo -e "$fichier ${vert} PASSED ${blanc}"
 
   fi
@@ -41,12 +41,12 @@ do
   fichier=$(basename $i)
   if test_context "$i" 2>&1 | grep -q -e "$fichier" -e 'Error'
   then
-    test_lex "$i" > "${i%.deca}".lis 2>&1 &
+    test_context "$i" > "${i%.deca}".lis 2>&1 &
     echo -e "$fichier ${rouge} FAILED ${blanc} (failure)"
     head -1 "${i%.deca}".lis
     status=1
   else
-    test_lex "$i" > "${i%.deca}".lis 2>&1 &
+    test_context "$i" > "${i%.deca}".lis 2>&1 &
     echo -e "$fichier ${vert} PASSED ${blanc}"
 
   fi
@@ -61,10 +61,10 @@ do
   fichier=$(basename $i)
   if test_context "$i" 2>&1 | grep -q -e "$fichier" -e 'Error'
   then
-    test_lex "$i" > "${i%.deca}".lis 2>&1 &
+    test_context "$i" > "${i%.deca}".lis 2>&1 &
     echo -e "$fichier ${vert} PASSED ${blanc} (failure)"
   else
-    test_lex "$i" > "${i%.deca}".lis 2>&1 &
+    test_context "$i" > "${i%.deca}".lis 2>&1 &
     echo -e "$fichier ${rouge} FAILED ${blanc} (no failure)"
     status=1
   fi
@@ -77,10 +77,10 @@ do
   fichier=$(basename $i)
   if test_context "$i" 2>&1 | grep -q -e "$fichier" -e 'Error'
   then
-    test_lex "$i" > "${i%.deca}".lis 2>&1 &
+    test_context "$i" > "${i%.deca}".lis 2>&1 &
     echo -e "$fichier ${vert} PASSED ${blanc} (failure)"
   else
-    test_lex "$i" > "${i%.deca}".lis 2>&1 &
+    test_context "$i" > "${i%.deca}".lis 2>&1 &
     echo -e "$fichier ${rouge} FAILED ${blanc} (no failure)"
     status=1
   fi
