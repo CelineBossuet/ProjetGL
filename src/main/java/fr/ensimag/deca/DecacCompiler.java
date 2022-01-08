@@ -7,7 +7,6 @@ import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.deca.tree.AbstractProgram;
 import fr.ensimag.deca.tree.LocationException;
 import fr.ensimag.ima.pseudocode.*;
-import jdk.internal.org.jline.utils.Log;
 
 import java.io.File;
 import java.io.FileNotFoundException;

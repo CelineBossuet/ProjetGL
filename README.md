@@ -21,60 +21,54 @@ Il est nécessaire d'ajouter le dossier `bin` de maven au *PATH*.
 Également celui de java si besoin suivant la méthode d'installation.
 
 Pour pouvoir utiliser les commandes du projet directement dans le terminal :
-```
+``
 source env_settup.sh
-```
+``
 A exécuter dans chaque terminal
 
 
 ### Compilation 
 
-Pour compiler avec Maven il suffit de tapper dans le terminal 
-
 ``
 mvn compile
 ``
 
-ensuite on peut ouvrir le compilateur avec la commande avec ensuite soit le nom du fichier à utiliser (comme hello.deca pour faire le HelloWorld) ou des paramètres comme -b pour afficher la banière
 
+### Exécution
 ``
 ./src/main/bin/decac
 ``
 
+Affichage du débogage Log4j :
+- `decac -d <file>` mode INFO
+- `decac -d -d <file>` mode DEBUG
+- `decac -d -d -d <file>` mode TRACE
+- `decac -d -d -d -d <file>` mode ALL
+
+
+
+
 ### Exécution des tests
 
-Vous pouvez lancer n'importe quel test en tapant en ligne de commande depuis n'importe quel répertoire.
+Emplacement des tests `./src/test/script`
 
-``
-nom-du-test.sh
-``
-
-si une erreur de droit apparait, vous pouvez vous rendre dans le répertoire du test et taper:
-
+Rappel pour rendre exécutable :
 ``
 chmod 0755 nom-du-test.sh
 ``
 
-Le chemin du test est:
-
-``
-./src/test/script
-``
-
-vous pourrez alors relancer le test.  
-Ce dernier ce décompose en 4 partie :
+4 parties :
 - Les tests valides fournis
 - Les tests valide non fournis
 - Les tests non valide fournis
 - Les tests non valide non fournis
 
-Chaque batterie de test est annoncé en jaune et chaque fichier testé verra le résultat de son test à coté de son nom. Si un cas normalement valide est faux, il y a un lien direct vers le début de la pile d'appel problématique ou un message d'erreur
-correpsondant. 
+Chaque batterie de test est annoncé en jaune et chaque fichier testé verra le résultat de son test à coté de son nom. Si un cas normalement valide est faux, il y a un lien direct vers le début de la pile d'appel problématique ou un message d'erreur correspondant. 
 
 
   
-Aprés éxécution des tests, un fichier de log de résultat apparait pour lire la réponse éxacte du test.
-Il peut être de différentes manières : 
+
+Formats de réponse des tests : 
 - .lis si le test est un test résultant du lexer ou du parser
 - .ass si le fichier .deca a été compilé en assembleur
 - .res si le fichier est le résultat d'une éxécution

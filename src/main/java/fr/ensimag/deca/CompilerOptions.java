@@ -72,7 +72,8 @@ public class CompilerOptions {
                     break;
                 case "-r": // A FAIRE
                     break;
-                case "-d": // A FAIRE
+                case "-d":
+                    debug++;
                     break;
                 case "-P":
                     parallel = true;
