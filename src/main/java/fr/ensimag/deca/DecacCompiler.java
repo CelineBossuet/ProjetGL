@@ -66,7 +66,7 @@ public class DecacCompiler {
 
     /**
      * @see
-     * fr.ensimag.ima.pseudocode.IMAProgram#add(fr.ensimag.ima.pseudocode.AbstractLine)
+     *      fr.ensimag.ima.pseudocode.IMAProgram#add(fr.ensimag.ima.pseudocode.AbstractLine)
      */
     public void add(AbstractLine line) {
         program.add(line);
@@ -81,7 +81,7 @@ public class DecacCompiler {
 
     /**
      * @see
-     * fr.ensimag.ima.pseudocode.IMAProgram#addLabel(fr.ensimag.ima.pseudocode.Label)
+     *      fr.ensimag.ima.pseudocode.IMAProgram#addLabel(fr.ensimag.ima.pseudocode.Label)
      */
     public void addLabel(Label label) {
         program.addLabel(label);
@@ -89,7 +89,7 @@ public class DecacCompiler {
 
     /**
      * @see
-     * fr.ensimag.ima.pseudocode.IMAProgram#addInstruction(fr.ensimag.ima.pseudocode.Instruction)
+     *      fr.ensimag.ima.pseudocode.IMAProgram#addInstruction(fr.ensimag.ima.pseudocode.Instruction)
      */
     public void addInstruction(Instruction instruction) {
         program.addInstruction(instruction);
@@ -97,8 +97,8 @@ public class DecacCompiler {
 
     /**
      * @see
-     * fr.ensimag.ima.pseudocode.IMAProgram#addInstruction(fr.ensimag.ima.pseudocode.Instruction,
-     * java.lang.String)
+     *      fr.ensimag.ima.pseudocode.IMAProgram#addInstruction(fr.ensimag.ima.pseudocode.Instruction,
+     *      java.lang.String)
      */
     public void addInstruction(Instruction instruction, String comment) {
         program.addInstruction(instruction, comment);
@@ -106,7 +106,7 @@ public class DecacCompiler {
 
     /**
      * @see
-     * fr.ensimag.ima.pseudocode.IMAProgram#display()
+     *      fr.ensimag.ima.pseudocode.IMAProgram#display()
      */
     public String displayIMAProgram() {
         return program.display();
@@ -136,8 +136,6 @@ public class DecacCompiler {
     public boolean compile() {
         String sourceFile = source.getAbsolutePath();
         String destFile = null;
-        // A FAIRE: calculer le nom du fichier .ass à partir du nom du
-        // A FAIRE: fichier .deca. FAIT
 
         destFile = sourceFile.substring(0, sourceFile.lastIndexOf('.')) + ".ass";
 
@@ -174,14 +172,14 @@ public class DecacCompiler {
      * verification and code generation).
      *
      * @param sourceName name of the source (deca) file
-     * @param destName name of the destination (assembly) file
-     * @param out stream to use for standard output (output of decac -p)
-     * @param err stream to use to display compilation errors
+     * @param destName   name of the destination (assembly) file
+     * @param out        stream to use for standard output (output of decac -p)
+     * @param err        stream to use to display compilation errors
      *
      * @return true on error
      */
     private boolean doCompile(String sourceName, String destName,
-                              PrintStream out, PrintStream err)
+            PrintStream out, PrintStream err)
             throws DecacFatalError, LocationException {
         AbstractProgram prog = doLexingAndParsing(sourceName, err);
 
@@ -189,11 +187,19 @@ public class DecacCompiler {
             LOG.info("Parsing failed");
             return true;
         }
-        //assert(prog.checkAllLocations()); pour etape B
 
+        if (compilerOptions.getParser()) { // Stop compiling if -p option
+            prog.prettyPrint(System.out); // Print tree
+            return false;
+        }
 
+        // assert(prog.checkAllLocations()); A FAIRE
+        LOG.info("Starting verification");
         prog.verifyProgram(this);
-        //assert(prog.checkAllDecorations()); pour etape B
+        // assert(prog.checkAllDecorations()); A FAIRE
+
+        if (compilerOptions.getVerif()) // Stop compiling if -v option
+            return false;
 
         addComment("start main program");
         prog.codeGenProgram(this);
@@ -220,28 +226,30 @@ public class DecacCompiler {
      * syntax tree.
      *
      * @param sourceName Name of the file to parse
-     * @param err Stream to send error messages to
+     * @param err        Stream to send error messages to
      * @return the abstract syntax tree
-     * @throws DecacFatalError When an error prevented opening the source file
+     * @throws DecacFatalError    When an error prevented opening the source file
      * @throws DecacInternalError When an inconsistency was detected in the
-     * compiler.
-     * @throws LocationException When a compilation error (incorrect program)
-     * occurs.
+     *                            compiler.
+     * @throws LocationException  When a compilation error (incorrect program)
+     *                            occurs.
      */
     protected AbstractProgram doLexingAndParsing(String sourceName, PrintStream err)
             throws DecacFatalError, DecacInternalError {
         DecaLexer lex;
         try {
+            LOG.info("Starting lexing");
             lex = new DecaLexer(CharStreams.fromFileName(sourceName));
         } catch (IOException ex) {
             throw new DecacFatalError("Failed to open input file: " + ex.getLocalizedMessage());
         }
         lex.setDecacCompiler(this);
         CommonTokenStream tokens = new CommonTokenStream(lex);
+        LOG.info("Starting parsing");
         DecaParser parser = new DecaParser(tokens);
         parser.setDecacCompiler(this);
         return parser.parseProgramAndManageErrors(err);
     }
 
-    //TODO methods addPUSH, addADDSP, addSUBSP, ...
+    // A FAIRE methods addPUSH, addADDSP, addSUBSP, ...
 }
