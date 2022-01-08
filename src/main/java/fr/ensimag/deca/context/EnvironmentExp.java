@@ -1,5 +1,7 @@
 package fr.ensimag.deca.context;
 
+import static org.mockito.ArgumentMatchers.nullable;
+
 import java.util.HashMap;
 
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
@@ -43,7 +45,9 @@ public class EnvironmentExp {
      */
     public ExpDefinition get(Symbol key) {
         ExpDefinition result = environment.get(key); // first look in current block
-        return result == null ? result = parentEnvironment.get(key) : result;
+        if (result != null || parentEnvironment == null)
+            return result;
+        return parentEnvironment.get(key);
     }
 
     /**
