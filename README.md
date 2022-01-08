@@ -101,9 +101,28 @@ Pour tester le bon fonctionnement du contexte (étape B) :
 self-test-context.sh
 ``
 
+### Automatisation des test
+
+Les tests qui sont présents dans le pom.xml sont des tests qui vont se lancer à chaque appel de:
+
 ``
-suppression-log.sh
+mvn test
 ``
+
+Pour forcer le lancement de tous les tests et ne pas s'arreter dès qu'il y a une erreur, 
+il faut utiliser:
+
+``
+mvn test mvn test -Dmaven.test.failure.ignore
+``
+
+Au passage, il est également possible d'utiliser:
+
+``
+mvn verify
+``
+
+qui réalise la phase de tests mais qui aussi désinstrumente les classes.
 
 
 
