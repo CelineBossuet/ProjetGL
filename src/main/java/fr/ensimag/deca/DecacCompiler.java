@@ -227,7 +227,7 @@ public class DecacCompiler {
      */
     protected AbstractProgram doLexingAndParsing(String sourceName, PrintStream err)
             throws DecacFatalError, DecacInternalError {
-        Log.debug("starting lexing and parsing");
+        LOG.debug("starting lexing and parsing");
         DecaLexer lex;
         try {
             lex = new DecaLexer(CharStreams.fromFileName(sourceName));
