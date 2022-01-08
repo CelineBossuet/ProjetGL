@@ -7,6 +7,7 @@ import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.deca.tree.AbstractProgram;
 import fr.ensimag.deca.tree.LocationException;
 import fr.ensimag.ima.pseudocode.*;
+import jdk.internal.org.jline.utils.Log;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -180,10 +181,16 @@ public class DecacCompiler {
             LOG.info("Parsing failed");
             return true;
         }
-        // assert(prog.checkAllLocations()); pour etape B
 
+        if (compilerOptions.getParser()) // Stop compiling if -p option
+            return false;
+
+        // assert(prog.checkAllLocations()); A FAIRE
         prog.verifyProgram(this);
-        // assert(prog.checkAllDecorations()); pour etape B
+        // assert(prog.checkAllDecorations()); A FAIRE
+
+        if (compilerOptions.getVerif()) // Stop compiling if -v option
+            return false;
 
         addComment("start main program");
         prog.codeGenProgram(this);
@@ -220,6 +227,7 @@ public class DecacCompiler {
      */
     protected AbstractProgram doLexingAndParsing(String sourceName, PrintStream err)
             throws DecacFatalError, DecacInternalError {
+        Log.debug("starting lexing and parsing");
         DecaLexer lex;
         try {
             lex = new DecaLexer(CharStreams.fromFileName(sourceName));
@@ -233,5 +241,5 @@ public class DecacCompiler {
         return parser.parseProgramAndManageErrors(err);
     }
 
-    // TODO methods addPUSH, addADDSP, addSUBSP, ...
+    // A FAIRE methods addPUSH, addADDSP, addSUBSP, ...
 }

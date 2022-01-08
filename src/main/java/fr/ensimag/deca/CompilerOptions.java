@@ -52,24 +52,28 @@ public class CompilerOptions {
     private boolean verif = false;
 
     public void parseArgs(String[] args) throws CLIException {
-        // A FAIRE : parcourir args pour positionner les options correctement.
         for (String arg : args) {
-            // A FAIRE : exclure -v et -p
             switch (arg) {
                 case "-b":
                     printBanner = true;
                     break;
                 case "-p":
+                    if (verif)
+                        throw new CLIException("Impossible d'utiliser simultanément les options -p et -v.");
                     parser = true;
                     break;
                 case "-v":
+                    if (parser)
+                        throw new CLIException("Impossible d'utiliser simultanément les options -p et -v.");
                     verif = true;
                     break;
                 case "-n":
                     // A FAIRE
                     break;
                 case "-r": // A FAIRE
+                    break;
                 case "-d": // A FAIRE
+                    break;
                 case "-P":
                     parallel = true;
                     break;
@@ -109,24 +113,24 @@ public class CompilerOptions {
 
     protected void displayUsage() {
         System.out.println("Utilisation : decac [OPTION] [FILE]");
-        System.out.println("Options disponibles :");
-        System.out.println(". -b (banner) : affiche une bannière indiquant le nom de l'équipe\n" +
-                ". -p (parse) : arrête decac après l'étape de construction de" +
+        System.out.println("Options :");
+        System.out.println(". -b (banner) : affiche une bannière indiquant le nom de l'équipe.\n" +
+                ". -p (parse) : arrête decac après l'étape de construction de " +
                 "l'arbre, et affiche la décompilation de ce dernier" +
-                "(i.e. s'il n'y a qu'un fichier source à" +
-                "compiler, la sortie doit être un programme" +
-                "deca syntaxiquement correct)\n" +
-                ". -v (verification) : arrête decac après l'étape de vérifications" +
-                "(ne produit aucune sortie en l'absence d'erreur)\n" +
-                ". -n (no check) : supprime les tests à l'exécution spécifiés dans" +
+                "(i.e. s'il n'y a qu'un fichier source à " +
+                "compiler, la sortie doit être un programme " +
+                "deca syntaxiquement correct).\n" +
+                ". -v (verification) : arrête decac après l'étape de vérifications " +
+                "(ne produit aucune sortie en l'absence d'erreur).\n" +
+                ". -n (no check) : supprime les tests à l'exécution spécifiés dans " +
                 "les points 11.1 et 11.3 de la sémantique de Deca.\n" +
-                ". -r X (registers) : limite les registres banalisés disponibles à" +
-                "R0 ... R{X-1}, avec 4 <= X <= 16\n" +
-                ". -d (debug) : active les traces de debug. Répéter" +
-                "l'option plusieurs fois pour avoir plus de" +
+                ". -r X (registers) : limite les registres banalisés disponibles à " +
+                "R0 ... R{X-1}, avec 4 <= X <= 16.\n" +
+                ". -d (debug) : active les traces de debug. Répéter " +
+                "l'option plusieurs fois pour avoir plus de " +
                 "traces.\n" +
-                ". -P (parallel) : s'il y a plusieurs fichiers sources," +
-                "lance la compilation des fichiers en" +
-                "parallèle (pour accélérer la compilation)");
+                ". -P (parallel) : s'il y a plusieurs fichiers sources, " +
+                "lance la compilation des fichiers en " +
+                "parallèle (pour accélérer la compilation).");
     }
 }
