@@ -1,6 +1,8 @@
 package fr.ensimag.deca;
 
 
+import fr.ensimag.deca.codegen.MemoryManager;
+import fr.ensimag.deca.codegen.RegisterManager;
 import fr.ensimag.deca.syntax.DecaLexer;
 import fr.ensimag.deca.syntax.DecaParser;
 import fr.ensimag.deca.tools.DecacInternalError;
@@ -112,6 +114,8 @@ public class DecacCompiler {
 
     private final CompilerOptions compilerOptions;
     private final File source;
+    private final RegisterManager registerManager = new RegisterManager();
+    private final MemoryManager memoryManager = new MemoryManager();
     /**
      * The main program. Every instruction generated will eventually end up here.
      */
@@ -120,6 +124,8 @@ public class DecacCompiler {
 
 
     public SymbolTable getSymbolTable() {return symbolTable;}
+    public RegisterManager getRegisterManager(){return registerManager;}
+    public MemoryManager getMemoryManager() {return memoryManager;}
 
 
     /**

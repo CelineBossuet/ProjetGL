@@ -5,6 +5,10 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.tools.DecacInternalError;
+import fr.ensimag.ima.pseudocode.BinaryInstruction;
+import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.GPRegister;
 
 /**
  *
@@ -23,4 +27,8 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
         throw new UnsupportedOperationException("not yet implemented");
     }
 
+    @Override
+    protected BinaryInstruction geneInstru(DVal val, GPRegister reg){
+        throw new DecacInternalError("Instruction non implémentable sur les binaires");
+    }
 }
