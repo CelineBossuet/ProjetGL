@@ -181,10 +181,13 @@ public class DecacCompiler {
             return true;
         }
 
-        if (compilerOptions.getParser()) // Stop compiling if -p option
+        if (compilerOptions.getParser()) { // Stop compiling if -p option
+            prog.prettyPrint(System.out); // Print tree
             return false;
+        }
 
         // assert(prog.checkAllLocations()); A FAIRE
+        LOG.info("Starting verification");
         prog.verifyProgram(this);
         // assert(prog.checkAllDecorations()); A FAIRE
 
@@ -226,15 +229,16 @@ public class DecacCompiler {
      */
     protected AbstractProgram doLexingAndParsing(String sourceName, PrintStream err)
             throws DecacFatalError, DecacInternalError {
-        LOG.debug("starting lexing and parsing");
         DecaLexer lex;
         try {
+            LOG.info("Starting lexing");
             lex = new DecaLexer(CharStreams.fromFileName(sourceName));
         } catch (IOException ex) {
             throw new DecacFatalError("Failed to open input file: " + ex.getLocalizedMessage());
         }
         lex.setDecacCompiler(this);
         CommonTokenStream tokens = new CommonTokenStream(lex);
+        LOG.info("Starting parsing");
         DecaParser parser = new DecaParser(tokens);
         parser.setDecacCompiler(this);
         return parser.parseProgramAndManageErrors(err);
