@@ -16,27 +16,36 @@ import org.apache.log4j.Logger;
  */
 public class Program extends AbstractProgram {
     private static final Logger LOG = Logger.getLogger(Program.class);
-    
+
     public Program(ListDeclClass classes, AbstractMain main) {
         Validate.notNull(classes);
         Validate.notNull(main);
         this.classes = classes;
         this.main = main;
     }
+
     public ListDeclClass getClasses() {
         return classes;
     }
+
     public AbstractMain getMain() {
         return main;
     }
+
     private ListDeclClass classes;
     private AbstractMain main;
 
     @Override
     public void verifyProgram(DecacCompiler compiler) throws ContextualError {
         LOG.debug("verify program: start");
-//        throw new UnsupportedOperationException("not yet implemented");
-        // LOG.debug("verify program: end");
+
+        LOG.debug("Pass 1 verification"); // A FAIRE passe 1
+
+        LOG.debug("Pass 2 verification"); // A FAIRE passe 2
+
+        LOG.debug("Pass 3 verification"); // A FAIRE passe 3
+
+        LOG.debug("verify program: end");
     }
 
     @Override
@@ -52,12 +61,13 @@ public class Program extends AbstractProgram {
         getClasses().decompile(s);
         getMain().decompile(s);
     }
-    
+
     @Override
     protected void iterChildren(TreeFunction f) {
         classes.iter(f);
         main.iter(f);
     }
+
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         classes.prettyPrint(s, prefix, false);
