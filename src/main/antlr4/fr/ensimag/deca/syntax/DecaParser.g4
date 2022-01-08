@@ -153,8 +153,9 @@ inst returns[AbstractInst tree]
     | WHILE OPARENT condition=expr CPARENT OBRACE body=list_inst CBRACE {
             assert($condition.tree != null);
             assert($body.tree != null);
-
-        } //TODO
+            $tree= new While($condition.tree, $body.tree);
+            setLocation($tree, $WHILE);
+        } //TOBETESTED
     | RETURN expr SEMI {
             assert($expr.tree != null);
             $tree=$expr.tree;
@@ -162,19 +163,25 @@ inst returns[AbstractInst tree]
         }
     ;
 
-//TODO
+//TOBETESTED
 if_then_else returns[IfThenElse tree]
 @init {
-
+    IfThenElse lastOne = null;
 }
     : if1=IF OPARENT condition=expr CPARENT OBRACE li_if=list_inst CBRACE {
         $tree = new IfThenElse($condition.tree, $li_if.tree, new ListInst());
+        setLocation($tree, $if1);
+        lastOne=$tree;
         }
       (ELSE elsif=IF OPARENT elsif_cond=expr CPARENT OBRACE elsif_li=list_inst CBRACE {
-
+            IfThenElse elsif = new IfThenElse($elsif_cond.tree, $elsif_li.tree, new ListInst());
+            setLocation(elsif, $elsif);
+            lastOne.setElseBranch(elsif);
+            lastOne=elsif;
         }
       )*
       (ELSE OBRACE li_else=list_inst CBRACE {
+            lastOne.setElseBranch($li_else.tree);
         }
       )?
     ;
@@ -211,12 +218,14 @@ assign_expr returns[AbstractExpr tree]
             if (! ($e.tree instanceof AbstractLValue)) {
                 throw new InvalidLValue(this, $ctx);
             }
-        }//TODO
-        EQUALS e2=assign_expr {
+        }
+        EQUALS e2=assign_expr { //on doit assign e1=e2
             assert($e.tree != null);
             assert($e2.tree != null);
+            $tree = new Assign((AbstractLValue)$e.tree, $e2.tree);
+            setLocation($tree, $EQUALS);
 
-        } //TODO
+        } //TOBETESTED
       | /* epsilon */ {
             assert($e.tree != null);
             $tree=$e.tree;
@@ -265,11 +274,15 @@ eq_neq_expr returns[AbstractExpr tree]
     | e1=eq_neq_expr EQEQ e2=inequality_expr {
             assert($e1.tree != null);
             assert($e2.tree != null);
-        }//TODO
+            $tree = new Equals($e1.tree, $e2.tree);
+            setLocation($tree, $EQEQ);
+        }//TOBETESTED
     | e1=eq_neq_expr NEQ e2=inequality_expr {
             assert($e1.tree != null);
             assert($e2.tree != null);
-        }//TODO
+            $tree = new NotEquals($e1.tree, $e2.tree);
+            setLocation($tree, $NEQ);
+        }//TOBETESTED
     ;
 
 
@@ -282,23 +295,33 @@ inequality_expr returns[AbstractExpr tree]
     | e1=inequality_expr LEQ e2=sum_expr {
             assert($e1.tree != null);
             assert($e2.tree != null);
-        }//TODO
+            $tree = new LowerOrEqual($e1.tree, $e2.tree);
+            setLocation($tree, $LEQ);
+        }//TOBETESTED
     | e1=inequality_expr GEQ e2=sum_expr {
             assert($e1.tree != null);
             assert($e2.tree != null);
-        }//TODO
+            $tree = new GreaterOrEqual($e1.tree, $e2.tree);
+            setLocation($tree, $GEQ);
+        }//TOBETESTED
     | e1=inequality_expr GT e2=sum_expr {
             assert($e1.tree != null);
             assert($e2.tree != null);
-        }//TODO
+            $tree = new Greater($e1.tree, $e2.tree);
+            setLocation($tree, $GT);
+        }//TOBETESTED
     | e1=inequality_expr LT e2=sum_expr {
             assert($e1.tree != null);
             assert($e2.tree != null);
-        }//TODO
+            $tree = new Lower($e1.tree, $e2.tree);
+            setLocation($tree, $LT);
+        }//TOBETESTED
     | e1=inequality_expr INSTANCEOF type {
             assert($e1.tree != null);
             assert($type.tree != null);
-        }//TODO
+            $tree = new InstanceOf($e1.tree, $type.tree);
+            setLocation($tree, $INSTANCEOF);
+        }//TOBETESTED
     ;
 
 
@@ -407,11 +430,13 @@ primary_expr returns[AbstractExpr tree]
             $tree=$expr.tree;
         }
     | READINT OPARENT CPARENT {
-
-        }//TODO
+            $tree = new ReadInt();
+            setLocation($tree, $READINT);
+        }//TOBETESTED
     | READFLOAT OPARENT CPARENT {
-
-        }//TODO
+            $tree = new ReadFloat();
+            setLocation($tree, $READFLOAT);
+        }//TOBETESTED
     | NEW ident OPARENT CPARENT {
             assert($ident.tree != null);
         }//TODO
@@ -454,16 +479,18 @@ literal returns[AbstractExpr tree]
         $tree = new BooleanLiteral(false);
         }//TOBETESTED
     | THIS {
-        }//TODO
+        $tree = new This(true);
+        }//TOBETESTED
     | NULL {
-        }//TODO
+        $tree = new Null();
+        }//TOBETESTED
     ;
 
 
 ident returns[AbstractIdentifier tree]
     : IDENT {
-
-        }//TODO
+        $tree = new Identifier(getDecacCompiler().getSymbolTable().create($IDENT.getText()));
+        }//TOBETESTED
     ;
 
 /****     Class related rules     ****/
