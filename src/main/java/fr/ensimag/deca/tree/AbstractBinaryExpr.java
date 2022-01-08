@@ -2,6 +2,10 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
+
+import fr.ensimag.ima.pseudocode.BinaryInstruction;
+import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.GPRegister;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -66,4 +70,12 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         rightOperand.prettyPrint(s, prefix, true);
     }
 
+    /**
+     * Fonction pour générer les instruction pour les Opération Arithmétiques
+     * Si est appelé pour autre chose renvoi une erreur
+     * @param val
+     * @param reg
+     * @return
+     * */
+    protected abstract BinaryInstruction geneInstru(DVal val, GPRegister reg);
 }

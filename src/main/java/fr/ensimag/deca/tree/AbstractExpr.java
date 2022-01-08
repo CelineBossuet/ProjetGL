@@ -7,8 +7,12 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Label;
 import java.io.PrintStream;
+
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -46,6 +50,7 @@ public abstract class AbstractExpr extends AbstractInst {
         }
     }
 
+    //TODO Tout ce qui est verify c'est la partie B !
     /**
      * Verify the expression for contextual error.
      * 
@@ -114,12 +119,18 @@ public abstract class AbstractExpr extends AbstractInst {
      * @param compiler
      */
     protected void codeGenPrint(DecacCompiler compiler) {
+        /*
+        if(this.type==INT) ==> compiler.addInstruction(new LOAD...)
+        DVal val =this.codeGenReg(compiler)
+        Ajouter un booléen si écrire en hexa ou pas pour float
+         */
         throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
+        codeGenExprIgnored(compiler);
+        //throw new UnsupportedOperationException("not yet implemented");
     }
     
 
@@ -139,4 +150,47 @@ public abstract class AbstractExpr extends AbstractInst {
             s.println();
         }
     }
+
+    /**
+     * Generate code without register
+     * @param compiler
+     * @return
+     */
+    protected DVal codeGenNoReg(DecacCompiler compiler){
+        return null;
+    }
+    //TODO abstract car dépend du type d'opération
+
+
+    /**
+     * genere code à mettre dans le registre
+     * @param compiler
+     * @return reg
+     */
+    protected GPRegister codeGenReg(DecacCompiler compiler) {
+        GPRegister reg = compiler.getRegisterManager().getCurrent();
+        compiler.addInstruction(new LOAD(codeGenNoReg(compiler), reg));
+        return reg;
+    }
+
+
+    /**
+     * genere code pour une condition
+     * @param compiler
+     * @return GPRegister reg
+     */
+    protected GPRegister codeGenCond( DecacCompiler compiler){
+        return null; //TODO
+    }
+
+    /**
+     *
+     * @param compiler
+     * @return GPRegister reg
+     */
+    protected void codeGenExprIgnored(DecacCompiler compiler){
+        GPRegister reg =codeGenReg(compiler);
+        compiler.addComment("value in "+ reg +" ignored");
+    }
+
 }
