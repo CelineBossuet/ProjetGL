@@ -13,7 +13,6 @@ public class DecacMain {
     private static Logger LOG = Logger.getLogger(DecacMain.class);
 
     public static void main(String[] args) {
-
         LOG.info("Decac compiler started");
         final CompilerOptions options = new CompilerOptions();
         try {
@@ -32,23 +31,17 @@ public class DecacMain {
             System.exit(0);
         }
         if (options.getParser()) {
-            LOG.info("Decac compiler will stop after parsing");
+            LOG.debug("Decac compiler will stop after parsing");
             for (File source : options.getSourceFiles()) {
                 DecacCompiler compiler = new DecacCompiler(options, source);
-                if (compiler.compile()) {
-                    // A FAIRE
-                    System.exit(0);
-                }
+                System.exit(compiler.compile() ? 1 : 0); // if no errors, tree displayed by compile function
             }
         }
         if (options.getVerif()) {
-            LOG.info("Decac compiler will stop after verification");
+            LOG.debug("Decac compiler will stop after verification");
             for (File source : options.getSourceFiles()) {
                 DecacCompiler compiler = new DecacCompiler(options, source);
-                if (compiler.compile()) {
-                    // A FAIRE
-                    System.exit(0);
-                }
+                System.exit(compiler.compile() ? 1 : 0); // no display if no errors
             }
         }
         if (options.getParallel()) {
@@ -58,10 +51,10 @@ public class DecacMain {
             // java.util.concurrent de la bibliothèque standard Java.
             throw new UnsupportedOperationException("Parallel build not yet implemented");
         } else { // Normal execution
+            LOG.debug("Decac compiler will fully compile");
             for (File source : options.getSourceFiles()) {
                 DecacCompiler compiler = new DecacCompiler(options, source);
-                if (compiler.compile())
-                    System.exit(0);
+                System.exit(compiler.compile() ? 1 : 0);
             }
         }
     }
