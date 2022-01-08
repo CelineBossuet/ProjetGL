@@ -1,0 +1,10 @@
+// Description:
+//    tests de programme lexicalement correct
+//
+// Resultats:
+//    création d'un token floathex
+//
+// Historique:
+//    cree le 06/01/2022
+
+0x12.6p8
