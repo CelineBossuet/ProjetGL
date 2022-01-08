@@ -1,6 +1,7 @@
 package fr.ensimag.deca;
 
 
+import fr.ensimag.deca.codegen.LabelManager;
 import fr.ensimag.deca.codegen.MemoryManager;
 import fr.ensimag.deca.codegen.RegisterManager;
 import fr.ensimag.deca.syntax.DecaLexer;
@@ -37,6 +38,8 @@ import org.apache.log4j.Logger;
  */
 public class DecacCompiler {
     private static final Logger LOG = Logger.getLogger(DecacCompiler.class);
+
+    public static Logger getLOG() {return LOG; }
 
     /**
      * Portable newline character.
@@ -116,6 +119,7 @@ public class DecacCompiler {
     private final File source;
     private final RegisterManager registerManager = new RegisterManager();
     private final MemoryManager memoryManager = new MemoryManager();
+    private final LabelManager labelManager = new LabelManager();
     /**
      * The main program. Every instruction generated will eventually end up here.
      */
@@ -126,7 +130,8 @@ public class DecacCompiler {
     public SymbolTable getSymbolTable() {return symbolTable;}
     public RegisterManager getRegisterManager(){return registerManager;}
     public MemoryManager getMemoryManager() {return memoryManager;}
-
+    public LabelManager getLabelManager(){return labelManager;}
+    public IMAProgram getProgram(){return program;}
 
     /**
      * Run the compiler (parse source file, generate code)

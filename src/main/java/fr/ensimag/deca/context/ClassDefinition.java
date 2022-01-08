@@ -11,8 +11,6 @@ import org.apache.commons.lang.Validate;
  * @date 01/01/2022
  */
 public class ClassDefinition extends TypeDefinition {
-
-
     public void setNumberOfFields(int numberOfFields) {
         this.numberOfFields = numberOfFields;
     }

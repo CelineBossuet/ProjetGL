@@ -7,6 +7,11 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
+
+import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.ImmediateFloat;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -21,7 +26,7 @@ public class FloatLiteral extends AbstractExpr {
         return value;
     }
 
-    private float value;
+    protected float value;
 
     public FloatLiteral(float value) {
         Validate.isTrue(!Float.isInfinite(value),
@@ -58,4 +63,21 @@ public class FloatLiteral extends AbstractExpr {
         // leaf node => nothing to do
     }
 
+    @Override
+    protected boolean NeedsRegister(){
+        return false;
+    }
+
+    @Override
+    protected DVal codeGenNoReg(DecacCompiler compiler){
+        return new ImmediateFloat(value);
+    }
+
+    @Override
+    protected GPRegister codeGenReg(DecacCompiler compiler){
+        GPRegister reg = compiler.getRegisterManager().getCurrent();
+
+        compiler.getProgram().addInstruction(new LOAD(new ImmediateFloat(value), reg));
+        return reg;
+    }
 }

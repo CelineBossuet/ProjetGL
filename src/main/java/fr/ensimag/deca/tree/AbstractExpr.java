@@ -150,27 +150,33 @@ public abstract class AbstractExpr extends AbstractInst {
             s.println();
         }
     }
-
     /**
-     * Generate code without register
-     * @param compiler
-     * @return
-     */
-    protected DVal codeGenNoReg(DecacCompiler compiler){
-        return null;
+     * Fonction qui dit si pour généré le code on a besoin d'un registre
+     * par défaut à true et est modifiée a false pour les feuilles
+     * ie pour les classes où la fonction codeGenNoReg est possible
+     * */
+    protected boolean NeedsRegister(){
+        return true;
     }
-    //TODO abstract car dépend du type d'opération
+
+    /**
+     * Store la valeur dans un DVal sans toucher à un Registre
+     * Applicable que pour les feuilles si pas le cas renvoi une erreur
+     * @param compiler
+     * @return DVal ou se trouve notre valeur
+     */
+    protected abstract DVal codeGenNoReg(DecacCompiler compiler);
+    //Abstract car dépend du type et faut que ça soit une feuille
 
 
     /**
-     * genere code à mettre dans le registre
+     * genere le code à mettre dans le registre current
      * @param compiler
-     * @return reg
+     * @return Registre ou se trouve notre code généré
      */
     protected GPRegister codeGenReg(DecacCompiler compiler) {
-        GPRegister reg = compiler.getRegisterManager().getCurrent();
-        compiler.addInstruction(new LOAD(codeGenNoReg(compiler), reg));
-        return reg;
+        compiler.addInstruction(new LOAD(codeGenNoReg(compiler), compiler.getRegisterManager().getCurrent()));
+        return compiler.getRegisterManager().getCurrent();
     }
 
 

@@ -25,6 +25,7 @@ public class Divide extends AbstractOpArith {
     @Override
     protected BinaryInstruction geneInstru(DVal val, GPRegister reg){
         //Génération de l'instruction pour une division dans le registre reg
+        //TODO différencier int et utliser QUO ou le float et utiliser DIV
         return new DIV(val, reg);
     }
 }
