@@ -76,7 +76,7 @@ fragment EXP : ('E' | 'e') SIGN NUM;
 fragment DEC : NUM '.' NUM ;
 fragment FLOATDEC : DEC ('F' | 'f')? | DEC EXP ('F' | 'f')?;
 fragment NUMHEX : (DIGIT | 'a' .. 'f' | 'A' .. 'F')+;
-fragment FLOATHEX : ('Ox' | 'OX') NUMHEX '.' NUMHEX ('P' | 'p') SIGN NUM ('F' | 'f' )?;
+fragment FLOATHEX : ('0x' | '0X') NUMHEX '.' NUMHEX ('P' | 'p') SIGN NUM ('F' | 'f' )?;
 FLOAT : FLOATDEC | FLOATHEX;
 
 //Chaine de Caractères

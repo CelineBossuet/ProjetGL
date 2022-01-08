@@ -18,19 +18,17 @@ status=0
 
 # Gestion des cas valide
 
-echo -e "${jaune}Cas valide donné ${blanc}"
-
-for i in ./src/test/deca/lexing/valid/provided/*.deca
+for i in ./src/test/deca/context/valid/provided/*.deca
 do
   fichier=$(basename $i)
-  if test_lex "$i" 2>&1 | grep -q -e "$fichier"
+  if test_context "$i" 2>&1 | grep -q -e "$fichier" -e 'Error'
   then
-    test_lex "$i" >& "${i%.deca}".lis
+    test_context "$i" >& "${i%.deca}".lis
     echo -e "$fichier ${rouge} FAILED ${blanc} (failure)"
-    tail -2 "${i%.deca}".lis
+    head -1 "${i%.deca}".lis
     status=1
   else
-    test_lex "$i" >& "${i%.deca}".lis
+    test_context "$i" >& "${i%.deca}".lis
     echo -e "$fichier ${vert} PASSED ${blanc}"
 
   fi
@@ -38,17 +36,17 @@ done
 
 echo -e "${jaune}Cas valide créé ${blanc}"
 
-for i in ./src/test/deca/lexing/valid/self/*.deca
+for i in ./src/test/deca/context/valid/self/*.deca
 do
   fichier=$(basename $i)
-  if test_lex "$i" 2>&1 | grep -q -e "$fichier"
+  if test_context "$i" 2>&1 | grep -q -e "$fichier" -e 'Error'
   then
-    test_lex "$i" >& "${i%.deca}".lis
+    test_context "$i" >& "${i%.deca}".lis
     echo -e "$fichier ${rouge} FAILED ${blanc} (failure)"
-    tail -2 "${i%.deca}".lis
+    head -1 "${i%.deca}".lis
     status=1
   else
-    test_lex "$i" >& "${i%.deca}".lis
+    test_context "$i" >& "${i%.deca}".lis
     echo -e "$fichier ${vert} PASSED ${blanc}"
 
   fi
@@ -58,15 +56,15 @@ done
 
 echo -e "${jaune}Cas non valide donné ${blanc}"
 
-for i in ./src/test/deca/lexing/invalid/provided/*.deca
+for i in ./src/test/deca/context/invalid/provided/*.deca
 do
   fichier=$(basename $i)
-  if test_lex "$i" 2>&1 | grep -q -e "$fichier"
+  if test_context "$i" 2>&1 | grep -q -e "$fichier" -e 'Error'
   then
-    test_lex "$i" >& "${i%.deca}".lis
+    test_context "$i" >& "${i%.deca}".lis
     echo -e "$fichier ${vert} PASSED ${blanc} (failure)"
   else
-    test_lex "$i" >& "${i%.deca}".lis
+    test_context "$i" >& "${i%.deca}".lis
     echo -e "$fichier ${rouge} FAILED ${blanc} (no failure)"
     status=1
   fi
@@ -74,15 +72,15 @@ done
 
 echo -e "${jaune}Cas non valide créé ${blanc}"
 
-for i in ./src/test/deca/lexing/invalid/self/*.deca
+for i in ./src/test/deca/context/invalid/self/*.deca
 do
   fichier=$(basename $i)
-  if test_lex "$i" 2>&1 | grep -q -e "$fichier"
+  if test_context "$i" 2>&1 | grep -q -e "$fichier" -e 'Error'
   then
-    test_lex "$i" >& "${i%.deca}".lis
+    test_context "$i" >& "${i%.deca}".lis
     echo -e "$fichier ${vert} PASSED ${blanc} (failure)"
   else
-    test_lex "$i" >& "${i%.deca}".lis
+    test_context "$i" >& "${i%.deca}".lis
     echo -e "$fichier ${rouge} FAILED ${blanc} (no failure)"
     status=1
   fi
