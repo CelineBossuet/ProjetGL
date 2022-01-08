@@ -11,7 +11,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <compileSource>1.8</compileSource>
-        <jacoco.skip>true</jacoco.skip>
+        <jacoco.skip>false</jacoco.skip>
         <jacoco.report_dir>${project.build.directory}/site</jacoco.report_dir>
     </properties>
 
@@ -209,6 +209,36 @@
                         <id>basic-synt</id>
                         <configuration>
                             <executable>./src/test/script/basic-synt.sh</executable>
+                        </configuration>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>self-test-lex</id>
+                        <configuration>
+                            <executable>./src/test/script/self-test-lex.sh</executable>
+                        </configuration>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>self-test-pars</id>
+                        <configuration>
+                            <executable>./src/test/script/self-test-pars.sh</executable>
+                        </configuration>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>self-test-context</id>
+                        <configuration>
+                            <executable>./src/test/script/self-test-context.sh</executable>
                         </configuration>
                         <phase>test</phase>
                         <goals>
