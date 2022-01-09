@@ -90,4 +90,8 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
     protected GPRegister codeGenReg(DecacCompiler compiler) {
         return null;//TODO
     }
+
+    protected GPRegister codeGenRegInternal(DecacCompiler compiler, boolean useful){
+        return null; //TODO besoin pour codeGenCond() de AbstractOpCmp
+    }
 }

@@ -1,6 +1,11 @@
 package fr.ensimag.deca.tree;
 
 
+import fr.ensimag.deca.tools.DecacInternalError;
+import fr.ensimag.ima.pseudocode.BinaryInstruction;
+import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.GPRegister;
+
 /**
  *
  * @author gl13
@@ -13,4 +18,8 @@ public abstract class AbstractOpIneq extends AbstractOpCmp {
     }
 
 
+    @Override
+    protected BinaryInstruction geneInstru(DVal val, GPRegister reg) {
+        throw new DecacInternalError("peut pas utiliser geneInstru() pour AbstractOpIneq");
+    }
 }
