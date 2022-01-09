@@ -469,8 +469,24 @@ literal returns[AbstractExpr tree]
     | fd=FLOAT {
         $tree = new FloatLiteral(Float.parseFloat($fd.text));
         }//TOBETESTED
-    | STRING {
-        $tree = new StringLiteral($STRING.getText());
+    | STRING
+        //Pour ne pas afficher les guillemets dans un String il faut le filtrer, le parcourir
+        //et ne garder que le contenu du String
+        //Pour éviter les guillemets on part à i=1 et on fini a length-1
+        {
+        StringBuffer nouveau = new StringBuffer(); //correspond à notre nouveau String auquel ou ajoute le contenu
+        String s=$STRING.getText();
+
+        for (int i=1; i<s.length()-1; i++){
+
+            if (s.charAt(i)=='\n' || s.charAt(i)=='\\'){
+                //on ne veut pas ajouter ces symboles donc on les passe et on ajoute le suivant
+                i++;
+            }
+            nouveau.append(s.charAt(i));
+        }
+        $tree = new StringLiteral(nouveau.toString());
+        setLocation($tree, $STRING);
         }
     | TRUE {
         $tree = new BooleanLiteral(true);
