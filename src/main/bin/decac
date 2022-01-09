@@ -1,7 +1,9 @@
 #!/bin/sh
 
 DECAC_HOME=$(cd "$(dirname "$0")"/../../../ && pwd)
+echo $DECAC_HOME
 CP_FILE="$DECAC_HOME"/target/generated-sources/classpath.txt
+echo $CP_FILE
 
 CP="$DECAC_HOME"/target/classes/:$(cat "$CP_FILE")
 
