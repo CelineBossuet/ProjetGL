@@ -45,15 +45,23 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
         GPRegister r = compiler.getRegisterManager().getCurrent();
 
         compiler.addInstruction(new CMP(0, r));
+        //Cette instruction permet d'effectuer une comparaison, val indique l'opérande à comparer
 
         compiler.addInstruction(new BNE(elseBranch));
-
+        //Cette instruction permet de faire un saut à l'emplacement spécifié si le drapeau d'égalité vaut 0.
 
         compiler.addInstruction(new BRA(endBranch));
+        //cette instruction permet de faire un saut à l'emplacement, saut relatif à la position courrante
         compiler.addLabel(elseBranch);
 
         compiler.addInstruction(new LOAD(1, r));
         compiler.addLabel(endBranch);
         return r;
     }
+
+    /**
+     * Redéfinition de la méthode car dépend du type d'opération booléenne et donc est abstract
+     * */
+    @Override
+    protected abstract void codeGenCond( DecacCompiler compiler, Label l, boolean saut);
 }
