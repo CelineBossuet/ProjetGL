@@ -1,9 +1,9 @@
 package fr.ensimag.deca;
 
-
 import fr.ensimag.deca.codegen.LabelManager;
 import fr.ensimag.deca.codegen.MemoryManager;
 import fr.ensimag.deca.codegen.RegisterManager;
+import fr.ensimag.deca.context.EnvironmentType;
 import fr.ensimag.deca.syntax.DecaLexer;
 import fr.ensimag.deca.syntax.DecaParser;
 import fr.ensimag.deca.tools.DecacInternalError;
@@ -39,7 +39,9 @@ import org.apache.log4j.Logger;
 public class DecacCompiler {
     private static final Logger LOG = Logger.getLogger(DecacCompiler.class);
 
-    public static Logger getLOG() {return LOG; }
+    public static Logger getLOG() {
+        return LOG;
+    }
 
     /**
      * Portable newline character.
@@ -50,6 +52,7 @@ public class DecacCompiler {
         super();
         this.compilerOptions = compilerOptions;
         this.source = source;
+        this.environmentType = new EnvironmentType(null); // on initialise le EnvironmentType
     }
 
     /**
@@ -125,13 +128,35 @@ public class DecacCompiler {
      */
     private final IMAProgram program = new IMAProgram();
     private final SymbolTable symbolTable = new SymbolTable();
+    private EnvironmentType environmentType;
 
+    public SymbolTable getSymbolTable() {
+        return symbolTable;
+    }
 
-    public SymbolTable getSymbolTable() {return symbolTable;}
-    public RegisterManager getRegisterManager(){return registerManager;}
-    public MemoryManager getMemoryManager() {return memoryManager;}
-    public LabelManager getLabelManager(){return labelManager;}
-    public IMAProgram getProgram(){return program;}
+    public RegisterManager getRegisterManager() {
+        return registerManager;
+    }
+
+    public MemoryManager getMemoryManager() {
+        return memoryManager;
+    }
+
+    public LabelManager getLabelManager() {
+        return labelManager;
+    }
+
+    public IMAProgram getProgram() {
+        return program;
+    }
+
+    /**
+     * 
+     * @return Type environment which includes in particular builtin types.
+     */
+    public EnvironmentType getEnvironmentType() {
+        return environmentType;
+    }
 
     /**
      * Run the compiler (parse source file, generate code)
@@ -254,6 +279,14 @@ public class DecacCompiler {
         DecaParser parser = new DecaParser(tokens);
         parser.setDecacCompiler(this);
         return parser.parseProgramAndManageErrors(err);
+    }
+
+    public GPRegister allocate() {
+        return registerManager.allocRegister();
+    }
+
+    public void release(GPRegister reg) {
+        registerManager.releaseRegister(reg);
     }
 
     // A FAIRE methods addPUSH, addADDSP, addSUBSP, ...

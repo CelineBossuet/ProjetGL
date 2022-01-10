@@ -12,10 +12,7 @@ import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Label;
 import java.io.PrintStream;
 
-import fr.ensimag.ima.pseudocode.instructions.BEQ;
-import fr.ensimag.ima.pseudocode.instructions.BNE;
-import fr.ensimag.ima.pseudocode.instructions.CMP;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
@@ -28,18 +25,21 @@ import org.apache.log4j.Logger;
 public abstract class AbstractExpr extends AbstractInst {
     private static final Logger LOG = Logger.getLogger(DecacCompiler.class);
 
-    public static Logger getLOG() {return LOG; }
+    public static Logger getLOG() {
+        return LOG;
+    }
 
     /**
      * @return true if the expression does not correspond to any concrete token
-     * in the source code (and should be decompiled to the empty string).
+     *         in the source code (and should be decompiled to the empty string).
      */
     boolean isImplicit() {
         return false;
     }
 
     /**
-     * Get the type decoration associated to this expression (i.e. the type computed by contextual verification).
+     * Get the type decoration associated to this expression (i.e. the type computed
+     * by contextual verification).
      */
     public Type getType() {
         return type;
@@ -49,6 +49,7 @@ public abstract class AbstractExpr extends AbstractInst {
         Validate.notNull(type);
         this.type = type;
     }
+
     private Type type;
 
     @Override
@@ -58,99 +59,112 @@ public abstract class AbstractExpr extends AbstractInst {
         }
     }
 
-    //TODO Tout ce qui est verify c'est la partie B !
+    // TODO Tout ce qui est verify c'est la partie B !
     /**
      * Verify the expression for contextual error.
      * 
-     * implements non-terminals "expr" and "lvalue" 
-     *    of [SyntaxeContextuelle] in pass 3
+     * implements non-terminals "expr" and "lvalue"
+     * of [SyntaxeContextuelle] in pass 3
      *
-     * @param compiler  (contains the "env_types" attribute)
+     * @param compiler     (contains the "env_types" attribute)
      * @param localEnv
-     *            Environment in which the expression should be checked
-     *            (corresponds to the "env_exp" attribute)
+     *                     Environment in which the expression should be checked
+     *                     (corresponds to the "env_exp" attribute)
      * @param currentClass
-     *            Definition of the class containing the expression
-     *            (corresponds to the "class" attribute)
-     *             is null in the main bloc.
+     *                     Definition of the class containing the expression
+     *                     (corresponds to the "class" attribute)
+     *                     is null in the main bloc.
      * @return the Type of the expression
-     *            (corresponds to the "type" attribute)
+     *         (corresponds to the "type" attribute)
      */
     public abstract Type verifyExpr(DecacCompiler compiler,
             EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError;
 
     /**
-     * Verify the expression in right hand-side of (implicit) assignments 
+     * Verify the expression in right hand-side of (implicit) assignments
      * 
      * implements non-terminal "rvalue" of [SyntaxeContextuelle] in pass 3
      *
-     * @param compiler  contains the "env_types" attribute
-     * @param localEnv corresponds to the "env_exp" attribute
+     * @param compiler     contains the "env_types" attribute
+     * @param localEnv     corresponds to the "env_exp" attribute
      * @param currentClass corresponds to the "class" attribute
-     * @param expectedType corresponds to the "type1" attribute            
+     * @param expectedType corresponds to the "type1" attribute
      * @return this with an additional ConvFloat if needed...
      */
     public AbstractExpr verifyRValue(DecacCompiler compiler,
-            EnvironmentExp localEnv, ClassDefinition currentClass, 
+            EnvironmentExp localEnv, ClassDefinition currentClass,
             Type expectedType)
             throws ContextualError {
         throw new UnsupportedOperationException("not yet implemented");
     }
-    
-    
+
     @Override
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        this.verifyExpr(compiler, localEnv, currentClass);
     }
-
-
 
     /**
      * Verify the expression as a condition, i.e. check that the type is
      * boolean.
      *
      * @param localEnv
-     *            Environment in which the condition should be checked.
+     *                     Environment in which the condition should be checked.
      * @param currentClass
-     *            Definition of the class containing the expression, or null in
-     *            the main program.
+     *                     Definition of the class containing the expression, or
+     *                     null in
+     *                     the main program.
      */
     void verifyCondition(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
         throw new UnsupportedOperationException("not yet implemented");
     }
 
-
     /////////////////////////// Part C //////////////////////////////////
-
 
     /**
      * Generate code to print the expression
      *
      * @param compiler
      */
-    protected void codeGenPrint(DecacCompiler compiler) {
+    protected void codeGenPrint(DecacCompiler compiler, boolean hexa) {
         /*
-        if(this.type==INT) ==> compiler.addInstruction(new LOAD...)
-        DVal val =this.codeGenReg(compiler)
-        Ajouter un booléen si écrire en hexa ou pas pour float
+         * if(this.type==INT) ==> compiler.addInstruction(new LOAD...)
+         * DVal val =this.codeGenReg(compiler)
+         * Ajouter un booléen si écrire en hexa ou pas pour float
          */
-        throw new UnsupportedOperationException("not yet implemented"); //TODO
-    }
+        // A FAIRE TODO réimplémenter le code ci dessous dans des sous classes ... et y
+        // redéfinir cette méthode.
+        // A FAIRE TODO voir ce qu'on fait du boolean hexa
+        // if(this.type == compiler.getEnvironmentType().INT){
+        // DVal val = this.codeGenReg(compiler);
+        // compiler.addInstruction(new LOAD(val, Register.getR(1)));
+        // compiler.addInstruction(new WINT());
+        // }
+        // else if (this.type == compiler.getEnvironmentType().FLOAT){
+        // DVal val = this.codeGenReg(compiler);
+        // compiler.addInstruction(new LOAD(val, Register.getR(1)));
+        // if (hexa){
+        // compiler.addInstruction(new WFLOATX());
+        // }
+        // else{
+        // compiler.addInstruction(new WFLOAT());
+        // }
+        // }
 
+        // throw new UnsupportedOperationException("not yet implemented");
+    }
 
     /**
      * */
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         codeGenExprIgnored(compiler);
-        //peut être ajouter des labels en paramètre...
-        //throw new UnsupportedOperationException("not yet implemented");
+        // peut être ajouter des labels en paramètre...
+        // throw new UnsupportedOperationException("not yet implemented");
     }
-    
 
     @Override
     protected void decompileInst(IndentPrintStream s) {
@@ -168,36 +182,38 @@ public abstract class AbstractExpr extends AbstractInst {
             s.println();
         }
     }
+
     /**
      * Fonction qui dit si pour généré le code on a besoin d'un registre
      * par défaut à true et est modifiée a false pour les feuilles
      * ie pour les classes où la fonction codeGenNoReg est possible
-     * */
-    protected boolean NeedsRegister(){
+     */
+    protected boolean NeedsRegister() {
         return true;
     }
 
     /**
      * Store la valeur dans un DVal sans toucher à un Registre
      * Applicable que pour les feuilles si pas le cas renvoi une erreur
+     * 
      * @param compiler
      * @return DVal ou se trouve notre valeur
      */
     protected abstract DVal codeGenNoReg(DecacCompiler compiler);
-    //Abstract car dépend du type et faut que ça soit une feuille
-
+    // Abstract car dépend du type et faut que ça soit une feuille
 
     /**
      * genere le code à mettre dans le registre current
+     * 
      * @param compiler
      * @return Registre ou se trouve notre code généré
      */
     protected GPRegister codeGenReg(DecacCompiler compiler) {
         compiler.addInstruction(new LOAD(codeGenNoReg(compiler), compiler.getRegisterManager().getCurrent()));
-        //cette instruction permet de charger une valeur dans un registre ici le Registre Current
+        // cette instruction permet de charger une valeur dans un registre ici le
+        // Registre Current
         return compiler.getRegisterManager().getCurrent();
     }
-
 
     /**
      * Genere le code comme une condition en utilisant le control-flow
@@ -208,28 +224,32 @@ public abstract class AbstractExpr extends AbstractInst {
      * @param saut booléen qui régit le saut vers le label
      * @return GPRegister reg
      */
-    protected void codeGenCond( DecacCompiler compiler, Label l, boolean saut){
+    protected void codeGenCond(DecacCompiler compiler, Label l, boolean saut) {
         compiler.addInstruction(new CMP(0, codeGenReg(compiler)));
-        //Cette instruction permet d'effectuer une comparaison comme si une soustraction avait été effectuée.
+        // Cette instruction permet d'effectuer une comparaison comme si une
+        // soustraction avait été effectuée.
         LOG.info("Vérification du résultat de l'évaluation avec codeGenCond()");
-        if(saut){
-            //Cette instruction permet de faire un saut à l'emplacement spécifié si le drapeau d'égalité vaut 0.
+        if (saut) {
+            // Cette instruction permet de faire un saut à l'emplacement spécifié si le
+            // drapeau d'égalité vaut 0.
             compiler.addInstruction(new BNE(l));
-        }
-        else{
+        } else {
             compiler.addInstruction(new BEQ(l));
-            //Cette instruction permet de faire un saut à l'emplacement spécifié si le drapeau d'égalité vaut 1.
+            // Cette instruction permet de faire un saut à l'emplacement spécifié si le
+            // drapeau d'égalité vaut 1.
         }
 
     }
 
     /**
-     *Génère code pour l'expression mais seulement pour les effets  et ignore l'expression
+     * Génère code pour l'expression mais seulement pour les effets et ignore
+     * l'expression
+     * 
      * @param compiler
      * @return rien
      */
-    protected void codeGenExprIgnored(DecacCompiler compiler){
-        compiler.addComment("value in "+ codeGenReg(compiler) +" ignored");
+    protected void codeGenExprIgnored(DecacCompiler compiler) {
+        compiler.addComment("value in " + codeGenReg(compiler) + " ignored");
         LOG.info("Génère code pour l'expression avec codeGenExprIgnored");
     }
 
