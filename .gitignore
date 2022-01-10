@@ -9,6 +9,7 @@
 .metadata
 .settings
 .idea/
+/gen
 
 *.lis
 *.res
