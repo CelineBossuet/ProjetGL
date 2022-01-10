@@ -6,6 +6,9 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
+
 import java.io.PrintStream;
 
 /**
@@ -52,4 +55,16 @@ public class BooleanLiteral extends AbstractExpr {
         return "BooleanLiteral (" + value + ")";
     }
 
+    @Override
+    protected boolean NeedsRegister(){return false;}
+
+    @Override
+    protected DVal codeGenNoReg(DecacCompiler compiler){
+        if (value){
+            return new ImmediateInteger(1);
+        }
+        else{
+            return new ImmediateInteger(0);
+        }
+    }
 }

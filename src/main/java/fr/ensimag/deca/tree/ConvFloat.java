@@ -4,6 +4,9 @@ import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Instruction;
+import fr.ensimag.ima.pseudocode.instructions.FLOAT;
 
 /**
  * Conversion of an int into a float. Used for implicit conversions.
@@ -22,10 +25,15 @@ public class ConvFloat extends AbstractUnaryExpr {
         throw new UnsupportedOperationException("not yet implemented");
     }
 
-
     @Override
     protected String getOperatorName() {
         return "/* conv float */";
+    }
+
+    @Override
+    protected Instruction geneInstru(GPRegister reg) {
+        // generation de l'instruction de la conversion d'un entier vers un float
+        return new FLOAT(reg, reg);
     }
 
 }

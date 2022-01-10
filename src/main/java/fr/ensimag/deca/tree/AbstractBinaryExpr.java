@@ -1,5 +1,7 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
@@ -78,4 +80,18 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
      * @return
      * */
     protected abstract BinaryInstruction geneInstru(DVal val, GPRegister reg);
+
+    @Override
+    protected DVal codeGenNoReg(DecacCompiler compiler){
+        throw new DecacInternalError("pas possible car pas feuille de AbstractEpression");
+    }
+
+    @Override
+    protected GPRegister codeGenReg(DecacCompiler compiler) {
+        return null;//TODO
+    }
+
+    protected GPRegister codeGenRegInternal(DecacCompiler compiler, boolean useful){
+        return null; //TODO besoin pour codeGenCond() de AbstractOpCmp
+    }
 }

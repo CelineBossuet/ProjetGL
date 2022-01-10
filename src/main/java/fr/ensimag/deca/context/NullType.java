@@ -1,8 +1,6 @@
 package fr.ensimag.deca.context;
 
-import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.SymbolTable;
-import fr.ensimag.ima.pseudocode.DVal;
 
 /**
  *
@@ -29,6 +27,5 @@ public class NullType extends Type {
     public boolean isClassOrNull() {
         return true;
     }
-
 
 }

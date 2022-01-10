@@ -12,8 +12,12 @@ import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Label;
 import java.io.PrintStream;
 
+import fr.ensimag.ima.pseudocode.instructions.BEQ;
+import fr.ensimag.ima.pseudocode.instructions.BNE;
+import fr.ensimag.ima.pseudocode.instructions.CMP;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import org.apache.commons.lang.Validate;
+import org.apache.log4j.Logger;
 
 /**
  * Expression, i.e. anything that has a value.
@@ -22,6 +26,10 @@ import org.apache.commons.lang.Validate;
  * @date 01/01/2022
  */
 public abstract class AbstractExpr extends AbstractInst {
+    private static final Logger LOG = Logger.getLogger(DecacCompiler.class);
+
+    public static Logger getLOG() {return LOG; }
+
     /**
      * @return true if the expression does not correspond to any concrete token
      * in the source code (and should be decompiled to the empty string).
@@ -98,6 +106,8 @@ public abstract class AbstractExpr extends AbstractInst {
         throw new UnsupportedOperationException("not yet implemented");
     }
 
+
+
     /**
      * Verify the expression as a condition, i.e. check that the type is
      * boolean.
@@ -113,6 +123,10 @@ public abstract class AbstractExpr extends AbstractInst {
         throw new UnsupportedOperationException("not yet implemented");
     }
 
+
+    /////////////////////////// Part C //////////////////////////////////
+
+
     /**
      * Generate code to print the expression
      *
@@ -124,12 +138,16 @@ public abstract class AbstractExpr extends AbstractInst {
         DVal val =this.codeGenReg(compiler)
         Ajouter un booléen si écrire en hexa ou pas pour float
          */
-        throw new UnsupportedOperationException("not yet implemented");
+        throw new UnsupportedOperationException("not yet implemented"); //TODO
     }
 
+
+    /**
+     * */
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         codeGenExprIgnored(compiler);
+        //peut être ajouter des labels en paramètre...
         //throw new UnsupportedOperationException("not yet implemented");
     }
     
@@ -150,47 +168,69 @@ public abstract class AbstractExpr extends AbstractInst {
             s.println();
         }
     }
-
     /**
-     * Generate code without register
-     * @param compiler
-     * @return
-     */
-    protected DVal codeGenNoReg(DecacCompiler compiler){
-        return null;
+     * Fonction qui dit si pour généré le code on a besoin d'un registre
+     * par défaut à true et est modifiée a false pour les feuilles
+     * ie pour les classes où la fonction codeGenNoReg est possible
+     * */
+    protected boolean NeedsRegister(){
+        return true;
     }
-    //TODO abstract car dépend du type d'opération
+
+    /**
+     * Store la valeur dans un DVal sans toucher à un Registre
+     * Applicable que pour les feuilles si pas le cas renvoi une erreur
+     * @param compiler
+     * @return DVal ou se trouve notre valeur
+     */
+    protected abstract DVal codeGenNoReg(DecacCompiler compiler);
+    //Abstract car dépend du type et faut que ça soit une feuille
 
 
     /**
-     * genere code à mettre dans le registre
+     * genere le code à mettre dans le registre current
      * @param compiler
-     * @return reg
+     * @return Registre ou se trouve notre code généré
      */
     protected GPRegister codeGenReg(DecacCompiler compiler) {
-        GPRegister reg = compiler.getRegisterManager().getCurrent();
-        compiler.addInstruction(new LOAD(codeGenNoReg(compiler), reg));
-        return reg;
+        compiler.addInstruction(new LOAD(codeGenNoReg(compiler), compiler.getRegisterManager().getCurrent()));
+        //cette instruction permet de charger une valeur dans un registre ici le Registre Current
+        return compiler.getRegisterManager().getCurrent();
     }
 
 
     /**
-     * genere code pour une condition
-     * @param compiler
-     * @return GPRegister reg
-     */
-    protected GPRegister codeGenCond( DecacCompiler compiler){
-        return null; //TODO
-    }
-
-    /**
+     * Genere le code comme une condition en utilisant le control-flow
+     * est utilisée que pour les expressions booléennes
      *
      * @param compiler
+     * @apram l le label vers lequel on va sauter
+     * @param saut booléen qui régit le saut vers le label
      * @return GPRegister reg
      */
+    protected void codeGenCond( DecacCompiler compiler, Label l, boolean saut){
+        compiler.addInstruction(new CMP(0, codeGenReg(compiler)));
+        //Cette instruction permet d'effectuer une comparaison comme si une soustraction avait été effectuée.
+        LOG.info("Vérification du résultat de l'évaluation avec codeGenCond()");
+        if(saut){
+            //Cette instruction permet de faire un saut à l'emplacement spécifié si le drapeau d'égalité vaut 0.
+            compiler.addInstruction(new BNE(l));
+        }
+        else{
+            compiler.addInstruction(new BEQ(l));
+            //Cette instruction permet de faire un saut à l'emplacement spécifié si le drapeau d'égalité vaut 1.
+        }
+
+    }
+
+    /**
+     *Génère code pour l'expression mais seulement pour les effets  et ignore l'expression
+     * @param compiler
+     * @return rien
+     */
     protected void codeGenExprIgnored(DecacCompiler compiler){
-        GPRegister reg =codeGenReg(compiler);
-        compiler.addComment("value in "+ reg +" ignored");
+        compiler.addComment("value in "+ codeGenReg(compiler) +" ignored");
+        LOG.info("Génère code pour l'expression avec codeGenExprIgnored");
     }
 
 }
