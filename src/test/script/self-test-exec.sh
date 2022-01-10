@@ -31,12 +31,14 @@ do
     status=1
   else
     decac "$i" > "${i%.deca}".ass 2>&1 &
-    ima "${i%.deca}".ass > "${i%.deca}".res 2>&1 &
     if ima "${i%.deca}".ass 2>&1 | grep -q -e "$fichier" -e 'Error'
     then
+      ima "${i%.deca}".ass > "${i%.deca}".res 2>&1 &
       echo -e "$fichier ${rouge} FAILED ${blanc}"
       status=1
-    else echo -e "$fichier ${vert} PASSED ${blanc}"
+    else
+      ima "${i%.deca}".ass > "${i%.deca}".res 2>&1 &
+      echo -e "$fichier ${vert} PASSED ${blanc}"
     fi
   fi
 done
@@ -49,21 +51,22 @@ do
   if decac "$i" 2>&1 | grep -q -e "$fichier" -e 'Error'
   then
     decac "$i" > "${i%.deca}".ass 2>&1 &
-    ima "${i%.deca}".ass > "${i%.deca}".res 2>&1 &
+    ima "${i%.deca}".ass> "${i%.deca}".res 2>&1 &
     echo -e "$fichier ${rouge} FAILED ${blanc}"
     status=1
   else
     decac "$i" > "${i%.deca}".ass 2>&1 &
-    ima "${i%.deca}".ass > "${i%.deca}".res 2>&1 &
     if ima "${i%.deca}".ass 2>&1 | grep -q -e "$fichier" -e 'Error'
     then
+      ima "${i%.deca}".ass > "${i%.deca}".res 2>&1 &
       echo -e "$fichier ${rouge} FAILED ${blanc}"
       status=1
-    else echo -e "$fichier ${vert} PASSED ${blanc}"
+    else
+      ima "${i%.deca}".ass > "${i%.deca}".res 2>&1 &
+      echo -e "$fichier ${vert} PASSED ${blanc}"
     fi
   fi
 done
-
 #Gestion des cas non valide
 
 echo -e "${jaune}Cas performance donné ${blanc}"
@@ -74,17 +77,19 @@ do
   if decac "$i" 2>&1 | grep -q -e "$fichier" -e 'Error'
   then
     decac "$i" > "${i%.deca}".ass 2>&1 &
-    ima "${i%.deca}".ass > "${i%.deca}".res 2>&1 &
+    ima "${i%.deca}".ass> "${i%.deca}".res 2>&1 &
     echo -e "$fichier ${rouge} FAILED ${blanc}"
     status=1
   else
     decac "$i" > "${i%.deca}".ass 2>&1 &
-    ima "${i%.deca}".ass > "${i%.deca}".res 2>&1 &
     if ima "${i%.deca}".ass 2>&1 | grep -q -e "$fichier" -e 'Error'
     then
+      ima "${i%.deca}".ass > "${i%.deca}".res 2>&1 &
       echo -e "$fichier ${rouge} FAILED ${blanc}"
       status=1
-    else echo -e "$fichier ${vert} PASSED ${blanc}"
+    else
+      ima "${i%.deca}".ass > "${i%.deca}".res 2>&1 &
+      echo -e "$fichier ${vert} PASSED ${blanc}"
     fi
   fi
 done
@@ -97,17 +102,19 @@ do
   if decac "$i" 2>&1 | grep -q -e "$fichier" -e 'Error'
   then
     decac "$i" > "${i%.deca}".ass 2>&1 &
-    ima "${i%.deca}".ass > "${i%.deca}".res 2>&1 &
+    ima "${i%.deca}".ass> "${i%.deca}".res 2>&1 &
     echo -e "$fichier ${rouge} FAILED ${blanc}"
     status=1
   else
     decac "$i" > "${i%.deca}".ass 2>&1 &
-    ima "${i%.deca}".ass > "${i%.deca}".res 2>&1 &
     if ima "${i%.deca}".ass 2>&1 | grep -q -e "$fichier" -e 'Error'
     then
+      ima "${i%.deca}".ass > "${i%.deca}".res 2>&1 &
       echo -e "$fichier ${rouge} FAILED ${blanc}"
       status=1
-    else echo -e "$fichier ${vert} PASSED ${blanc}"
+    else
+      ima "${i%.deca}".ass > "${i%.deca}".res 2>&1 &
+      echo -e "$fichier ${vert} PASSED ${blanc}"
     fi
   fi
 done
