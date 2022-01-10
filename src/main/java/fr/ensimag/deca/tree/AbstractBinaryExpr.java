@@ -99,17 +99,18 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
     }
 
     protected GPRegister codeGenRegInternal(DecacCompiler compiler, boolean useful){
+
         AbstractExpr right = getRightOperand();
         AbstractExpr left = getLeftOperand();
         GPRegister result;
         GPRegister leftValue = left.codeGenReg(compiler);
+
         if(!right.NeedsRegister()){
-            geneOneOrMoreInstru(compiler, right.codeGenNoReg(compiler), left.codeGenReg(compiler), useful);
+            geneOneOrMoreInstru(compiler, right.codeGenNoReg(compiler), leftValue, useful);
             getLOG().info("cas ou pas besoin de registre");
-            result = left.codeGenReg(compiler);
+            result =leftValue;
         }
         else if (compiler.getRegisterManager().getMax() -compiler.getRegisterManager().getCurrentv() +1 > 1) {
-
 
             GPRegister r = compiler.allocate();
             DVal rightValue = right.codeGenReg(compiler);
