@@ -1,17 +1,11 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.BooleanType;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.EnvironmentExp;
-import fr.ensimag.deca.context.FloatType;
-import fr.ensimag.deca.context.IntType;
-import fr.ensimag.deca.context.NullType;
-import fr.ensimag.deca.context.StringType;
-import fr.ensimag.deca.context.TypeDefinition;
-import fr.ensimag.deca.context.VoidType;
+import fr.ensimag.deca.context.*;
+import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.instructions.*;
+
 import java.io.PrintStream;
 
 import org.apache.commons.lang.Validate;
@@ -51,19 +45,8 @@ public class Program extends AbstractProgram {
         LOG.debug("Pass 1 verification");
 
         // declare language types :
-        EnvironmentExp environmentType = new EnvironmentExp(null); // A FAIRE EnvironmentType
-        environmentType.declare(compiler.getSymbolTable().create("void"),
-                new TypeDefinition(new VoidType(compiler.getSymbolTable().create("void")), Location.BUILTIN));
-        environmentType.declare(compiler.getSymbolTable().create("boolean"),
-                new TypeDefinition(new BooleanType(compiler.getSymbolTable().create("boolean")), Location.BUILTIN));
-        environmentType.declare(compiler.getSymbolTable().create("float"),
-                new TypeDefinition(new FloatType(compiler.getSymbolTable().create("float")), Location.BUILTIN));
-        environmentType.declare(compiler.getSymbolTable().create("int"),
-                new TypeDefinition(new IntType(compiler.getSymbolTable().create("int")), Location.BUILTIN));
-        environmentType.declare(compiler.getSymbolTable().create("string"),
-                new TypeDefinition(new StringType(compiler.getSymbolTable().create("string")), Location.BUILTIN));
-        environmentType.declare(compiler.getSymbolTable().create("null"),
-                new TypeDefinition(new NullType(compiler.getSymbolTable().create("null")), Location.BUILTIN));
+        EnvironmentType environmentType = new EnvironmentType(null); // A FAIRE EnvironmentType
+        declareBuiltinTypes(environmentType, compiler);
 
         getClasses().verifyListClass(compiler);
         getMain().verifyMain(compiler);
@@ -73,6 +56,25 @@ public class Program extends AbstractProgram {
         LOG.debug("Pass 3 verification"); // A FAIRE passe 3
 
         LOG.debug("verify program: end");
+    }
+
+    private void declareBuiltinTypes(EnvironmentType environmentType, DecacCompiler compiler) {
+        try {
+            environmentType.declare(compiler.getSymbolTable().create("void"),
+                    new TypeDefinition(new VoidType(compiler.getSymbolTable().create("void")), Location.BUILTIN));
+            environmentType.declare(compiler.getSymbolTable().create("boolean"),
+                    new TypeDefinition(new BooleanType(compiler.getSymbolTable().create("boolean")), Location.BUILTIN));
+            environmentType.declare(compiler.getSymbolTable().create("float"),
+                    new TypeDefinition(new FloatType(compiler.getSymbolTable().create("float")), Location.BUILTIN));
+            environmentType.declare(compiler.getSymbolTable().create("int"),
+                    new TypeDefinition(new IntType(compiler.getSymbolTable().create("int")), Location.BUILTIN));
+            environmentType.declare(compiler.getSymbolTable().create("string"),
+                    new TypeDefinition(new StringType(compiler.getSymbolTable().create("string")), Location.BUILTIN));
+            environmentType.declare(compiler.getSymbolTable().create("null"),
+                    new TypeDefinition(new NullType(compiler.getSymbolTable().create("null")), Location.BUILTIN));
+        } catch (EnvironmentType.DoubleDefException e) {
+            throw new DecacInternalError("Double built in type definition");
+        }
     }
 
     @Override
