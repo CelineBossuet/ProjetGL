@@ -5,9 +5,12 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tree.AbstractExpr;
 import fr.ensimag.deca.tree.Plus;
 import fr.ensimag.deca.tree.TreeFunction;
-import java.io.PrintStream;
+import fr.ensimag.ima.pseudocode.DVal;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+
+import java.io.PrintStream;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Test for the Plus node in a manual way. The same test would be much easier to
@@ -36,6 +39,11 @@ public class TestPlusWithoutMock {
                 ClassDefinition currentClass) throws ContextualError {
             hasBeenVerified = true;
             return INT;
+        }
+
+        @Override
+        protected DVal codeGenNoReg(DecacCompiler compiler) {
+            return null;
         }
 
         @Override

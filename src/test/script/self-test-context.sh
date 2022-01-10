@@ -18,6 +18,8 @@ status=0
 
 # Gestion des cas valide
 
+echo -e "${jaune}Cas valide donné ${blanc}"
+
 for i in ./src/test/deca/context/valid/provided/*.deca
 do
   fichier=$(basename $i)
