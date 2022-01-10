@@ -12,10 +12,8 @@ import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Label;
 import java.io.PrintStream;
 
-import fr.ensimag.ima.pseudocode.instructions.BEQ;
-import fr.ensimag.ima.pseudocode.instructions.BNE;
-import fr.ensimag.ima.pseudocode.instructions.CMP;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
@@ -103,7 +101,7 @@ public abstract class AbstractExpr extends AbstractInst {
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        this.verifyExpr(compiler, localEnv, currentClass);
     }
 
 
@@ -132,13 +130,29 @@ public abstract class AbstractExpr extends AbstractInst {
      *
      * @param compiler
      */
-    protected void codeGenPrint(DecacCompiler compiler) {
+    protected void codeGenPrint(DecacCompiler compiler, boolean hexa) {
         /*
         if(this.type==INT) ==> compiler.addInstruction(new LOAD...)
         DVal val =this.codeGenReg(compiler)
         Ajouter un booléen si écrire en hexa ou pas pour float
          */
-        throw new UnsupportedOperationException("not yet implemented"); //TODO
+        if(this.type == compiler.getEnvironmentType().INT){
+            DVal val = this.codeGenReg(compiler);
+            compiler.addInstruction(new LOAD(val, Register.getR(1)));
+            compiler.addInstruction(new WINT());
+        }
+        else if (this.type == compiler.getEnvironmentType().FLOAT){
+            DVal val = this.codeGenReg(compiler);
+            compiler.addInstruction(new LOAD(val, Register.getR(1)));
+            if (hexa){
+                compiler.addInstruction(new WFLOATX());
+            }
+            else{
+                compiler.addInstruction(new WFLOAT());
+            }
+        }
+
+        //throw new UnsupportedOperationException("not yet implemented");
     }
 
 
