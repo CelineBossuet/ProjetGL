@@ -7,7 +7,8 @@ import org.apache.log4j.Logger;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.Environment;
+import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
 /**
@@ -29,7 +30,7 @@ public class ListInst extends TreeList<AbstractInst> {
      *                     corresponds to "return" attribute (void in the main
      *                     bloc).
      */
-    public void verifyListInst(DecacCompiler compiler, EnvironmentExp localEnv,
+    public void verifyListInst(DecacCompiler compiler, Environment<ExpDefinition> localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
         LOG.debug("verify listInst: start");

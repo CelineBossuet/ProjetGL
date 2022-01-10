@@ -4,7 +4,8 @@ import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.Environment;
+import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
@@ -78,7 +79,7 @@ public abstract class AbstractExpr extends AbstractInst {
      *         (corresponds to the "type" attribute)
      */
     public abstract Type verifyExpr(DecacCompiler compiler,
-            EnvironmentExp localEnv, ClassDefinition currentClass)
+            Environment<ExpDefinition> localEnv, ClassDefinition currentClass)
             throws ContextualError;
 
     /**
@@ -93,14 +94,14 @@ public abstract class AbstractExpr extends AbstractInst {
      * @return this with an additional ConvFloat if needed...
      */
     public AbstractExpr verifyRValue(DecacCompiler compiler,
-            EnvironmentExp localEnv, ClassDefinition currentClass,
+            Environment<ExpDefinition> localEnv, ClassDefinition currentClass,
             Type expectedType)
             throws ContextualError {
         throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override
-    protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
+    protected void verifyInst(DecacCompiler compiler, Environment<ExpDefinition> localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
         this.verifyExpr(compiler, localEnv, currentClass);
@@ -117,7 +118,7 @@ public abstract class AbstractExpr extends AbstractInst {
      *                     null in
      *                     the main program.
      */
-    void verifyCondition(DecacCompiler compiler, EnvironmentExp localEnv,
+    void verifyCondition(DecacCompiler compiler, Environment<ExpDefinition> localEnv,
             ClassDefinition currentClass) throws ContextualError {
         throw new UnsupportedOperationException("not yet implemented");
     }
@@ -138,12 +139,12 @@ public abstract class AbstractExpr extends AbstractInst {
         // A FAIRE TODO réimplémenter le code ci dessous dans des sous classes ... et y
         // redéfinir cette méthode.
         // A FAIRE TODO voir ce qu'on fait du boolean hexa
-        // if(this.type == compiler.getEnvironmentType().INT){
+        // if(this.type == compiler.getEnvironment<TypeDefinition>().INT){
         // DVal val = this.codeGenReg(compiler);
         // compiler.addInstruction(new LOAD(val, Register.getR(1)));
         // compiler.addInstruction(new WINT());
         // }
-        // else if (this.type == compiler.getEnvironmentType().FLOAT){
+        // else if (this.type == compiler.getEnvironment<TypeDefinition>().FLOAT){
         // DVal val = this.codeGenReg(compiler);
         // compiler.addInstruction(new LOAD(val, Register.getR(1)));
         // if (hexa){

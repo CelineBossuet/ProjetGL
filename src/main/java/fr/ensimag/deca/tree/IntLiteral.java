@@ -4,7 +4,8 @@ import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.Environment;
+import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
@@ -31,14 +32,13 @@ public class IntLiteral extends AbstractExpr {
     }
 
     @Override
-    public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
+    public Type verifyExpr(DecacCompiler compiler, Environment<ExpDefinition> localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        setType(compiler.getEnvironmentType().INT);
+        // setType(compiler.getEnvironmentType().INT);
 
-        return compiler.getEnvironmentType().INT;
-        //throw new UnsupportedOperationException("not yet implemented");
+        // return compiler.getEnvironmentType().INT;
+        throw new UnsupportedOperationException("not yet implemented");
     }
-
 
     @Override
     String prettyPrintNode() {
@@ -61,12 +61,12 @@ public class IntLiteral extends AbstractExpr {
     }
 
     @Override
-    protected boolean NeedsRegister(){
+    protected boolean NeedsRegister() {
         return false;
     }
 
     @Override
-    protected DVal codeGenNoReg(DecacCompiler compiler){
+    protected DVal codeGenNoReg(DecacCompiler compiler) {
         return new ImmediateInteger(value);
     }
 

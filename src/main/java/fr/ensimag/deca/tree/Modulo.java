@@ -4,7 +4,8 @@ import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.Environment;
+import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.ima.pseudocode.BinaryInstruction;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
@@ -22,11 +23,10 @@ public class Modulo extends AbstractOpArith {
     }
 
     @Override
-    public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
+    public Type verifyExpr(DecacCompiler compiler, Environment<ExpDefinition> localEnv,
             ClassDefinition currentClass) throws ContextualError {
         throw new UnsupportedOperationException("not yet implemented");
     }
-
 
     @Override
     protected String getOperatorName() {
@@ -34,8 +34,8 @@ public class Modulo extends AbstractOpArith {
     }
 
     @Override
-    protected BinaryInstruction geneInstru(DVal val, GPRegister reg){
-        //Génération de l'instruction pour un modulo dans le registre reg
+    protected BinaryInstruction geneInstru(DVal val, GPRegister reg) {
+        // Génération de l'instruction pour un modulo dans le registre reg
         return new REM(val, reg);
     }
 

@@ -3,7 +3,8 @@ package fr.ensimag.deca;
 import fr.ensimag.deca.codegen.LabelManager;
 import fr.ensimag.deca.codegen.MemoryManager;
 import fr.ensimag.deca.codegen.RegisterManager;
-import fr.ensimag.deca.context.EnvironmentType;
+import fr.ensimag.deca.context.Environment;
+import fr.ensimag.deca.context.TypeDefinition;
 import fr.ensimag.deca.syntax.DecaLexer;
 import fr.ensimag.deca.syntax.DecaParser;
 import fr.ensimag.deca.tools.DecacInternalError;
@@ -52,7 +53,7 @@ public class DecacCompiler {
         super();
         this.compilerOptions = compilerOptions;
         this.source = source;
-        this.environmentType = new EnvironmentType(null); // on initialise le EnvironmentType
+        this.environmentType = new Environment<TypeDefinition>(null); // on initialise le EnvironmentType
     }
 
     /**
@@ -128,7 +129,7 @@ public class DecacCompiler {
      */
     private final IMAProgram program = new IMAProgram();
     private final SymbolTable symbolTable = new SymbolTable();
-    private EnvironmentType environmentType;
+    private Environment<TypeDefinition> environmentType;
 
     public SymbolTable getSymbolTable() {
         return symbolTable;
@@ -154,7 +155,7 @@ public class DecacCompiler {
      * 
      * @return Type environment which includes in particular builtin types.
      */
-    public EnvironmentType getEnvironmentType() {
+    public Environment<TypeDefinition> getEnvironmentType() {
         return environmentType;
     }
 

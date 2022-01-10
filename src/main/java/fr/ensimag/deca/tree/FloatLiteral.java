@@ -4,7 +4,8 @@ import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.Environment;
+import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
@@ -37,11 +38,10 @@ public class FloatLiteral extends AbstractExpr {
     }
 
     @Override
-    public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
+    public Type verifyExpr(DecacCompiler compiler, Environment<ExpDefinition> localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");        
+        throw new UnsupportedOperationException("not yet implemented");
     }
-
 
     @Override
     public void decompile(IndentPrintStream s) {
@@ -64,17 +64,17 @@ public class FloatLiteral extends AbstractExpr {
     }
 
     @Override
-    protected boolean NeedsRegister(){
+    protected boolean NeedsRegister() {
         return false;
     }
 
     @Override
-    protected DVal codeGenNoReg(DecacCompiler compiler){
+    protected DVal codeGenNoReg(DecacCompiler compiler) {
         return new ImmediateFloat(value);
     }
 
     @Override
-    protected GPRegister codeGenReg(DecacCompiler compiler){
+    protected GPRegister codeGenReg(DecacCompiler compiler) {
         GPRegister reg = compiler.getRegisterManager().getCurrent();
 
         compiler.getProgram().addInstruction(new LOAD(new ImmediateFloat(value), reg));

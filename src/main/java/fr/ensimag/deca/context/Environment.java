@@ -5,9 +5,9 @@ import java.util.HashMap;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 
 /**
- * Dictionary associating identifier's ExpDefinition to their names.
+ * Dictionary associating identifier's Definition to their names.
  * 
- * This is actually a linked list of dictionaries: each EnvironmentExp has a
+ * This is actually a linked list of dictionaries: each Environment has a
  * pointer to a parentEnvironment, corresponding to superblock (eg superclass).
  * 
  * The dictionary at the head of this list thus corresponds to the "current"
@@ -20,17 +20,17 @@ import fr.ensimag.deca.tools.SymbolTable.Symbol;
  * dictionary.
  * 
  * @author gl13
- * @date 01/01/2022
+ * @date 10/01/2022
  */
-public class EnvironmentExp {
+public class Environment<D> {
 
-    private HashMap<Symbol, ExpDefinition> environment;
+    private HashMap<Symbol, D> environment;
 
-    EnvironmentExp parentEnvironment;
+    Environment<D> parentEnvironment;
 
-    public EnvironmentExp(EnvironmentExp parentEnvironment) {
+    public Environment(Environment parentEnvironment) {
         this.parentEnvironment = parentEnvironment;
-        this.environment = new HashMap<Symbol, ExpDefinition>();
+        this.environment = new HashMap<Symbol, D>();
     }
 
     public static class DoubleDefException extends Exception {
@@ -41,8 +41,8 @@ public class EnvironmentExp {
      * Return the definition of the symbol in the environment, or null if the
      * symbol is undefined.
      */
-    public ExpDefinition get(Symbol key) {
-        ExpDefinition result = environment.get(key); // first look in current block
+    public D get(Symbol key) {
+        D result = environment.get(key); // first look in current block
         if (result != null || parentEnvironment == null)
             return result;
         return parentEnvironment.get(key);
@@ -64,7 +64,7 @@ public class EnvironmentExp {
      *                            dictionary
      *
      */
-    public void declare(Symbol name, ExpDefinition def) throws DoubleDefException {
+    public void declare(Symbol name, D def) throws DoubleDefException {
         // symbols are unique
         if (environment.containsKey(name))
             throw new DoubleDefException();

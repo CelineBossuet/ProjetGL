@@ -45,7 +45,8 @@ public class Program extends AbstractProgram {
         LOG.debug("Pass 1 verification");
 
         // declare language types :
-        EnvironmentType environmentType = new EnvironmentType(null); // A FAIRE EnvironmentType
+        Environment<TypeDefinition> environmentType = new Environment<TypeDefinition>(null); // A FAIRE
+                                                                                             // Environment<TypeDefinition>
         declareBuiltinTypes(environmentType, compiler);
 
         getClasses().verifyListClass(compiler);
@@ -58,7 +59,7 @@ public class Program extends AbstractProgram {
         LOG.debug("verify program: end");
     }
 
-    private void declareBuiltinTypes(EnvironmentType environmentType, DecacCompiler compiler) {
+    private void declareBuiltinTypes(Environment<TypeDefinition> environmentType, DecacCompiler compiler) {
         try {
             environmentType.declare(compiler.getSymbolTable().create("void"),
                     new TypeDefinition(new VoidType(compiler.getSymbolTable().create("void")), Location.BUILTIN));
@@ -72,7 +73,7 @@ public class Program extends AbstractProgram {
                     new TypeDefinition(new StringType(compiler.getSymbolTable().create("string")), Location.BUILTIN));
             environmentType.declare(compiler.getSymbolTable().create("null"),
                     new TypeDefinition(new NullType(compiler.getSymbolTable().create("null")), Location.BUILTIN));
-        } catch (EnvironmentType.DoubleDefException e) {
+        } catch (Environment.DoubleDefException e) {
             throw new DecacInternalError("Double built in type definition");
         }
     }
