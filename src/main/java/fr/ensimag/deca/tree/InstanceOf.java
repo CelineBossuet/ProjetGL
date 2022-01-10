@@ -10,28 +10,22 @@ import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.instructions.BSR;
-import fr.ensimag.ima.pseudocode.instructions.LEA;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
 
 import java.io.PrintStream;
 
-import static fr.ensimag.ima.pseudocode.Register.*;
-
-public class InstanceOf extends AbstractExpr{
+public class InstanceOf extends AbstractExpr {
     private AbstractExpr expr;
     private AbstractIdentifier type;
 
-    public InstanceOf(AbstractExpr expr, AbstractIdentifier type){
+    public InstanceOf(AbstractExpr expr, AbstractIdentifier type) {
         super();
-        this.expr=expr;
-        this.type=type;
+        this.expr = expr;
+        this.type = type;
     }
 
-
-
     @Override
-    public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
+    public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass)
+            throws ContextualError {
         return null;
     }
 
@@ -51,13 +45,13 @@ public class InstanceOf extends AbstractExpr{
     }
 
     @Override
-    protected DVal codeGenNoReg(DecacCompiler compiler){
+    protected DVal codeGenNoReg(DecacCompiler compiler) {
         throw new DecacInternalError("méthode codeGenNoReg pas instantiable pour InstanceOf");
     }
 
     @Override
     protected GPRegister codeGenReg(DecacCompiler compiler) {
         return null;
-        //TODO
+        // TODO
     }
 }

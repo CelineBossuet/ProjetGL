@@ -1,6 +1,5 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.tools.IndentPrintStream;
@@ -29,12 +28,11 @@ public class DeclClass extends AbstractDeclClass {
             throws ContextualError {
         throw new UnsupportedOperationException("not yet implemented");
     }
-    
+
     @Override
     protected void verifyClassBody(DecacCompiler compiler) throws ContextualError {
         throw new UnsupportedOperationException("not yet implemented");
     }
-
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {

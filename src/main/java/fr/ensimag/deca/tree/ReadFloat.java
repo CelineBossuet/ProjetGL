@@ -8,7 +8,6 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.NullaryInstruction;
 import fr.ensimag.ima.pseudocode.instructions.RFLOAT;
-import fr.ensimag.ima.pseudocode.instructions.RINT;
 
 import java.io.PrintStream;
 
@@ -24,7 +23,6 @@ public class ReadFloat extends AbstractReadExpr {
             ClassDefinition currentClass) throws ContextualError {
         throw new UnsupportedOperationException("not yet implemented");
     }
-
 
     @Override
     public void decompile(IndentPrintStream s) {
@@ -42,7 +40,7 @@ public class ReadFloat extends AbstractReadExpr {
     }
 
     @Override
-    protected NullaryInstruction geneInstru(){
+    protected NullaryInstruction geneInstru() {
         return new RFLOAT();
     }
 

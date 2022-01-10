@@ -4,7 +4,6 @@ import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.Definition;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.ima.pseudocode.BinaryInstruction;
@@ -23,7 +22,7 @@ public class Assign extends AbstractBinaryExpr {
     public AbstractLValue getLeftOperand() {
         // The cast succeeds by construction, as the leftOperand has been set
         // as an AbstractLValue by the constructor.
-        return (AbstractLValue)super.getLeftOperand();
+        return (AbstractLValue) super.getLeftOperand();
     }
 
     public Assign(AbstractLValue leftOperand, AbstractExpr rightOperand) {
@@ -36,15 +35,13 @@ public class Assign extends AbstractBinaryExpr {
         throw new UnsupportedOperationException("not yet implemented");
     }
 
-
     @Override
     protected String getOperatorName() {
         return "=";
     }
 
-
     @Override
-    protected BinaryInstruction geneInstru(DVal val, GPRegister reg){
+    protected BinaryInstruction geneInstru(DVal val, GPRegister reg) {
         throw new DecacInternalError("mothode non implémentanle pour Assign");
     }
 }

@@ -6,9 +6,6 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.BinaryInstruction;
-import fr.ensimag.ima.pseudocode.DVal;
-import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.NullaryInstruction;
 import fr.ensimag.ima.pseudocode.instructions.RINT;
 
@@ -27,7 +24,6 @@ public class ReadInt extends AbstractReadExpr {
         throw new UnsupportedOperationException("not yet implemented");
     }
 
-
     @Override
     public void decompile(IndentPrintStream s) {
         s.print("readInt()");
@@ -44,7 +40,7 @@ public class ReadInt extends AbstractReadExpr {
     }
 
     @Override
-    protected NullaryInstruction geneInstru(){
+    protected NullaryInstruction geneInstru() {
         return new RINT();
     }
 }

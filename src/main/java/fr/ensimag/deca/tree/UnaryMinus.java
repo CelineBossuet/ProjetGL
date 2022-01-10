@@ -9,7 +9,6 @@ import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Instruction;
 import fr.ensimag.ima.pseudocode.instructions.OPP;
-import fr.ensimag.ima.pseudocode.instructions.SUB;
 
 /**
  * @author gl13
@@ -27,22 +26,21 @@ public class UnaryMinus extends AbstractUnaryExpr {
         throw new UnsupportedOperationException("not yet implemented");
     }
 
-
     @Override
     protected String getOperatorName() {
         return "-";
     }
 
     @Override
-    protected Instruction geneInstru( GPRegister reg) {
-        //generation de l'instruction pour le moins unaire donc on a besoin que de notre registre reg
+    protected Instruction geneInstru(GPRegister reg) {
+        // generation de l'instruction pour le moins unaire donc on a besoin que de
+        // notre registre reg
         return new OPP(reg, reg);
     }
 
-
     @Override
-    protected GPRegister codeGenReg(DecacCompiler compiler){
-        //TODO verifier type int ou float
+    protected GPRegister codeGenReg(DecacCompiler compiler) {
+        // TODO verifier type int ou float
         GPRegister reg;
         if (!getOperand().NeedsRegister()) {
             reg = compiler.getRegisterManager().getCurrent();

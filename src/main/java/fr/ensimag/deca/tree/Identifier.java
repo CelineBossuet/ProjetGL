@@ -1,7 +1,6 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.Type;
-import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
@@ -18,7 +17,6 @@ import java.io.PrintStream;
 
 import fr.ensimag.ima.pseudocode.DVal;
 import org.apache.commons.lang.Validate;
-import org.apache.log4j.Logger;
 
 /**
  * Deca Identifier
@@ -27,7 +25,7 @@ import org.apache.log4j.Logger;
  * @date 01/01/2022
  */
 public class Identifier extends AbstractIdentifier {
-    
+
     @Override
     protected void checkDecoration() {
         if (getDefinition() == null) {
@@ -48,7 +46,7 @@ public class Identifier extends AbstractIdentifier {
      * when the cast fails.
      * 
      * @throws DecacInternalError
-     *             if the definition is not a class definition.
+     *                            if the definition is not a class definition.
      */
     @Override
     public ClassDefinition getClassDefinition() {
@@ -70,7 +68,7 @@ public class Identifier extends AbstractIdentifier {
      * when the cast fails.
      * 
      * @throws DecacInternalError
-     *             if the definition is not a method definition.
+     *                            if the definition is not a method definition.
      */
     @Override
     public MethodDefinition getMethodDefinition() {
@@ -92,7 +90,7 @@ public class Identifier extends AbstractIdentifier {
      * when the cast fails.
      * 
      * @throws DecacInternalError
-     *             if the definition is not a field definition.
+     *                            if the definition is not a field definition.
      */
     @Override
     public FieldDefinition getFieldDefinition() {
@@ -114,7 +112,7 @@ public class Identifier extends AbstractIdentifier {
      * when the cast fails.
      * 
      * @throws DecacInternalError
-     *             if the definition is not a field definition.
+     *                            if the definition is not a field definition.
      */
     @Override
     public VariableDefinition getVariableDefinition() {
@@ -129,13 +127,14 @@ public class Identifier extends AbstractIdentifier {
     }
 
     /**
-     * Like {@link #getDefinition()}, but works only if the definition is a ExpDefinition.
+     * Like {@link #getDefinition()}, but works only if the definition is a
+     * ExpDefinition.
      * 
      * This method essentially performs a cast, but throws an explicit exception
      * when the cast fails.
      * 
      * @throws DecacInternalError
-     *             if the definition is not a field definition.
+     *                            if the definition is not a field definition.
      */
     @Override
     public ExpDefinition getExpDefinition() {
@@ -174,16 +173,15 @@ public class Identifier extends AbstractIdentifier {
 
     /**
      * Implements non-terminal "type" of [SyntaxeContextuelle] in the 3 passes
+     * 
      * @param compiler contains "env_types" attribute
      */
     @Override
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
         throw new UnsupportedOperationException("not yet implemented");
     }
-    
-    
-    private Definition definition;
 
+    private Definition definition;
 
     @Override
     protected void iterChildren(TreeFunction f) {
@@ -218,7 +216,7 @@ public class Identifier extends AbstractIdentifier {
 
     @Override
     protected DVal codeGenNoReg(DecacCompiler compiler) {
-        return null; //TODO
+        return null; // TODO
     }
 
 }

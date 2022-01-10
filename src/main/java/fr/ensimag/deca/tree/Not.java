@@ -6,7 +6,6 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.DecacInternalError;
-import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Instruction;
 import fr.ensimag.ima.pseudocode.Label;
@@ -40,15 +39,14 @@ public class Not extends AbstractUnaryExpr {
     }
 
     @Override
-    protected GPRegister codeGenReg(DecacCompiler compiler){
-        //TODO factoriser ce code avec celui dans AbstractOpBool
+    protected GPRegister codeGenReg(DecacCompiler compiler) {
+        // TODO factoriser ce code avec celui dans AbstractOpBool
         Label elseLabel = compiler.getLabelManager().newLabel("elseC2R");
         Label end = compiler.getLabelManager().newLabel("endC2R");
         GPRegister r = compiler.getRegisterManager().getCurrent();
 
         compiler.addInstruction(new CMP(0, r));
         compiler.addInstruction(new BNE(elseLabel));
-
 
         compiler.addInstruction(new BRA(end));
         compiler.addLabel(elseLabel);
