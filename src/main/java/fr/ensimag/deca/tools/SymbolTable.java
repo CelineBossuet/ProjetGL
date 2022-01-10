@@ -20,9 +20,6 @@ public class SymbolTable {
 
     public SymbolTable() {
         map = new HashMap<String, Symbol>();
-        // Langage Symbols
-        create("int");
-        // A FAIRE
     }
 
     /**

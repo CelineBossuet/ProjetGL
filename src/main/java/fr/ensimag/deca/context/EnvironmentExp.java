@@ -1,7 +1,5 @@
 package fr.ensimag.deca.context;
 
-import static org.mockito.ArgumentMatchers.nullable;
-
 import java.util.HashMap;
 
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
