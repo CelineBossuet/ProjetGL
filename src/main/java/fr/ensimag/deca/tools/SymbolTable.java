@@ -30,10 +30,8 @@ public class SymbolTable {
      * this Symbol. Otherwise, create a new Symbol and add it to the table.
      */
     public Symbol create(String name) {
-        System.out.println("create");
 
         if (this.map.get(name)==null){
-            System.out.println("null");
             Symbol symb = new Symbol(name);
             this.map.put(name, symb);
             return symb;
