@@ -6,7 +6,11 @@ import org.apache.commons.lang.Validate;
 
 import static fr.ensimag.ima.pseudocode.Register.getR;
 
-
+/**
+ * Fichier permetant de gérer les Registres pour pouvoir les alloc et avoir le current
+ * @author gl13
+ * @date 10/01/2022
+ */
 public class RegisterManager {
     private int current;
     private int max;
@@ -28,11 +32,10 @@ public class RegisterManager {
 
 
     /**
-     * Allocate one register, have to make sure that getCurrent() won't
-     * return it until it has been freed.
+     * Alloc un registre tout en prenant en compte qu'il fait que getCurrent()
+     * ne puisse pas le return tant qu'il n'a pas été free
      *
-     * @return The register allocated. This register should not be used anymore
-     *         until it is freed.
+     * @return reg le registre allocated. A ne pas utiliser par qqun d'autre tant qu'il n'a pas été free
      */
     public GPRegister allocRegister() throws Exception {
         Validate.isTrue(current<=max); //pas de registre libre

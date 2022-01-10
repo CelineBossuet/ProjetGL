@@ -3,6 +3,12 @@ package fr.ensimag.deca.codegen;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
 
+
+/**
+ * Fichier permetant de gérer la mémoire en gardant les resgistres utilisés
+ * @author gl13
+ * @date 09/01/2022
+ * */
 public class MemoryManager {
     private int currentLB=-1; //local base current register
     private int currentGB=-1;
@@ -42,6 +48,5 @@ public class MemoryManager {
     public  void deallocLB(int size){
         currentLB-=size;
     }
-
 
 }

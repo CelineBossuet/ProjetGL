@@ -2,6 +2,11 @@ package fr.ensimag.deca.codegen;
 
 import fr.ensimag.ima.pseudocode.Label;
 
+/**
+ * Fichier permetant de gerer la création des Labels
+ * @author gl13
+ * @date 10/01/2022
+ */
 public class LabelManager {
     private Label label;
     private Label io_errorLabel;
