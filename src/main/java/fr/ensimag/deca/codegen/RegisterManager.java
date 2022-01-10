@@ -24,9 +24,14 @@ public class RegisterManager {
         return this.lastUsed;
     }
 
+    public int getMax() {
+        return max;
+    }
+
     public void setMax(int max) {
         this.max = max;
     }
+    public int getCurrentv(){return current;}
 
     public GPRegister getCurrent() {return getR(current);}
 
@@ -37,7 +42,7 @@ public class RegisterManager {
      *
      * @return reg le registre allocated. A ne pas utiliser par qqun d'autre tant qu'il n'a pas été free
      */
-    public GPRegister allocRegister() throws Exception {
+    public GPRegister allocRegister() {
         Validate.isTrue(current<=max); //pas de registre libre
         Validate.isTrue(lastUsed>0); //pas encore appelé la fonction initRegistre()
 
