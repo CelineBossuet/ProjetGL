@@ -2,6 +2,7 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
+import fr.ensimag.deca.context.EnvironmentType.DoubleDefException;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.instructions.*;
@@ -40,20 +41,20 @@ public class Program extends AbstractProgram {
 
     @Override
     public void verifyProgram(DecacCompiler compiler) throws ContextualError {
-        LOG.debug("verify program: start");
 
-        LOG.debug("Pass 1 verification");
+        // A FAIRE TODO 3 passes pour langage complet
+        // getClasses().verifyListClass(compiler);
+        // LOG.debug("Pass 1 verification");
+        // LOG.debug("Pass 2 verification");
+        // LOG.debug("Pass 3 verification");
+
+        LOG.debug("verify program: start");
 
         // declare language types :
         EnvironmentType environmentType = new EnvironmentType(null); // A FAIRE EnvironmentType
         declareBuiltinTypes(environmentType, compiler);
 
-        getClasses().verifyListClass(compiler);
         getMain().verifyMain(compiler);
-
-        LOG.debug("Pass 2 verification"); // A FAIRE passe 2
-
-        LOG.debug("Pass 3 verification"); // A FAIRE passe 3
 
         LOG.debug("verify program: end");
     }
@@ -72,7 +73,7 @@ public class Program extends AbstractProgram {
                     new TypeDefinition(new StringType(compiler.getSymbolTable().create("string")), Location.BUILTIN));
             environmentType.declare(compiler.getSymbolTable().create("null"),
                     new TypeDefinition(new NullType(compiler.getSymbolTable().create("null")), Location.BUILTIN));
-        } catch (EnvironmentType.DoubleDefException e) {
+        } catch (DoubleDefException e) {
             throw new DecacInternalError("Double built in type definition");
         }
     }
