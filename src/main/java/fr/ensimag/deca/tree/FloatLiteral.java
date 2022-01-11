@@ -12,7 +12,10 @@ import java.io.PrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.ImmediateFloat;
+import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
+import fr.ensimag.ima.pseudocode.instructions.WFLOATX;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -42,6 +45,18 @@ public class FloatLiteral extends AbstractExpr {
             ClassDefinition currentClass) throws ContextualError {
         setType(new FloatType(compiler.getSymbolTable().create("float")));
         return getType();
+    }
+
+    @Override
+    protected void codeGenPrint(DecacCompiler compiler) {
+        compiler.addInstruction(new LOAD(this.codeGenReg(compiler), Register.getR(1)));
+        compiler.addInstruction(new WFLOAT());
+    }
+
+    @Override
+    protected void codeGenPrintHexa(DecacCompiler compiler) {
+        compiler.addInstruction(new LOAD(this.codeGenReg(compiler), Register.getR(1)));
+        compiler.addInstruction(new WFLOATX());
     }
 
     @Override

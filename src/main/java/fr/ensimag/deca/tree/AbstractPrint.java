@@ -39,13 +39,17 @@ public abstract class AbstractPrint extends AbstractInst {
         for (AbstractExpr a : getArguments().getList()) {
             a.verifyInst(compiler, localEnv, currentClass, returnType);
         }
-        //throw new UnsupportedOperationException("not yet implemented");
+        // throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         for (AbstractExpr a : getArguments().getList()) {
-            a.codeGenPrint(compiler, this.printHex);
+            if (this.printHex)
+                a.codeGenPrintHexa(compiler);
+            else
+                a.codeGenPrint(compiler);
+
         }
     }
 

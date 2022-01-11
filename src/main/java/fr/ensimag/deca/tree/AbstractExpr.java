@@ -131,27 +131,17 @@ public abstract class AbstractExpr extends AbstractInst {
      *
      * @param compiler
      */
-    protected void codeGenPrint(DecacCompiler compiler, boolean hexa) {
-        /*
-         * if(this.type==INT) ==> compiler.addInstruction(new LOAD...)
-         * DVal val =this.codeGenReg(compiler)
-         * Ajouter un booléen si écrire en hexa ou pas pour float
-         */
-        if (this.type.isInt()) {
-            DVal val = this.codeGenReg(compiler);
-            compiler.addInstruction(new LOAD(val, Register.getR(1)));
-            compiler.addInstruction(new WINT());
-        } else if (this.type.isFloat()) {
-            DVal val = this.codeGenReg(compiler);
-            compiler.addInstruction(new LOAD(val, Register.getR(1)));
-            if (hexa) {
-                compiler.addInstruction(new WFLOATX());
-            } else {
-                compiler.addInstruction(new WFLOAT());
-            }
-        }
+    protected void codeGenPrint(DecacCompiler compiler) {
 
-        // throw new UnsupportedOperationException("not yet implemented");
+    }
+
+    /**
+     * Generate code to print the expression
+     *
+     * @param compiler
+     */
+    protected void codeGenPrintHexa(DecacCompiler compiler) {
+        codeGenPrint(compiler);
     }
 
     /**
