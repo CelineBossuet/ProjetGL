@@ -135,24 +135,19 @@ public abstract class AbstractExpr extends AbstractInst {
          * DVal val =this.codeGenReg(compiler)
          * Ajouter un booléen si écrire en hexa ou pas pour float
          */
-        // A FAIRE TODO réimplémenter le code ci dessous dans des sous classes ... et y
-        // redéfinir cette méthode.
-        // A FAIRE TODO voir ce qu'on fait du boolean hexa
-        // if(this.type == compiler.getEnvironmentType().INT){
-        // DVal val = this.codeGenReg(compiler);
-        // compiler.addInstruction(new LOAD(val, Register.getR(1)));
-        // compiler.addInstruction(new WINT());
-        // }
-        // else if (this.type == compiler.getEnvironmentType().FLOAT){
-        // DVal val = this.codeGenReg(compiler);
-        // compiler.addInstruction(new LOAD(val, Register.getR(1)));
-        // if (hexa){
-        // compiler.addInstruction(new WFLOATX());
-        // }
-        // else{
-        // compiler.addInstruction(new WFLOAT());
-        // }
-        // }
+        if (this.type.isInt()) {
+            DVal val = this.codeGenReg(compiler);
+            compiler.addInstruction(new LOAD(val, Register.getR(1)));
+            compiler.addInstruction(new WINT());
+        } else if (this.type.isFloat()) {
+            DVal val = this.codeGenReg(compiler);
+            compiler.addInstruction(new LOAD(val, Register.getR(1)));
+            if (hexa) {
+                compiler.addInstruction(new WFLOATX());
+            } else {
+                compiler.addInstruction(new WFLOAT());
+            }
+        }
 
         // throw new UnsupportedOperationException("not yet implemented");
     }
