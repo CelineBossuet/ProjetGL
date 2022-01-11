@@ -36,6 +36,7 @@ public class Initialization extends AbstractInitialization {
     protected void verifyInitialization(DecacCompiler compiler, Type t,
             Environment<ExpDefinition> localEnv, ClassDefinition currentClass)
             throws ContextualError {
+        // A FAIRE TODO
         throw new UnsupportedOperationException("not yet implemented");
     }
 

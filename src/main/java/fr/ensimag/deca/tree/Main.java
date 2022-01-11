@@ -6,6 +6,7 @@ import fr.ensimag.deca.context.Environment;
 import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
+
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
@@ -30,14 +31,11 @@ public class Main extends AbstractMain {
     @Override
     protected void verifyMain(DecacCompiler compiler) throws ContextualError {
         LOG.debug("verify Main: start");
-        // declVariables.verifyListDeclVariable(compiler, new
-        // Environment<ExpDefinition>(null), null);
+        declVariables.verifyListDeclVariable(compiler, new Environment<ExpDefinition>(null), null); // no parent to env
+                                                                                                    // this is in
+        // main
         insts.verifyListInst(compiler, new Environment<ExpDefinition>(null), null, null);
-        // A FAIRE: Appeler méthodes "verify*" de ListDeclVarSet et ListInst.
-        // Vous avez le droit de changer le profil fourni pour ces méthodes
-        // (mais ce n'est à priori pas nécessaire).
         LOG.debug("verify Main: end");
-        // throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override

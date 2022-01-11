@@ -11,6 +11,8 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.Register;
+
 import java.io.PrintStream;
 
 import fr.ensimag.ima.pseudocode.instructions.*;
@@ -130,32 +132,17 @@ public abstract class AbstractExpr extends AbstractInst {
      *
      * @param compiler
      */
-    protected void codeGenPrint(DecacCompiler compiler, boolean hexa) {
-        /*
-         * if(this.type==INT) ==> compiler.addInstruction(new LOAD...)
-         * DVal val =this.codeGenReg(compiler)
-         * Ajouter un booléen si écrire en hexa ou pas pour float
-         */
-        // A FAIRE TODO réimplémenter le code ci dessous dans des sous classes ... et y
-        // redéfinir cette méthode.
-        // A FAIRE TODO voir ce qu'on fait du boolean hexa
-        // if(this.type == compiler.getEnvironment<TypeDefinition>().INT){
-        // DVal val = this.codeGenReg(compiler);
-        // compiler.addInstruction(new LOAD(val, Register.getR(1)));
-        // compiler.addInstruction(new WINT());
-        // }
-        // else if (this.type == compiler.getEnvironment<TypeDefinition>().FLOAT){
-        // DVal val = this.codeGenReg(compiler);
-        // compiler.addInstruction(new LOAD(val, Register.getR(1)));
-        // if (hexa){
-        // compiler.addInstruction(new WFLOATX());
-        // }
-        // else{
-        // compiler.addInstruction(new WFLOAT());
-        // }
-        // }
+    protected void codeGenPrint(DecacCompiler compiler) {
 
-        // throw new UnsupportedOperationException("not yet implemented");
+    }
+
+    /**
+     * Generate code to print the expression
+     *
+     * @param compiler
+     */
+    protected void codeGenPrintHexa(DecacCompiler compiler) {
+        codeGenPrint(compiler);
     }
 
     /**

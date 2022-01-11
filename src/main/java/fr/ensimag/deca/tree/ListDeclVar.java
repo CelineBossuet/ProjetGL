@@ -36,6 +36,11 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
      */
     void verifyListDeclVariable(DecacCompiler compiler, Environment<ExpDefinition> localEnv,
             ClassDefinition currentClass) throws ContextualError {
+        // A FAIRE TODO manage current class
+
+        // verify each declared variable
+        for (AbstractDeclVar dV : this.getList())
+            dV.verifyDeclVar(compiler, localEnv, currentClass);
     }
 
 }
