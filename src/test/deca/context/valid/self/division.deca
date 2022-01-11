@@ -9,9 +9,7 @@
 //    cree le 10/01/2022
 
 {
-print("Division entière : ");
-println(10/2);
-print("Division de float : ");
-println(10.0/2.0);
+println("Division entière de 10/2 : ", 10/2);
+println("Division de float de 10.0/2.0: ", 10.0/2.0);
 
 }
