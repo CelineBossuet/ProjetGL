@@ -22,27 +22,31 @@ import fr.ensimag.deca.tools.SymbolTable.Symbol;
  * @author gl13
  * @date 10/01/2022
  */
-public class Environment<D> {
+public class Environment<Definition> {
 
-    private HashMap<Symbol, D> environment;
+    private HashMap<Symbol, Definition> environment;
 
-    Environment<D> parentEnvironment;
+    Environment<Definition> parentEnvironment;
 
     public Environment(Environment parentEnvironment) {
         this.parentEnvironment = parentEnvironment;
-        this.environment = new HashMap<Symbol, D>();
+        this.environment = new HashMap<Symbol, Definition>();
     }
 
     public static class DoubleDefException extends Exception {
         private static final long serialVersionUID = -2733379901827316441L;
     }
 
+    public Definition defOfType(Symbol s){
+        return environment.get(s);
+    }
+
     /**
      * Return the definition of the symbol in the environment, or null if the
      * symbol is undefined.
      */
-    public D get(Symbol key) {
-        D result = environment.get(key); // first look in current block
+    public Definition get(Symbol key) {
+        Definition result = environment.get(key); // first look in current block
         if (result != null || parentEnvironment == null)
             return result;
         return parentEnvironment.get(key);
@@ -64,7 +68,7 @@ public class Environment<D> {
      *                            dictionary
      *
      */
-    public void declare(Symbol name, D def) throws DoubleDefException {
+    public void declare(Symbol name, Definition def) throws DoubleDefException {
         // symbols are unique
         if (environment.containsKey(name))
             throw new DoubleDefException();

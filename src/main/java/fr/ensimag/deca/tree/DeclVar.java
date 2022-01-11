@@ -9,6 +9,10 @@ import fr.ensimag.deca.context.VariableDefinition;
 import fr.ensimag.deca.context.Environment.DoubleDefException;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
+
+import fr.ensimag.ima.pseudocode.DAddr;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -50,6 +54,12 @@ public class DeclVar extends AbstractDeclVar {
         // Initialization
         initialization.verifyInitialization(compiler, this.type.getType(), localEnv, currentClass);
 
+    }
+
+    @Override
+    protected int codeGenVar(DecacCompiler compiler) {
+        //TODO
+        return 1;
     }
 
     @Override

@@ -77,37 +77,6 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         rightOperand.prettyPrint(s, prefix, true);
     }
 
-    @Override
-    protected void codeGenPrint(DecacCompiler compiler){
-        if(getType().isInt()){
-            compiler.addInstruction(new LOAD(this.codeGenReg(compiler), Register.getR(1)));
-            compiler.addInstruction(new WINT());
-        }
-        else if(getType().isFloat()){
-            compiler.addInstruction(new LOAD(this.codeGenReg(compiler), Register.getR(1)));
-
-            compiler.addInstruction(new WFLOAT());
-        }
-        else{
-            throw new DecacInternalError("Print pas supporté pour le type"+getType());
-        }
-    }
-
-    @Override
-    protected void codeGenPrintHexa(DecacCompiler compiler){
-        if(getType().isInt()){
-            compiler.addInstruction(new LOAD(this.codeGenReg(compiler), Register.getR(1)));
-            compiler.addInstruction(new WINT());
-        }
-        else if(getType().isFloat()){
-            compiler.addInstruction(new LOAD(this.codeGenReg(compiler), Register.getR(1)));
-
-            compiler.addInstruction(new WFLOATX());
-        }
-        else{
-            throw new DecacInternalError("Print pas supporté pour le type"+getType());
-        }
-    }
 
     /**
      * Fonction pour générer les instruction pour les Opération Arithmétiques
