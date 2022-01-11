@@ -136,12 +136,12 @@ public abstract class AbstractExpr extends AbstractInst {
         DVal val =this.codeGenReg(compiler)
         Ajouter un booléen si écrire en hexa ou pas pour float
          */
-        if(this.type == compiler.getEnvironmentType().INT){
+        if(this.type.isInt()){
             DVal val = this.codeGenReg(compiler);
             compiler.addInstruction(new LOAD(val, Register.getR(1)));
             compiler.addInstruction(new WINT());
         }
-        else if (this.type == compiler.getEnvironmentType().FLOAT){
+        else if (this.type.isFloat()){
             DVal val = this.codeGenReg(compiler);
             compiler.addInstruction(new LOAD(val, Register.getR(1)));
             if (hexa){
