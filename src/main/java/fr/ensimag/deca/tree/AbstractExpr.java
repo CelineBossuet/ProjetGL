@@ -142,7 +142,7 @@ public abstract class AbstractExpr extends AbstractInst {
      * @param compiler
      */
     protected void codeGenPrintHexa(DecacCompiler compiler) {
-        codeGenPrint(compiler);
+
     }
 
     /**
