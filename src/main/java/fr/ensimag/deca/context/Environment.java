@@ -5,7 +5,7 @@ import java.util.HashMap;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 
 /**
- * Dictionary associating identifier's Definition to their names.
+ * Dictionary associating identifier's D to their names.
  * 
  * This is actually a linked list of dictionaries: each Environment has a
  * pointer to a parentEnvironment, corresponding to superblock (eg superclass).
@@ -22,22 +22,22 @@ import fr.ensimag.deca.tools.SymbolTable.Symbol;
  * @author gl13
  * @date 10/01/2022
  */
-public class Environment<Definition> {
+public class Environment<D extends Definition> {
 
-    private HashMap<Symbol, Definition> environment;
+    private HashMap<Symbol, D> environment;
 
-    Environment<Definition> parentEnvironment;
+    Environment<D> parentEnvironment;
 
     public Environment(Environment parentEnvironment) {
         this.parentEnvironment = parentEnvironment;
-        this.environment = new HashMap<Symbol, Definition>();
+        this.environment = new HashMap<Symbol, D>();
     }
 
     public static class DoubleDefException extends Exception {
         private static final long serialVersionUID = -2733379901827316441L;
     }
 
-    public Definition defOfType(Symbol s){
+    public D defOfType(Symbol s) {
         return environment.get(s);
     }
 
@@ -45,8 +45,8 @@ public class Environment<Definition> {
      * Return the definition of the symbol in the environment, or null if the
      * symbol is undefined.
      */
-    public Definition get(Symbol key) {
-        Definition result = environment.get(key); // first look in current block
+    public D get(Symbol key) {
+        D result = environment.get(key); // first look in current block
         if (result != null || parentEnvironment == null)
             return result;
         return parentEnvironment.get(key);
@@ -62,13 +62,13 @@ public class Environment<Definition> {
      * @param name
      *             Name of the symbol to define
      * @param def
-     *             Definition of the symbol
+     *             D of the symbol
      * @throws DoubleDefException
      *                            if the symbol is already defined at the "current"
      *                            dictionary
      *
      */
-    public void declare(Symbol name, Definition def) throws DoubleDefException {
+    public void declare(Symbol name, D def) throws DoubleDefException {
         // symbols are unique
         if (environment.containsKey(name))
             throw new DoubleDefException();
