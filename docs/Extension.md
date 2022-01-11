@@ -33,6 +33,8 @@ il faudra pour cela recréer une étape C bis qui traduira non pas en language
 assembleur .ass mais en un fichier .j qui sera éxécutable par la jasmin
 qui créera un .class. Ce .class pourra alors être éxécutable par une JVM.
 
+![Conséquences de l'extension](Utilisation de l'extension.png)
+
 ## Procédé de notre implémentation
 
 Le but sera de pouvoir implémenter au fur et à mesure les différents types
