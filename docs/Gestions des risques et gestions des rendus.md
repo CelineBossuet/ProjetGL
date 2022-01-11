@@ -16,7 +16,7 @@ ou un mauvais formatage du code. Tout code est donc relu afin de pouvoir mieux i
 
 Plusieurs moyens sont mis en oeuvres afin de ne pas introduire de bugs massifs dans notre code. La première étant de prendre et de développer les fonctionnalités une par une, puis une fois validée d'en développer une autre. Par exemple, si nous devons développer les opérations arithmétiques,
 chaque étape du développement sera testé, tout d'abord par un test de lexing, puis par un test de parsing, puis par un test de contexte et 
-enfin un test de compilation avec bien sûr des tests sur les cas limites. En effet, par exemple pour les Opération Arithmétiques les cas limites testés sont ceux d'opération entre des types différents, avec des nombres trop grand (OverFlow) ou un résultat trop grand. 
+enfin un test de compilation avec bien sûr des tests sur les cas limites. En effet, par exemple, pour les Opération Arithmétiques les cas limites testés sont ceux d'opération entre des types différents, avec des nombres trop grand (OverFlow) ou un résultat trop grand. 
 Ainsi, si le test de la partie correspondantes est bon, la fonctionnalité est bonne et on peut passer à la partie suivante,
 sinon, un retour sur le bug est créé et une correction est proposée puis retesté. Le Schéma ci-dessous explique plus en détail la méthode de validation du travail:
 

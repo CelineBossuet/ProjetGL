@@ -52,3 +52,11 @@ assembleur de déca qui est très intéressante, et l'outil clé en main jasmin
 est reconnu dans la communauté de développeur comme étant le principal assembleur
 de bytecode java. Utiliser cette solution permet de compacter le code et de 
 gagner en rapidité d'exécution. 
+
+### Bibliographie
+
+http://jasmin.sourceforge.net/
+https://blog.univ-reunion.fr/ygangat/files/2013/11/CM-JavaBytecodeJasmin.pdf
+https://github.com/davidar/jasmin
+https://fr.wikipedia.org/wiki/Bytecode_Java
+
