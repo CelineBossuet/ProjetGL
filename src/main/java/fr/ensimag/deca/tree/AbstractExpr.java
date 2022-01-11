@@ -184,6 +184,7 @@ public abstract class AbstractExpr extends AbstractInst {
      * */
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
+        System.out.println("AbsExpr");
         codeGenExprIgnored(compiler);
         // peut être ajouter des labels en paramètre...
         // throw new UnsupportedOperationException("not yet implemented");

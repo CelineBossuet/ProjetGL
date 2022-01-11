@@ -20,6 +20,7 @@ import static org.mockito.ArgumentMatchers.nullable;
 
 import java.io.PrintStream;
 
+import fr.ensimag.ima.pseudocode.DAddr;
 import fr.ensimag.ima.pseudocode.DVal;
 import org.apache.commons.lang.Validate;
 
@@ -173,7 +174,7 @@ public class Identifier extends AbstractIdentifier {
     @Override
     public Type verifyExpr(DecacCompiler compiler, Environment<ExpDefinition> localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        if(localEnv.get(getName())!=null){
+        if(localEnv.get(this.getName())!=null){
             Definition def =localEnv.get(getName()); //TODO
             this.setDefinition(def);
             this.setType(def.getType());
@@ -236,8 +237,15 @@ public class Identifier extends AbstractIdentifier {
     }
 
     @Override
-    protected DVal codeGenNoReg(DecacCompiler compiler) {
-        return null; // TODO
+    protected DAddr codeGenNoReg(DecacCompiler compiler) {
+        DAddr ope = this.getExpDefinition().getOperand();
+        return ope; // TODO assert...
     }
 
+
+    @Override
+    public DAddr codeGenAddr(DecacCompiler compiler) {
+        DAddr ope = codeGenNoReg(compiler);
+        return ope;
+    }
 }
