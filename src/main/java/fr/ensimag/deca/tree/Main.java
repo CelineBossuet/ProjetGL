@@ -31,16 +31,18 @@ public class Main extends AbstractMain {
     @Override
     protected void verifyMain(DecacCompiler compiler) throws ContextualError {
         LOG.debug("verify Main: start");
-        declVariables.verifyListDeclVariable(compiler, new Environment<ExpDefinition>(null), null); // no parent to env
+        Environment<ExpDefinition> envi = new Environment<ExpDefinition>(null);
+        declVariables.verifyListDeclVariable(compiler, envi, null); // no parent to env
                                                                                                     // this is in
         // main
-        insts.verifyListInst(compiler, new Environment<ExpDefinition>(null), null, null);
+        insts.verifyListInst(compiler, envi, null, null);
         LOG.debug("verify Main: end");
     }
 
     @Override
     protected void codeGenMain(DecacCompiler compiler) {
         // A FAIRE: traiter les déclarations de variables.
+        declVariables.codeGenListVar(compiler);
         compiler.addComment("Beginning of main instructions:");
         insts.codeGenListInst(compiler);
     }
