@@ -1,12 +1,7 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.Type;
-import fr.ensimag.deca.tree.Identifier;
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.Environment;
-import fr.ensimag.deca.context.ExpDefinition;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.ima.pseudocode.BinaryInstruction;
 import fr.ensimag.ima.pseudocode.DAddr;
@@ -37,7 +32,11 @@ public class Assign extends AbstractBinaryExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, Environment<ExpDefinition> localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        Type left = this.getLeftOperand().verifyExpr(compiler, localEnv,currentClass);
+        AbstractExpr right = this.getRightOperand().verifyRValue(compiler, localEnv, currentClass, left);
+        setRightOperand(right);
+        return left;
+        //throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override

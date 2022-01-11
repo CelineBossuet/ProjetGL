@@ -1,23 +1,18 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.Environment;
-import fr.ensimag.deca.context.ExpDefinition;
-import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
-
-import java.io.PrintStream;
-
 import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
+
+import java.io.PrintStream;
 
 /**
  * Expression, i.e. anything that has a value.
@@ -116,7 +111,7 @@ public abstract class AbstractExpr extends AbstractInst {
     protected void verifyInst(DecacCompiler compiler, Environment<ExpDefinition> localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
-        this.verifyExpr(compiler, localEnv, currentClass);
+        this.type = this.verifyExpr(compiler, localEnv, currentClass);
     }
 
     /**
@@ -132,7 +127,7 @@ public abstract class AbstractExpr extends AbstractInst {
      */
     void verifyCondition(DecacCompiler compiler, Environment<ExpDefinition> localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        this.verifyExpr(compiler, localEnv, currentClass);
     }
 
     /////////////////////////// Part C //////////////////////////////////
@@ -151,7 +146,7 @@ public abstract class AbstractExpr extends AbstractInst {
 
             compiler.addInstruction(new WFLOAT());
         } else {
-            throw new DecacInternalError("Print pas supporté pour le type" + getType());
+            throw new DecacInternalError("Print pas supporté pour le type " + getType());
         }
     }
 
