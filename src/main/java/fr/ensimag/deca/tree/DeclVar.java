@@ -48,6 +48,7 @@ public class DeclVar extends AbstractDeclVar {
 
         // A FAIRE TODO verifier initialisation
         // Initialization
+        initialization.verifyInitialization(compiler, this.type.getType(), localEnv, currentClass);
 
     }
 

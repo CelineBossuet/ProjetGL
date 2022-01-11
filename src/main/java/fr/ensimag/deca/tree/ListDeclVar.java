@@ -39,7 +39,11 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
 
         // verify each declared variable
         for (AbstractDeclVar dV : this.getList())
+            try{
             dV.verifyDeclVar(compiler, localEnv, currentClass);
+    } catch (ContextualError e){
+                throw e;
+            }
     }
 
 }
