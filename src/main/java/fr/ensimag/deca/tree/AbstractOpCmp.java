@@ -23,7 +23,12 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, Environment<ExpDefinition> localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented"); // TODO
+        getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
+        getRightOperand().verifyExpr(compiler, localEnv, currentClass);
+        Type left = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
+        setType(left);
+        return left;
+        //throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override
