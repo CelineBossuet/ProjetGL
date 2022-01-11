@@ -8,10 +8,8 @@ import java.io.PrintStream;
 import fr.ensimag.ima.pseudocode.BinaryInstruction;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.instructions.BOV;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
-import fr.ensimag.ima.pseudocode.instructions.POP;
-import fr.ensimag.ima.pseudocode.instructions.PUSH;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
 
 import static fr.ensimag.ima.pseudocode.Register.R0;
@@ -77,6 +75,38 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         leftOperand.prettyPrint(s, prefix, false);
         rightOperand.prettyPrint(s, prefix, true);
+    }
+
+    @Override
+    protected void codeGenPrint(DecacCompiler compiler){
+        if(getType().isInt()){
+            compiler.addInstruction(new LOAD(this.codeGenReg(compiler), Register.getR(1)));
+            compiler.addInstruction(new WINT());
+        }
+        else if(getType().isFloat()){
+            compiler.addInstruction(new LOAD(this.codeGenReg(compiler), Register.getR(1)));
+
+            compiler.addInstruction(new WFLOAT());
+        }
+        else{
+            throw new DecacInternalError("Print pas supporté pour le type"+getType());
+        }
+    }
+
+    @Override
+    protected void codeGenPrintHexa(DecacCompiler compiler){
+        if(getType().isInt()){
+            compiler.addInstruction(new LOAD(this.codeGenReg(compiler), Register.getR(1)));
+            compiler.addInstruction(new WINT());
+        }
+        else if(getType().isFloat()){
+            compiler.addInstruction(new LOAD(this.codeGenReg(compiler), Register.getR(1)));
+
+            compiler.addInstruction(new WFLOATX());
+        }
+        else{
+            throw new DecacInternalError("Print pas supporté pour le type"+getType());
+        }
     }
 
     /**
