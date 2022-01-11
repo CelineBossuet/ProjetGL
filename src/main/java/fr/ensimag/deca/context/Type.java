@@ -1,6 +1,8 @@
 package fr.ensimag.deca.context;
 
+import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
+import fr.ensimag.deca.tree.AbstractExpr;
 import fr.ensimag.deca.tree.Location;
 
 /**
@@ -76,5 +78,6 @@ public abstract class Type {
             throws ContextualError {
         throw new ContextualError(errorMessage, l);
     }
+
 
 }

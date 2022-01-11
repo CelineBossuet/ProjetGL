@@ -12,6 +12,7 @@ import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.deca.tree.ConvFloat;
 
 import java.io.PrintStream;
 
@@ -99,7 +100,19 @@ public abstract class AbstractExpr extends AbstractInst {
             Environment<ExpDefinition> localEnv, ClassDefinition currentClass,
             Type expectedType)
             throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        Type type =this.verifyExpr(compiler, localEnv, currentClass);
+        if(type.sameType(expectedType)){
+            return this;
+        }
+        else if(type.isInt() && expectedType.isFloat()){
+            AbstractExpr abs= new ConvFloat(this);
+            abs.verifyExpr(compiler, localEnv, currentClass);
+            return abs;
+        }
+        else{
+            throw new UnsupportedOperationException("Mauvais Type");
+        }
+        //throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override
@@ -133,7 +146,18 @@ public abstract class AbstractExpr extends AbstractInst {
      * @param compiler
      */
     protected void codeGenPrint(DecacCompiler compiler) {
+        if(getType().isInt()){
+            compiler.addInstruction(new LOAD(this.codeGenReg(compiler), Register.getR(1)));
+            compiler.addInstruction(new WINT());
+        }
+        else if(getType().isFloat()){
+            compiler.addInstruction(new LOAD(this.codeGenReg(compiler), Register.getR(1)));
 
+            compiler.addInstruction(new WFLOAT());
+        }
+        else{
+            throw new DecacInternalError("Print pas supporté pour le type"+getType());
+        }
     }
 
     /**
@@ -142,7 +166,18 @@ public abstract class AbstractExpr extends AbstractInst {
      * @param compiler
      */
     protected void codeGenPrintHexa(DecacCompiler compiler) {
+        if(getType().isInt()){
+            compiler.addInstruction(new LOAD(this.codeGenReg(compiler), Register.getR(1)));
+            compiler.addInstruction(new WINT());
+        }
+        else if(getType().isFloat()){
+            compiler.addInstruction(new LOAD(this.codeGenReg(compiler), Register.getR(1)));
 
+            compiler.addInstruction(new WFLOATX());
+        }
+        else{
+            throw new DecacInternalError("Print pas supporté pour le type"+getType());
+        }
     }
 
     /**

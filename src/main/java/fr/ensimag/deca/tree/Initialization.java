@@ -7,6 +7,7 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.Environment;
 import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.deca.tree.AbstractExpr;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
 
@@ -36,8 +37,13 @@ public class Initialization extends AbstractInitialization {
     protected void verifyInitialization(DecacCompiler compiler, Type t,
             Environment<ExpDefinition> localEnv, ClassDefinition currentClass)
             throws ContextualError {
-        // A FAIRE TODO
-        throw new UnsupportedOperationException("not yet implemented");
+        // A FAIRE TODO !!
+        Type expr=getExpression().verifyExpr(compiler, localEnv, currentClass);
+        if(!expr.sameType(t)){
+            throw new UnsupportedOperationException("pas même type");
+        }
+        setExpression(expression.verifyRValue(compiler, localEnv, currentClass, t));
+        //throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override

@@ -173,7 +173,16 @@ public class Identifier extends AbstractIdentifier {
     @Override
     public Type verifyExpr(DecacCompiler compiler, Environment<ExpDefinition> localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        if(localEnv.get(getName())!=null){
+            Definition def =localEnv.get(getName()); //TODO
+            this.setDefinition(def);
+            this.setType(def.getType());
+            return getType();
+        }
+        else{
+            throw new UnsupportedOperationException("pas de Name peut pas définir");
+        }
+        //throw new UnsupportedOperationException("not yet implemented");
     }
 
     /**
@@ -183,10 +192,14 @@ public class Identifier extends AbstractIdentifier {
      */
     @Override
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
-        TypeDefinition typeDef = compiler.getEnvironmentType().get(getName());
-        if (typeDef == null)
-            throw new ContextualError("Non-existent type", getLocation());
-        return typeDef.getType();
+        Definition def = compiler.getEnvironmentType().defOfType(getName());
+        if(def==null){
+            throw new UnsupportedOperationException("Type "+def.getType()+" existe pas");
+        }
+        setType(def.getType());
+        setDefinition(def);
+        return getType();
+
     }
 
     private Definition definition;

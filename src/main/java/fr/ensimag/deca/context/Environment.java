@@ -37,6 +37,10 @@ public class Environment<D> {
         private static final long serialVersionUID = -2733379901827316441L;
     }
 
+    public D defOfType(Symbol s){
+        return environment.get(s);
+    }
+
     /**
      * Return the definition of the symbol in the environment, or null if the
      * symbol is undefined.
