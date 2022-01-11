@@ -25,12 +25,12 @@ do
   fichier=$(basename $i)
   if test_lex "$i" 2>&1 | grep -q -e "$fichier"
   then
-    test_lex "$i" >& "${i%.deca}".lis
+    test_lex "$i" > "${i%.deca}".lis 2>&1 &
     echo -e "$fichier ${rouge} FAILED ${blanc} (failure)"
     tail -2 "${i%.deca}".lis
     status=1
   else
-    test_lex "$i" >& "${i%.deca}".lis
+    test_lex "$i" > "${i%.deca}".lis 2>&1 &
     echo -e "$fichier ${vert} PASSED ${blanc}"
 
   fi
@@ -43,12 +43,12 @@ do
   fichier=$(basename $i)
   if test_lex "$i" 2>&1 | grep -q -e "$fichier"
   then
-    test_lex "$i" >& "${i%.deca}".lis
+    test_lex "$i" > "${i%.deca}".lis 2>&1 &
     echo -e "$fichier ${rouge} FAILED ${blanc} (failure)"
     tail -2 "${i%.deca}".lis
     status=1
   else
-    test_lex "$i" >& "${i%.deca}".lis
+    test_lex "$i" > "${i%.deca}".lis 2>&1 &
     echo -e "$fichier ${vert} PASSED ${blanc}"
 
   fi
@@ -63,10 +63,10 @@ do
   fichier=$(basename $i)
   if test_lex "$i" 2>&1 | grep -q -e "$fichier"
   then
-    test_lex "$i" >& "${i%.deca}".lis
+    test_lex "$i" > "${i%.deca}".lis 2>&1 &
     echo -e "$fichier ${vert} PASSED ${blanc} (failure)"
   else
-    test_lex "$i" >& "${i%.deca}".lis
+    test_lex "$i" > "${i%.deca}".lis 2>&1 &
     echo -e "$fichier ${rouge} FAILED ${blanc} (no failure)"
     status=1
   fi
@@ -79,10 +79,10 @@ do
   fichier=$(basename $i)
   if test_lex "$i" 2>&1 | grep -q -e "$fichier"
   then
-    test_lex "$i" >& "${i%.deca}".lis
+    test_lex "$i" > "${i%.deca}".lis 2>&1 &
     echo -e "$fichier ${vert} PASSED ${blanc} (failure)"
   else
-    test_lex "$i" >& "${i%.deca}".lis
+    test_lex "$i" > "${i%.deca}".lis 2>&1 &
     echo -e "$fichier ${rouge} FAILED ${blanc} (no failure)"
     status=1
   fi

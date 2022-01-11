@@ -5,6 +5,9 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import org.apache.log4j.Logger;
 
+//import de Iterator
+import java.util.Iterator;
+
 /**
  *
  * @author gl13
@@ -12,7 +15,7 @@ import org.apache.log4j.Logger;
  */
 public class ListDeclClass extends TreeList<AbstractDeclClass> {
     private static final Logger LOG = Logger.getLogger(ListDeclClass.class);
-    
+
     @Override
     public void decompile(IndentPrintStream s) {
         for (AbstractDeclClass c : getList()) {
@@ -26,8 +29,10 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
      */
     void verifyListClass(DecacCompiler compiler) throws ContextualError {
         LOG.debug("verify listClass: start");
-        throw new UnsupportedOperationException("not yet implemented");
-        // LOG.debug("verify listClass: end");
+        for (Iterator<AbstractDeclClass> i = this.iterator(); i.hasNext();) {
+            i.next().verifyClass(compiler);
+        }
+        LOG.debug("verify listClass: end");
     }
 
     /**
@@ -36,13 +41,12 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
     public void verifyListClassMembers(DecacCompiler compiler) throws ContextualError {
         throw new UnsupportedOperationException("not yet implemented");
     }
-    
+
     /**
      * Pass 3 of [SyntaxeContextuelle]
      */
     public void verifyListClassBody(DecacCompiler compiler) throws ContextualError {
         throw new UnsupportedOperationException("not yet implemented");
     }
-
 
 }

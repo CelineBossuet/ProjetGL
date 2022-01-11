@@ -1,8 +1,19 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
+
+import fr.ensimag.ima.pseudocode.BinaryInstruction;
+import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
+
+import static fr.ensimag.ima.pseudocode.Register.R0;
+import static fr.ensimag.ima.pseudocode.Register.getR;
 
 /**
  * Binary expressions.
@@ -66,4 +77,71 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         rightOperand.prettyPrint(s, prefix, true);
     }
 
+
+    /**
+     * Fonction pour générer les instruction pour les Opération Arithmétiques
+     * Si est appelé pour autre chose renvoi une erreur
+     * @param val
+     * @param reg
+     * @return
+     * */
+    protected abstract BinaryInstruction geneInstru(DVal val, GPRegister reg);
+
+    @Override
+    protected DVal codeGenNoReg(DecacCompiler compiler){
+        throw new DecacInternalError("pas possible car pas feuille de AbstractEpression");
+    }
+
+    @Override
+    protected GPRegister codeGenReg(DecacCompiler compiler) {
+        return codeGenRegInternal(compiler, true);
+    }
+
+    protected GPRegister codeGenRegInternal(DecacCompiler compiler, boolean useful){
+
+        AbstractExpr right = getRightOperand();
+        AbstractExpr left = getLeftOperand();
+        GPRegister result;
+        GPRegister leftValue = left.codeGenReg(compiler);
+
+        if(!right.NeedsRegister()){
+            geneOneOrMoreInstru(compiler, right.codeGenNoReg(compiler), leftValue, useful);
+            getLOG().info("cas ou pas besoin de registre");
+            result =leftValue;
+        }
+        else if (compiler.getRegisterManager().getMax() -compiler.getRegisterManager().getCurrentv() +1 > 1) {
+
+            GPRegister r = compiler.allocate();
+            DVal rightValue = right.codeGenReg(compiler);
+            compiler.release(r);
+            compiler.addComment("non-trivial expression, registers available");
+            geneOneOrMoreInstru(compiler, rightValue, leftValue, useful);
+            result = leftValue;
+        }
+        else{
+            compiler.getMemoryManager().allocLB(1);
+            compiler.addInstruction(new PUSH(leftValue));
+
+            DVal rightValue = right.codeGenReg(compiler);
+
+            compiler.addInstruction(new POP(getR(0)));
+            geneOneOrMoreInstru(compiler, rightValue, getR(0), useful);
+            result = compiler.getRegisterManager().getCurrent();
+            if (useful) {
+                // The result was computed in R0, move it to the right register.
+                compiler.addInstruction(new LOAD(getR(0), result));
+            }
+        }
+        /*if (!compiler.getCompilerOptions().getNoRunTimeCheck() &&
+                needsOverflowCheck()) {
+            compiler.addInstruction(new BOV(compiler.getLabelManager()
+                    .getOverflowLabel()));*/
+
+        return result;
+    }
+
+
+    protected void geneOneOrMoreInstru(DecacCompiler compiler, DVal val, GPRegister reg, boolean usefull){
+        compiler.addInstruction(geneInstru(val, reg));
+    }
 }

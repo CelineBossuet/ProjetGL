@@ -105,5 +105,54 @@ self-test-context.sh
 suppression-log.sh
 ``
 
+### Automatisation des test
+
+Les tests qui sont présents dans le pom.xml sont des tests qui vont se lancer à chaque appel de:
+
+``
+mvn test
+``
+
+Pour forcer le lancement de tous les tests et ne pas s'arreter dès qu'il y a une erreur, 
+il faut utiliser:
+
+``
+mvn test -Dmaven.test.failure.ignore
+``
+
+Au passage, il est également possible d'utiliser:
+
+``
+mvn verify
+``
+
+qui réalise la phase de tests mais qui aussi désinstrumente les classes.
+
+### Couverture des tests
+
+Lors de l'utilisation de 
+
+``
+mvn verify
+``
+
+Une couverture automatique des tests est alors lancé pour découvrir par où sont passés les 
+sont passés les tests. Pour avoir un accés graphique de cet couverture, il suffit de lancé:
+
+``
+jacoco-report.sh
+``
+
+puis d'ouvrir le fichier index.html 
+
+``
+firefox target/site/index.html
+``
+
+Pour relancer en mode sans échec, vous pouvez aussi lancer 
+
+``
+mvn verify -Dmaven.test.failure.ignore
+``
 
 

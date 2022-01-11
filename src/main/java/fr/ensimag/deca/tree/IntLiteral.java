@@ -4,8 +4,17 @@ import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.Environment;
+import fr.ensimag.deca.context.ExpDefinition;
+import fr.ensimag.deca.context.IntType;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.WINT;
+
 import java.io.PrintStream;
 
 /**
@@ -19,16 +28,17 @@ public class IntLiteral extends AbstractExpr {
         return value;
     }
 
-    private int value;
+    protected int value;
 
     public IntLiteral(int value) {
         this.value = value;
     }
 
     @Override
-    public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
+    public Type verifyExpr(DecacCompiler compiler, Environment<ExpDefinition> localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        setType(new IntType(compiler.getSymbolTable().create("int")));
+        return getType();
     }
 
 
@@ -52,4 +62,20 @@ public class IntLiteral extends AbstractExpr {
         // leaf node => nothing to do
     }
 
+    @Override
+    protected boolean NeedsRegister() {
+        return false;
+    }
+
+    @Override
+    protected DVal codeGenNoReg(DecacCompiler compiler) {
+        return new ImmediateInteger(value);
+    }
+
+    @Override
+    protected GPRegister codeGenReg(DecacCompiler compiler) {
+        GPRegister reg = compiler.getRegisterManager().getCurrent();
+        compiler.addInstruction(new LOAD(new ImmediateInteger(getValue()), reg));
+        return reg;
+    }
 }

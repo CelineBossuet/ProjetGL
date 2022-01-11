@@ -1,5 +1,10 @@
 package fr.ensimag.deca;
 
+import fr.ensimag.deca.codegen.LabelManager;
+import fr.ensimag.deca.codegen.MemoryManager;
+import fr.ensimag.deca.codegen.RegisterManager;
+import fr.ensimag.deca.context.Environment;
+import fr.ensimag.deca.context.TypeDefinition;
 import fr.ensimag.deca.syntax.DecaLexer;
 import fr.ensimag.deca.syntax.DecaParser;
 import fr.ensimag.deca.tools.DecacInternalError;
@@ -34,6 +39,10 @@ import org.apache.log4j.Logger;
  */
 public class DecacCompiler {
     private static final Logger LOG = Logger.getLogger(DecacCompiler.class);
+
+    public static Logger getLOG() {
+        return LOG;
+    }
 
     /**
      * Portable newline character.
@@ -111,14 +120,42 @@ public class DecacCompiler {
 
     private final CompilerOptions compilerOptions;
     private final File source;
+    private final RegisterManager registerManager = new RegisterManager();
+    private final MemoryManager memoryManager = new MemoryManager();
+    private final LabelManager labelManager = new LabelManager();
     /**
      * The main program. Every instruction generated will eventually end up here.
      */
     private final IMAProgram program = new IMAProgram();
     private final SymbolTable symbolTable = new SymbolTable();
+    private Environment<TypeDefinition> environmentType = new Environment<TypeDefinition>(null);
 
     public SymbolTable getSymbolTable() {
         return symbolTable;
+    }
+
+    public RegisterManager getRegisterManager() {
+        return registerManager;
+    }
+
+    public MemoryManager getMemoryManager() {
+        return memoryManager;
+    }
+
+    public LabelManager getLabelManager() {
+        return labelManager;
+    }
+
+    public IMAProgram getProgram() {
+        return program;
+    }
+
+    /**
+     * 
+     * @return Type environment which includes in particular builtin types.
+     */
+    public Environment<TypeDefinition> getEnvironmentType() {
+        return environmentType;
     }
 
     /**
@@ -242,6 +279,14 @@ public class DecacCompiler {
         DecaParser parser = new DecaParser(tokens);
         parser.setDecacCompiler(this);
         return parser.parseProgramAndManageErrors(err);
+    }
+
+    public GPRegister allocate() {
+        return registerManager.allocRegister();
+    }
+
+    public void release(GPRegister reg) {
+        registerManager.releaseRegister(reg);
     }
 
     // A FAIRE methods addPUSH, addADDSP, addSUBSP, ...

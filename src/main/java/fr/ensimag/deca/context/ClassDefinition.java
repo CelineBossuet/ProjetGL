@@ -1,7 +1,6 @@
 package fr.ensimag.deca.context;
 
 import fr.ensimag.deca.tree.Location;
-import fr.ensimag.ima.pseudocode.Label;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -11,8 +10,6 @@ import org.apache.commons.lang.Validate;
  * @date 01/01/2022
  */
 public class ClassDefinition extends TypeDefinition {
-
-
     public void setNumberOfFields(int numberOfFields) {
         this.numberOfFields = numberOfFields;
     }
@@ -33,7 +30,7 @@ public class ClassDefinition extends TypeDefinition {
         Validate.isTrue(n >= 0);
         numberOfMethods = n;
     }
-    
+
     public int incNumberOfMethods() {
         numberOfMethods++;
         return numberOfMethods;
@@ -41,12 +38,12 @@ public class ClassDefinition extends TypeDefinition {
 
     private int numberOfFields = 0;
     private int numberOfMethods = 0;
-    
+
     @Override
     public boolean isClass() {
         return true;
     }
-    
+
     @Override
     public ClassType getType() {
         // Cast succeeds by construction because the type has been correctly set
@@ -58,23 +55,23 @@ public class ClassDefinition extends TypeDefinition {
         return superClass;
     }
 
-    private final EnvironmentExp members;
-    private final ClassDefinition superClass; 
+    private final Environment<ExpDefinition> members;
+    private final ClassDefinition superClass;
 
-    public EnvironmentExp getMembers() {
+    public Environment<ExpDefinition> getMembers() {
         return members;
     }
 
     public ClassDefinition(ClassType type, Location location, ClassDefinition superClass) {
         super(type, location);
-        EnvironmentExp parent;
+        Environment<ExpDefinition> parent;
         if (superClass != null) {
             parent = superClass.getMembers();
         } else {
             parent = null;
         }
-        members = new EnvironmentExp(parent);
+        members = new Environment<ExpDefinition>(parent);
         this.superClass = superClass;
     }
-    
+
 }

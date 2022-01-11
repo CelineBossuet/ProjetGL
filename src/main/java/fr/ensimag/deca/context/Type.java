@@ -1,8 +1,8 @@
 package fr.ensimag.deca.context;
 
-import fr.ensimag.deca.context.ClassType;
-import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
+import fr.ensimag.deca.tree.AbstractExpr;
 import fr.ensimag.deca.tree.Location;
 
 /**
@@ -13,7 +13,6 @@ import fr.ensimag.deca.tree.Location;
  */
 
 public abstract class Type {
-
 
     /**
      * True if this and otherType represent the same type (in the case of
@@ -79,5 +78,6 @@ public abstract class Type {
             throws ContextualError {
         throw new ContextualError(errorMessage, l);
     }
+
 
 }

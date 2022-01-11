@@ -5,16 +5,19 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tree.AbstractExpr;
 import fr.ensimag.deca.tree.Plus;
 import fr.ensimag.deca.tree.TreeFunction;
-import java.io.PrintStream;
+import fr.ensimag.ima.pseudocode.DVal;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+
+import java.io.PrintStream;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Test for the Plus node in a manual way. The same test would be much easier to
  * write using a mock-up framework like Mockito.
  *
  * @see TestPlusPlain to see how the Mockito library can help writing this kind
- * of tests.
+ *      of tests.
  *
  * @author Ensimag
  * @date 01/01/2022
@@ -32,10 +35,15 @@ public class TestPlusWithoutMock {
         boolean hasBeenVerified = false;
 
         @Override
-        public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
+        public Type verifyExpr(DecacCompiler compiler, Environment<ExpDefinition> localEnv,
                 ClassDefinition currentClass) throws ContextualError {
             hasBeenVerified = true;
             return INT;
+        }
+
+        @Override
+        protected DVal codeGenNoReg(DecacCompiler compiler) {
+            return null;
         }
 
         @Override
