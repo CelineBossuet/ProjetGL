@@ -51,27 +51,26 @@ public class Program extends AbstractProgram {
         LOG.debug("verify program: start");
 
         // declare language types :
-        EnvironmentType environmentType = new EnvironmentType(null); // A FAIRE EnvironmentType
-        declareBuiltinTypes(environmentType, compiler);
+        declareBuiltinTypes(compiler);
 
         getMain().verifyMain(compiler);
 
         LOG.debug("verify program: end");
     }
 
-    private void declareBuiltinTypes(EnvironmentType environmentType, DecacCompiler compiler) {
+    private void declareBuiltinTypes(DecacCompiler compiler) {
         try {
-            environmentType.declare(compiler.getSymbolTable().create("void"),
+            compiler.getEnvironmentType().declare(compiler.getSymbolTable().create("void"),
                     new TypeDefinition(new VoidType(compiler.getSymbolTable().create("void")), Location.BUILTIN));
-            environmentType.declare(compiler.getSymbolTable().create("boolean"),
+            compiler.getEnvironmentType().declare(compiler.getSymbolTable().create("boolean"),
                     new TypeDefinition(new BooleanType(compiler.getSymbolTable().create("boolean")), Location.BUILTIN));
-            environmentType.declare(compiler.getSymbolTable().create("float"),
+            compiler.getEnvironmentType().declare(compiler.getSymbolTable().create("float"),
                     new TypeDefinition(new FloatType(compiler.getSymbolTable().create("float")), Location.BUILTIN));
-            environmentType.declare(compiler.getSymbolTable().create("int"),
+            compiler.getEnvironmentType().declare(compiler.getSymbolTable().create("int"),
                     new TypeDefinition(new IntType(compiler.getSymbolTable().create("int")), Location.BUILTIN));
-            environmentType.declare(compiler.getSymbolTable().create("string"),
+            compiler.getEnvironmentType().declare(compiler.getSymbolTable().create("string"),
                     new TypeDefinition(new StringType(compiler.getSymbolTable().create("string")), Location.BUILTIN));
-            environmentType.declare(compiler.getSymbolTable().create("null"),
+            compiler.getEnvironmentType().declare(compiler.getSymbolTable().create("null"),
                     new TypeDefinition(new NullType(compiler.getSymbolTable().create("null")), Location.BUILTIN));
         } catch (DoubleDefException e) {
             throw new DecacInternalError("Double built in type definition");

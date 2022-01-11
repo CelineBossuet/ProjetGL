@@ -4,6 +4,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.NullType;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
@@ -11,15 +12,17 @@ import fr.ensimag.ima.pseudocode.NullOperand;
 
 import java.io.PrintStream;
 
-public class Null extends AbstractExpr{
+public class Null extends AbstractExpr {
 
-    public Null(){
+    public Null() {
         super();
     }
 
     @Override
-    public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
-        return null;
+    public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass)
+            throws ContextualError {
+        setType(new NullType(compiler.getSymbolTable().create("null")));
+        return getType();
     }
 
     @Override
@@ -38,10 +41,12 @@ public class Null extends AbstractExpr{
     }
 
     @Override
-    protected boolean NeedsRegister(){return false;}
+    protected boolean NeedsRegister() {
+        return false;
+    }
 
     @Override
-    protected DVal codeGenNoReg(DecacCompiler compiler){
+    protected DVal codeGenNoReg(DecacCompiler compiler) {
         return new NullOperand();
     }
 }

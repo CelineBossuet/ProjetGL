@@ -52,7 +52,6 @@ public class DecacCompiler {
         super();
         this.compilerOptions = compilerOptions;
         this.source = source;
-        this.environmentType = new EnvironmentType(null); // on initialise le EnvironmentType
     }
 
     /**
@@ -128,7 +127,7 @@ public class DecacCompiler {
      */
     private final IMAProgram program = new IMAProgram();
     private final SymbolTable symbolTable = new SymbolTable();
-    private EnvironmentType environmentType;
+    private EnvironmentType environmentType = new EnvironmentType(null);
 
     public SymbolTable getSymbolTable() {
         return symbolTable;

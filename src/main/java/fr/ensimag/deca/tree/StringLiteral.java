@@ -5,6 +5,8 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.ExpDefinition;
+import fr.ensimag.deca.context.StringType;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.ImmediateString;
@@ -35,10 +37,9 @@ public class StringLiteral extends AbstractStringLiteral {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        setType(compiler.getEnvironmentType().STRING);
+        setType(new StringType(compiler.getSymbolTable().create("string")));
 
-        return compiler.getEnvironmentType().STRING;
-        //throw new UnsupportedOperationException("not yet implemented");
+        return getType();
     }
 
     @Override
@@ -48,7 +49,7 @@ public class StringLiteral extends AbstractStringLiteral {
 
     @Override
     protected DVal codeGenNoReg(DecacCompiler compiler) {
-        return null; //TODO
+        return null; // TODO
     }
 
     @Override
@@ -65,7 +66,7 @@ public class StringLiteral extends AbstractStringLiteral {
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         // leaf node => nothing to do
     }
-    
+
     @Override
     String prettyPrintNode() {
         return "StringLiteral (" + value + ")";
