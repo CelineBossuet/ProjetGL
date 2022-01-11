@@ -55,22 +55,22 @@ public class ClassDefinition extends TypeDefinition {
         return superClass;
     }
 
-    private final EnvironmentExp members;
+    private final Environment<ExpDefinition> members;
     private final ClassDefinition superClass;
 
-    public EnvironmentExp getMembers() {
+    public Environment<ExpDefinition> getMembers() {
         return members;
     }
 
     public ClassDefinition(ClassType type, Location location, ClassDefinition superClass) {
         super(type, location);
-        EnvironmentExp parent;
+        Environment<ExpDefinition> parent;
         if (superClass != null) {
             parent = superClass.getMembers();
         } else {
             parent = null;
         }
-        members = new EnvironmentExp(parent);
+        members = new Environment<ExpDefinition>(parent);
         this.superClass = superClass;
     }
 

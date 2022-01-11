@@ -19,8 +19,9 @@ public class DeclClass extends AbstractDeclClass {
     }
 
     @Override
-    protected void verifyClass(DecacCompiler compiler) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+    protected void verifyClass(DecacCompiler compiler) throws ContextualError { // A FAIRE
+
+        //throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override

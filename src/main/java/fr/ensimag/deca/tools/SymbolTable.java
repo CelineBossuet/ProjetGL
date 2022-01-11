@@ -18,11 +18,10 @@ import java.util.Map;
 public class SymbolTable {
     private Map<String, Symbol> map = new HashMap<String, Symbol>();
 
-    public SymbolTable(){
+    public SymbolTable() {
         map = new HashMap<String, Symbol>();
-        Symbol symb = new Symbol("int");
-        map.put("int", symb);
     }
+
     /**
      * Create or reuse a symbol.
      *
@@ -31,15 +30,13 @@ public class SymbolTable {
      */
     public Symbol create(String name) {
 
-        if (this.map.get(name)==null){
+        if (this.map.get(name) == null) {
             Symbol symb = new Symbol(name);
             this.map.put(name, symb);
             return symb;
-        }
-        else {
+        } else {
             return this.map.get(name);
         }
-        //throw new UnsupportedOperationException("Symbol creation");
     }
 
     public static class Symbol {

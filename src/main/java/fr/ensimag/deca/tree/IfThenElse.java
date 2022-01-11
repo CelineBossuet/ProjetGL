@@ -3,7 +3,8 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.Environment;
+import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import org.apache.commons.lang.Validate;
@@ -17,8 +18,8 @@ import java.io.PrintStream;
  * @date 01/01/2022
  */
 public class IfThenElse extends AbstractInst {
-    
-    private final AbstractExpr condition; 
+
+    private final AbstractExpr condition;
     private final ListInst thenBranch;
     private ListInst elseBranch;
 
@@ -31,17 +32,17 @@ public class IfThenElse extends AbstractInst {
         this.elseBranch = elseBranch;
     }
 
-    public void setElseBranch(ListInst elseBranch){
-        this.elseBranch=elseBranch;
+    public void setElseBranch(ListInst elseBranch) {
+        this.elseBranch = elseBranch;
     }
 
-    public void setElseBranch(AbstractInst elseBranch){
+    public void setElseBranch(AbstractInst elseBranch) {
         Validate.notNull(elseBranch);
         this.elseBranch.add(elseBranch);
     }
-    
+
     @Override
-    protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
+    protected void verifyInst(DecacCompiler compiler, Environment<ExpDefinition> localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
     }
@@ -57,8 +58,7 @@ public class IfThenElse extends AbstractInst {
     }
 
     @Override
-    protected
-    void iterChildren(TreeFunction f) {
+    protected void iterChildren(TreeFunction f) {
         condition.iter(f);
         thenBranch.iter(f);
         elseBranch.iter(f);

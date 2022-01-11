@@ -1,11 +1,13 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.context.TypeDefinition;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.Definition;
-import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.Environment;
+import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.context.FieldDefinition;
 import fr.ensimag.deca.context.MethodDefinition;
 import fr.ensimag.deca.context.ExpDefinition;
@@ -13,6 +15,9 @@ import fr.ensimag.deca.context.VariableDefinition;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
+
+import static org.mockito.ArgumentMatchers.nullable;
+
 import java.io.PrintStream;
 
 import fr.ensimag.ima.pseudocode.DVal;
@@ -166,7 +171,7 @@ public class Identifier extends AbstractIdentifier {
     }
 
     @Override
-    public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
+    public Type verifyExpr(DecacCompiler compiler, Environment<ExpDefinition> localEnv,
             ClassDefinition currentClass) throws ContextualError {
         throw new UnsupportedOperationException("not yet implemented");
     }
@@ -178,7 +183,10 @@ public class Identifier extends AbstractIdentifier {
      */
     @Override
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        TypeDefinition typeDef = compiler.getEnvironmentType().get(getName());
+        if (typeDef == null)
+            throw new ContextualError("Non-existent type", getLocation());
+        return typeDef.getType();
     }
 
     private Definition definition;

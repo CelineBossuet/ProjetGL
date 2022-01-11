@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * write using a mock-up framework like Mockito.
  *
  * @see TestPlusPlain to see how the Mockito library can help writing this kind
- * of tests.
+ *      of tests.
  *
  * @author Ensimag
  * @date 01/01/2022
@@ -35,7 +35,7 @@ public class TestPlusWithoutMock {
         boolean hasBeenVerified = false;
 
         @Override
-        public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
+        public Type verifyExpr(DecacCompiler compiler, Environment<ExpDefinition> localEnv,
                 ClassDefinition currentClass) throws ContextualError {
             hasBeenVerified = true;
             return INT;

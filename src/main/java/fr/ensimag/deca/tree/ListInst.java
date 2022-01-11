@@ -1,10 +1,14 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.Type;
+
+import org.apache.log4j.Logger;
+
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.Environment;
+import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
 /**
@@ -13,6 +17,7 @@ import fr.ensimag.deca.tools.IndentPrintStream;
  * @date 01/01/2022
  */
 public class ListInst extends TreeList<AbstractInst> {
+    private static final Logger LOG = Logger.getLogger(ListDeclClass.class);
 
     /**
      * Implements non-terminal "list_inst" of [SyntaxeContextuelle] in pass 3
@@ -25,13 +30,12 @@ public class ListInst extends TreeList<AbstractInst> {
      *                     corresponds to "return" attribute (void in the main
      *                     bloc).
      */
-    public void verifyListInst(DecacCompiler compiler, EnvironmentExp localEnv,
+    public void verifyListInst(DecacCompiler compiler, Environment<ExpDefinition> localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
-        for (AbstractInst i : getList()) {
+        // verify each instructions
+        for (AbstractInst i : this.getList())
             i.verifyInst(compiler, localEnv, currentClass, returnType);
-        }
-        //throw new UnsupportedOperationException("not yet implemented");
     }
 
     public void codeGenListInst(DecacCompiler compiler) {
