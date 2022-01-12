@@ -9,6 +9,9 @@ import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tree.AbstractExpr;
 import java.io.PrintStream;
+
+import fr.ensimag.ima.pseudocode.DAddr;
+import fr.ensimag.ima.pseudocode.instructions.STORE;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -44,6 +47,13 @@ public class Initialization extends AbstractInitialization {
         }
         setExpression(expression.verifyRValue(compiler, localEnv, currentClass, t));
         //throw new UnsupportedOperationException("not yet implemented");
+    }
+
+    @Override
+    protected void codeGeneInit(DecacCompiler compiler, DAddr target) {
+        //System.out.println("Init");
+        compiler.addInstruction(new STORE(expression.codeGenReg(compiler), target));
+        //la valeur du registre expression.codeGenReg() est stored dans l'adresse target
     }
 
     @Override

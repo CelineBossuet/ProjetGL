@@ -10,6 +10,5 @@
 print("modulo de 5%2 : ");
 println(5%2);
 
-print("modulo de 5%2.0 : ");
 //println(5%2.0); renvoit bien une erreur car 2.0 float
 }
