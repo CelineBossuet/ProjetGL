@@ -98,6 +98,7 @@ public class DecacCompiler {
      *      fr.ensimag.ima.pseudocode.IMAProgram#addInstruction(fr.ensimag.ima.pseudocode.Instruction)
      */
     public void addInstruction(Instruction instruction) {
+        //System.out.println("DecacCompiler add Instru");
         program.addInstruction(instruction);
     }
 

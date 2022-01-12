@@ -15,12 +15,12 @@ public class LabelManager {
 
     public Label newLabel(String name){
         counter++;
-        return new Label(name);
+        return new Label(name, counter);
     }
 
     public Label getIoErrorLabel() {
         if (io_errorLabel == null) {
-            io_errorLabel = new Label("error");
+            io_errorLabel = new Label("error", 0);
         }
         return io_errorLabel;
     }

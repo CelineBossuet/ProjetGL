@@ -45,7 +45,7 @@ public class Main extends AbstractMain {
         //System.out.println("Main");
         declVariables.codeGenListVar(compiler);
         compiler.addComment("Beginning of main instructions:");
-        insts.codeGenListInst(compiler);
+        insts.codeGenListInst(compiler, null, null);
     }
 
     @Override

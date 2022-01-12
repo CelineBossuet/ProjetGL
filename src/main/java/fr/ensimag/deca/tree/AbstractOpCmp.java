@@ -4,6 +4,7 @@ import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.instructions.CMP;
 
 /**
  *
@@ -56,4 +57,13 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
      * Génère les instructions pour notre comparaison
      */
     protected abstract Instruction genSccInstruction(GPRegister result);
+
+    @Override
+    protected void geneOneOrMoreInstru(DecacCompiler compiler, DVal val, GPRegister reg, boolean usefull){
+        //System.out.println("AbsOpCmp geneOneOrMoreInstru");
+        compiler.addInstruction(new CMP(val, reg));
+        if(usefull){
+            compiler.addInstruction(genSccInstruction(reg));
+        }
+    }
 }
