@@ -171,8 +171,8 @@ public abstract class AbstractExpr extends AbstractInst {
     /**
      * */
     @Override
-    protected void codeGenInst(DecacCompiler compiler) {
-        System.out.println("AbsExpr");
+    protected void codeGenInst(DecacCompiler compiler, Label returnLabel, Label local) {
+        //System.out.println("AbsExpr");
         codeGenExprIgnored(compiler);
         // peut être ajouter des labels en paramètre...
         // throw new UnsupportedOperationException("not yet implemented");
@@ -221,6 +221,7 @@ public abstract class AbstractExpr extends AbstractInst {
      * @return Registre ou se trouve notre code généré
      */
     protected GPRegister codeGenReg(DecacCompiler compiler) {
+        //System.out.println("AbsExpr codeGenReg");
         compiler.addInstruction(new LOAD(codeGenNoReg(compiler), compiler.getRegisterManager().getCurrent()));
         // cette instruction permet de charger une valeur dans un registre ici le
         // Registre Current

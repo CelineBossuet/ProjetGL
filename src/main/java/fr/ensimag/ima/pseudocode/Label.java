@@ -16,11 +16,11 @@ public class Label extends Operand {
         return name;
     }
 
-    public Label(String name) {
+    public Label(String name, int c) {
         super();
         Validate.isTrue(name.length() <= 1024, "Label name too long, not supported by IMA");
         Validate.isTrue(name.matches("^[a-zA-Z][a-zA-Z0-9_.]*$"), "Invalid label name " + name);
-        this.name = name;
+        this.name = name+"."+c;
     }
     private String name;
 }
