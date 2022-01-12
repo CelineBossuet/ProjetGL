@@ -7,6 +7,5 @@
 // Historique:
 //    cree le 01/01/2022
 
-{
-#include "calcul.deca";
-}
+
+#include "calcul.deca"
