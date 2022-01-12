@@ -20,8 +20,8 @@ import static org.mockito.ArgumentMatchers.nullable;
 
 import java.io.PrintStream;
 
-import fr.ensimag.ima.pseudocode.DAddr;
-import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -123,6 +123,7 @@ public class Identifier extends AbstractIdentifier {
     @Override
     public VariableDefinition getVariableDefinition() {
         try {
+            //System.out.println(definition);
             return (VariableDefinition) definition;
         } catch (ClassCastException e) {
             throw new DecacInternalError(
@@ -239,12 +240,35 @@ public class Identifier extends AbstractIdentifier {
     @Override
     protected DAddr codeGenNoReg(DecacCompiler compiler) {
         DAddr ope = this.getExpDefinition().getOperand();
-        return ope; // TODO assert...
+        if(ope==null){
+            throw new DecacInternalError("Operande null pour l'identifier "+getName()+" "+getDefinition());
+        }
+        return ope;
+    }
+
+    @Override
+    protected GPRegister codeGenReg(DecacCompiler compiler){
+        if(getDefinition().isField()){
+            //cas particulier pour les fields qui ne peuvent pas être générés avec un seul opérand
+            getLOG().info("cas particulier pour les fields, génération par plusieurs opérandes");
+            GPRegister current = compiler.getRegisterManager().getCurrent();
+            compiler.addInstruction(new LOAD(codeGenAddr(compiler), current));
+            return current;
+        }
+        return super.codeGenReg(compiler);
     }
 
 
     @Override
     public DAddr codeGenAddr(DecacCompiler compiler) {
+        if(getDefinition().isField()){
+            getLOG().info("cas particulier pour les fields, génération par plusieurs opérandes");
+            GPRegister current = compiler.getRegisterManager().getCurrent();
+            RegisterOffset offset = new RegisterOffset(-2, Register.LB);
+            RegisterOffset field = new RegisterOffset(getFieldDefinition().getIndex() +1, current);
+            compiler.addInstruction(new LOAD(offset, current));
+            return field;
+        }
         DAddr ope = codeGenNoReg(compiler);
         return ope;
     }

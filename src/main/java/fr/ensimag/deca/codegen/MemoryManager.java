@@ -10,8 +10,8 @@ import fr.ensimag.ima.pseudocode.RegisterOffset;
  * @date 09/01/2022
  * */
 public class MemoryManager {
-    private int currentLB=-1; //local base current register
-    private int currentGB=-1;
+    private int currentLB=0; //local base current register
+    private int currentGB=0;
     private int maxLB;
 
     public int getCurrentGB() {return currentGB;}
