@@ -1,0 +1,73 @@
+The Deca language is a sort of sub-language of Java, which means that it is Object-oriented and relays on a strong typing. Our product is a Compiler for this language, it allows the User to transform their code in Deca into a lower-level code (assembly language). \\
+
+In order to execute our program, it is mandatory to download \textit{maven}, which is a build automation tool, and it is necessary to have a relatively recent version of \textit{Java} (Java 16 or more recent). \\
+
+The product is a package that can be downloaded from the following Git depository (available only for gitlab.ensimag users) : 
+\begin{center}
+https://gitlab.ensimag.fr/gl2022/g3/gl13/-/tree/master
+\end{center}
+
+The package contains many files including a \textit{readme.md} file that shows some of the features and some command lines of the device.
+
+\subsection{Compilation and Execution}
+
+In order to compile the product, the following command should be ran in a terminal : 
+\begin{center}
+    mvn compile
+\end{center}
+
+The executable program is in the depository \textit{decac}, in order to execute it  the following command should be ran in a terminal :
+\begin{center}
+    ./src/main/bin/decac
+\end{center}
+
+\subsection{Tests execution}
+
+The tests are placed in \textit{src/test/script}, in order to make a test executable, the user is urged to run the following command : 
+\begin{center}
+    chmod 0755 test-name.sh
+\end{center}
+
+When a test is being ran, it appears with a yellow font in the terminal, and when ran the result of the test appears next to its name. The result of the test is one of the following files : \begin{itemize}
+    \item \textit{.lis} file, if the test results from a parser or a lexer
+    \item \textit{.ass} file, if the .deca file have been compilated in assembly language
+    \item \textit{.res} file, if the file is the result of an execution
+\end{itemize} 
+
+These files will contain either the result of the program showing that it works correctly, or the errors faced by the program while it was running.
+
+\subsection{Tests Automation}
+
+There are some tests in the file \textit{pom.xml}, these tests can be ran using the following command in a terminal : 
+\begin{center}
+    mvn test
+\end{center}
+This program would stop running when there would be errors in the execution, in order to prevent this from happening, the user can chose to ignore the errors and run all the tests by running the following command in the terminal : 
+\begin{center}
+    mvn test -Dmaven.test.failure.ignore
+\end{center}
+
+The user can also use the following command to run the tests :
+\begin{center}
+    mvn verify
+\end{center}
+But this command doesn't give as much details about the classes as the first command.
+
+
+\subsection{Tests coverage}
+
+The user can get a full coverage of the tests by running the following command in a terminal : 
+\begin{center}
+    mvn verify
+\end{center}
+
+In order to have a graphical access of this coverage, the following command can be ran : 
+\begin{center}
+    jacoco-report.sh
+\end{center}
+
+and then open the file \textit{index.html} by using, for example, the firefox browser by running the following comand in a terminal :
+\begin{center}
+    firefox target/site/index.html
+\end{center}
+
