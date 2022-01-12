@@ -9,8 +9,10 @@
 
 // Un exemple de programme Deca utilisant la classe Math
 
+/* A décomenter quand la partie objet sera faites
 #include "Math.decah"
 {
     Math m = new Math();
     println("cos(0.0) = ", m.cos(0.0));
 }
+*/

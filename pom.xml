@@ -240,7 +240,7 @@
                             <goal>exec</goal>
                         </goals>
                     </execution>
-                    <!-- A décommenter une fois la génération du code faites
+
                     <execution>
                         <id>basic-gencode</id>
                         <configuration>
@@ -251,7 +251,7 @@
                             <goal>exec</goal>
                         </goals>
                     </execution>
-                    -->
+
                     <!-- A décommenter une fois la génération du code faites
                     <execution>
                         <id>basic-decac</id>
@@ -311,6 +311,18 @@
                         <id>self-test-gen</id>
                         <configuration>
                             <executable>./src/test/script/self-test-gen.sh</executable>
+                        </configuration>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                    -->
+                    <!-- A décommenter une fois la génération du code faites
+                    <execution>
+                        <id>self-test-exec</id>
+                        <configuration>
+                            <executable>./src/test/script/self-test-exec.sh</executable>
                         </configuration>
                         <phase>test</phase>
                         <goals>
