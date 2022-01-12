@@ -22,7 +22,8 @@ public class NoOperation extends AbstractInst {
     protected void verifyInst(DecacCompiler compiler, Environment<ExpDefinition> localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        //throw new UnsupportedOperationException("not yet implemented");
+        //Pas d'opération donc pas de propagation
     }
 
     @Override

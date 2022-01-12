@@ -23,5 +23,4 @@ public class FloatType extends Type {
         return otherType.isFloat();
         //throw new UnsupportedOperationException("not yet implemented");
     }
-
 }
