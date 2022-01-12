@@ -9,6 +9,7 @@
 // Historique:
 //    cree le 01/01/2022
 
+/* A décomenter quand on aura fait les classes
 class Polyexp {
     float pexp (float m) {
 	return m * (m * (m * (m * (m * (m * ( m * (1.0/5040.0) + 1.0/720.0) + 1.0/120.0) + 1.0/24.0) + 1.0/6.0) + 1.0/2.0) + 1.0) -1;
@@ -35,3 +36,4 @@ class Polyexp {
     print (g, " = "); printlnx(g);
 
 }
+*/
