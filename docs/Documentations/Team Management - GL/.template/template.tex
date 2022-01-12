@@ -1,0 +1,40 @@
+\documentclass[a4paper,11pt]{article}
+
+%%%%%%%%%%%% Default Includes %%%%%%%%%%%%%%%%%
+\input{.template/includes}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%% REPORT TITLE INFO %%%%%%%%%%%%%%%%%
+\titulo{Team Management}
+\disciplina{Projet Génie Logiciel}
+\lhead{Projet Génie Logiciel}
+%\rhead{}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%% Shortcuts %%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%% DOCUMENT %%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+    \titlefull
+    \fancyhead[R]{\leftmark}
+
+    \clearpage
+    \tableofcontents
+    \clearpage
+    
+    \input{main.tex}
+    \newpage
+    %%%%%%%%%%%%%%%%%%%
+    \bibliography{refs} 
+    %%%%%%%%%%%%%%%%%%%
+    
+    
+\end{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -1,0 +1,92 @@
+\usepackage{fancyhdr}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Report Variables & Parameters %%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%% Title Variables %%%%%%%%%%%%%%
+
+\def\@disciplina{\textit{Disciplina}}
+\newcommand{\disciplina}[1]{
+  \def\@disciplina{#1}}
+
+\def\@titulo{\textit{Título}}
+\newcommand{\titulo}[1]{
+  \def\@titulo{#1}}
+
+\def\@subtitulo{}
+\newcommand{\subtitulo}[1]{
+  \def\@subtitulo{#1}}
+  
+\def\@integrantes{\textit{Integrantes}}
+\newcommand{\integrantes}[1]{
+  \def\@integrantes{#1}}
+  
+\def\@logo{Uga_GrenobleINP.png}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%% Report Titles %%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%% Short Title %%%%%%%%%%%%%%%%%
+\newcommand{\titleshort}{
+\thispagestyle{empty}
+\begin{center}
+	\includegraphics[height=2cm]{logoUFSCsimples.png} \\
+	{\Large UGA -- Grenoble INP} \\
+	\vspace{1cm}
+	{\Large \@disciplina} \\
+	\vspace{1cm}
+	\Large{\textbf{
+	%%%%%%% TÍTULO E SUBTÍTULO %%%%%%%%%%%%%%%%%%%%%
+    \@titulo} \\
+	\@subtitulo} 
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\vspace{2cm}
+	Grenoble, \today.
+\end{center}
+}
+
+%%%%%%%%%%%%%% Complete Title %%%%%%%%%%%%%%
+\newcommand{\titlefull}{
+    \thispagestyle{empty}
+    \begin{center}
+	\includegraphics[height=4cm]{\@logo} \\
+	{\LARGE UGA -- Grenoble INP} \\
+	\vspace{1cm}
+	{\LARGE \@disciplina} \\
+	\vfill
+	\Large{\textbf{
+	%%%%%%% TÍTULO E SUBTÍTULO %%%%%%%%%%%%%%%%%%%%%
+    \@titulo} \\
+	\@subtitulo} 
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\vspace{1cm}
+	\vfill
+	Grenoble, \today.
+    \end{center}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%% Report Header %%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\@disciplina}
+\rhead{\@titulo}
+\rfoot{\thepage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%% Custom Commands %%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\newcommand{\enunciado}[1]{
+    \begin{blockquote}
+    \textbf{Enunciado:} #1
+    \end{blockquote}
+}
