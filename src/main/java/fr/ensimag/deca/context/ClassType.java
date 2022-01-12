@@ -57,7 +57,7 @@ public class ClassType extends Type {
     /**
      * Return true if potentialSuperClass is a superclass of this class.
      */
-    public boolean isSubClassOf(ClassType potentialSuperClass) {
+    public boolean isSubClassOf(ClassType potentialSuperClass) {//A faire dans la partie classe
         throw new UnsupportedOperationException("not yet implemented");
     }
 
