@@ -5,6 +5,7 @@ import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
 import org.apache.commons.lang.Validate;
+import org.apache.log4j.Logger;
 
 import java.io.PrintStream;
 
@@ -18,6 +19,12 @@ public abstract class AbstractPrint extends AbstractInst {
 
     private boolean printHex;
     private ListExpr arguments = new ListExpr();
+
+    private static final Logger LOG = Logger.getLogger(AbstractPrint.class);
+
+    public static Logger getLOG() {
+        return LOG;
+    }
 
     abstract String getSuffix();
 
@@ -43,7 +50,7 @@ public abstract class AbstractPrint extends AbstractInst {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler, Label returnLabel, Label local) {
-        //System.out.println("AbsPrint codeGenInst");
+        getLOG().trace("AbsPrint codeGenInst");
         for (AbstractExpr a : getArguments().getList()) {
             if (this.printHex)
                 //print en hexa

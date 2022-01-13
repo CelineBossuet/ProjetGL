@@ -6,6 +6,7 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.Environment;
 import fr.ensimag.deca.context.ExpDefinition;
+import org.apache.log4j.Logger;
 
 /**
  * Arithmetic binary operations (+, -, /, ...)
@@ -17,6 +18,12 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
 
     public AbstractOpArith(AbstractExpr leftOperand, AbstractExpr rightOperand) {
         super(leftOperand, rightOperand);
+    }
+
+    private static final Logger LOG = Logger.getLogger(AbstractOpArith.class);
+
+    public static Logger getLOG() {
+        return LOG;
     }
 
     @Override

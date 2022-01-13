@@ -1,5 +1,7 @@
 package fr.ensimag.deca.tree;
 
+import org.apache.log4j.Logger;
+
 /**
  *
  * @author gl13
@@ -8,5 +10,11 @@ package fr.ensimag.deca.tree;
 public abstract class AbstractStringLiteral extends AbstractExpr {
 
     public abstract String getValue();
+
+    private static final Logger LOG = Logger.getLogger(AbstractStringLiteral.class);
+
+    public static Logger getLOG() {
+        return LOG;
+    }
     
 }

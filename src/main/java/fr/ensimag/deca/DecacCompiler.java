@@ -244,12 +244,17 @@ public class DecacCompiler {
 
         //Génération des Label d'erreurs
         this.addLabel(this.getLabelManager().getIErrorLabel());
-        this.addInstruction(new WSTR("Input Error"));
+        this.addInstruction(new WSTR("Error: Input/Output Error"));
         this.addInstruction(new WNL());
         this.addInstruction(new ERROR());
 
         this.addLabel(this.labelManager.getOverFlowLabel());
-        this.addInstruction(new WSTR("OverFlow Error"));
+        this.addInstruction(new WSTR("Error: Overflow during arithmetic operation"));
+        this.addInstruction(new WNL());
+        this.addInstruction(new ERROR());
+
+        this.addLabel(this.labelManager.getStack_overflowLabel());
+        this.addInstruction(new WSTR("Error: Stack Overflow"));
         this.addInstruction(new WNL());
         this.addInstruction(new ERROR());
 

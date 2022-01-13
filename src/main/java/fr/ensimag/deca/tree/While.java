@@ -37,7 +37,7 @@ public class While extends AbstractInst {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler, Label returnLabel, Label local) {
-        //System.out.println("While codeGenInst");
+        getLOG().trace("While codeGenInst");
         Label debutwhile = compiler.getLabelManager().newLabel("while");
         Label condwhile = compiler.getLabelManager().newLabel("condWhile");
         compiler.addInstruction(new BRA(condwhile));
@@ -46,7 +46,6 @@ public class While extends AbstractInst {
         compiler.addLabel(condwhile);
         this.condition.codeGenCond(compiler, debutwhile, true);
         getLOG().info("création et fixation du Label de début du while");
-        //System.out.println("While codeGenInst FIN");
 
         //throw new UnsupportedOperationException("not yet implemented");
     }

@@ -5,6 +5,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -17,6 +18,11 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
         super(leftOperand, rightOperand);
     }
 
+    private static final Logger LOG = Logger.getLogger(AbstractOpCmp.class);
+
+    public static Logger getLOG() {
+        return LOG;
+    }
     @Override
     public Type verifyExpr(DecacCompiler compiler, Environment<ExpDefinition> localEnv,
             ClassDefinition currentClass) throws ContextualError {
@@ -60,7 +66,7 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
 
     @Override
     protected void geneOneOrMoreInstru(DecacCompiler compiler, DVal val, GPRegister reg, boolean usefull){
-        //System.out.println("AbsOpCmp geneOneOrMoreInstru");
+        getLOG().trace("AbsOpCmp geneOneOrMoreInstru");
         compiler.addInstruction(new CMP(val, reg));
         if(usefull){
             compiler.addInstruction(genSccInstruction(reg));
