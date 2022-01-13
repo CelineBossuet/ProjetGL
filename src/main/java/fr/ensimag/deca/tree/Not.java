@@ -63,4 +63,10 @@ public class Not extends AbstractUnaryExpr {
         compiler.addLabel(end);
         return r;
     }
+
+    @Override
+    protected void codeGenCond(DecacCompiler compiler, Label l, boolean saut){
+        getLOG().info("le Not inverse la logique dans codeGenCond");
+        getOperand().codeGenCond(compiler, l, !saut);
+    }
 }

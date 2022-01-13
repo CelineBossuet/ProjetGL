@@ -105,13 +105,12 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         GPRegister leftValue = left.codeGenReg(compiler);
         //System.out.println("AbsBinaryExpr codeGenRegInternal");
         if(!right.NeedsRegister()){
-            //System.out.println("need no register");
             geneOneOrMoreInstru(compiler, right.codeGenNoReg(compiler), leftValue, useful);
             getLOG().info("cas ou pas besoin de registre");
             result =leftValue;
         }
         else if (compiler.getRegisterManager().getMax() -compiler.getRegisterManager().getCurrentv() +1 > 1) {
-            //System.out.println("no register available");
+
             GPRegister r = compiler.allocate();
             DVal rightValue = right.codeGenReg(compiler);
             compiler.release(r);
@@ -120,7 +119,6 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
             result = leftValue;
         }
         else{
-            //System.out.println("register available");
             compiler.getMemoryManager().allocLB(1);
             compiler.addInstruction(new PUSH(leftValue));
 
@@ -130,7 +128,6 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
             geneOneOrMoreInstru(compiler, rightValue, getR(0), useful);
             result = compiler.getRegisterManager().getCurrent();
             if (useful) {
-                //System.out.println("useful");
                 // The result was computed in R0, move it to the right register.
                 compiler.addInstruction(new LOAD(getR(0), result));
             }
@@ -139,13 +136,13 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
                 needsOverflowCheck()) {
             compiler.addInstruction(new BOV(compiler.getLabelManager()
                     .getOverflowLabel()));*/
-
+        //System.out.println("fin AbsBinaryExpr codeGenRegInternal");
         return result;
     }
 
 
     protected void geneOneOrMoreInstru(DecacCompiler compiler, DVal val, GPRegister reg, boolean usefull){
-        //System.out.println("geneOneOrMoreInstru");
+        //System.out.println("AbsBinaryExpr geneOneOrMoreInstru");
         compiler.addInstruction(geneInstru(val, reg));
     }
 }

@@ -59,13 +59,13 @@ public class DeclVar extends AbstractDeclVar {
     @Override
     protected int codeGenVar(DecacCompiler compiler) {
         //TODO
-        //System.out.println("DeclVar");
+        //System.out.println("DeclVar codeGenVar");
         VariableDefinition d = varName.getVariableDefinition();
 
         DAddr o = compiler.getMemoryManager().allocGB(1);
         d.setOperand(o);
-        //System.out.println(o);
         initialization.codeGeneInit(compiler, d.getOperand());
+        //System.out.println("DeclVar codeGenVar FIN");
         return 1;
     }
 

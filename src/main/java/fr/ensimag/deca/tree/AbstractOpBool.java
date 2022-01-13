@@ -48,6 +48,7 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
 
     @Override
     protected GPRegister codeGenReg(DecacCompiler compiler) {
+        //System.out.println("AbsOpBool codeGenReg");
         Label elseBranch = compiler.getLabelManager().newLabel("elseC2R");
         Label endBranch = compiler.getLabelManager().newLabel("endC2R");
         GPRegister r = compiler.getRegisterManager().getCurrent();

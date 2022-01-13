@@ -50,13 +50,15 @@ public class Assign extends AbstractBinaryExpr {
 
     @Override
     protected GPRegister codeGenReg(DecacCompiler compiler){
+        //System.out.println("Assign codeGenReg");
         AbstractLValue left = getLeftOperand();
         AbstractExpr right =getRightOperand();
 
         GPRegister reg = compiler.getRegisterManager().getCurrent();
-        GPRegister rightReg=right.codeGenReg(compiler);
+        GPRegister rightReg;
         DAddr val = left.codeGenAddr(compiler);
-        if(compiler.getRegisterManager().getLastUsed()-compiler.getRegisterManager().getCurrentv()+1 <=0){
+        if(compiler.getRegisterManager().getMax()-compiler.getRegisterManager().getCurrentv()+1 <=0){
+            rightReg = right.codeGenReg(compiler);
             getLOG().info("pas de registre disponible il faut en allouer un");
             getLOG().debug("pas de registre disponible if faut en allouer un");
             compiler.getMemoryManager().allocLB(1); //on suppose une taille de 1 pour les variables

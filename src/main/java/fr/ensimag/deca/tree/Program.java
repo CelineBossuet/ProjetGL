@@ -81,7 +81,6 @@ public class Program extends AbstractProgram {
     public void codeGenProgram(DecacCompiler compiler) {
         // A FAIRE: compléter ce squelette très rudimentaire de code
         compiler.addComment("Main program");
-        //System.out.println("Program");
         main.codeGenMain(compiler);
         compiler.addInstruction(new HALT());
     }
