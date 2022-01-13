@@ -132,11 +132,8 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
                 compiler.addInstruction(new LOAD(getR(0), result));
             }
         }
-        /*if (!compiler.getCompilerOptions().getNoRunTimeCheck() &&
-                needsOverflowCheck()) {
-            compiler.addInstruction(new BOV(compiler.getLabelManager()
-                    .getOverflowLabel()));*/
-        //System.out.println("fin AbsBinaryExpr codeGenRegInternal");
+        getLOG().info("si erreur rentre dans le Label OverFlow");
+        compiler.addInstruction(new BOV(compiler.getLabelManager().getOverFlowLabel()));
         return result;
     }
 

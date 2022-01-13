@@ -246,6 +246,11 @@ public class DecacCompiler {
         this.addInstruction(new WNL());
         this.addInstruction(new ERROR());
 
+        this.addLabel(this.labelManager.getOverFlowLabel());
+        this.addInstruction(new WSTR("OverFlow Error"));
+        this.addInstruction(new WNL());
+        this.addInstruction(new ERROR());
+
         LOG.debug("Generated assembly code:" + nl + program.display());
         LOG.info("Output file assembly file is: " + destName);
 
