@@ -330,6 +330,16 @@
                             <goal>exec</goal>
                         </goals>
                     </execution>
+                    <execution>
+                        <id>self-test-decac-p</id>
+                        <configuration>
+                            <executable>./src/test/script/self-test-decac-p.sh</executable>
+                        </configuration>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
 
                 </executions>
             </plugin>
