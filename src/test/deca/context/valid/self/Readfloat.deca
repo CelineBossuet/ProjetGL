@@ -1,6 +1,7 @@
 
 {
     float x;
+    println(12+0.3);
     x=readFloat() ;
     println(x);
 }
