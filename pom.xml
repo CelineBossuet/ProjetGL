@@ -183,7 +183,9 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>      
+            </plugin>
+
+
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
@@ -318,7 +320,6 @@
                         </goals>
                     </execution>
 
-                    <!-- A décommenter une fois la génération du code faites
                     <execution>
                         <id>self-test-exec</id>
                         <configuration>
@@ -329,7 +330,7 @@
                             <goal>exec</goal>
                         </goals>
                     </execution>
-                    -->
+
                 </executions>
             </plugin>
 
