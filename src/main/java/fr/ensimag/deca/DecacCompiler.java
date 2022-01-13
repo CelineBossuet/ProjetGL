@@ -26,6 +26,8 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.apache.log4j.Logger;
 
+import java.io.*;
+
 /**
  * Decac compiler instance.
  *
@@ -224,7 +226,7 @@ public class DecacCompiler {
         }
 
         if (compilerOptions.getParser()) { // Stop compiling if -p option
-            prog.prettyPrint(System.out); // Print tree
+            prog.decompile(out);
             return false;
         }
 

@@ -3,16 +3,17 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import java.io.PrintStream;
-
 import fr.ensimag.ima.pseudocode.BinaryInstruction;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.instructions.*;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.POP;
+import fr.ensimag.ima.pseudocode.instructions.PUSH;
 import org.apache.commons.lang.Validate;
 
-import static fr.ensimag.ima.pseudocode.Register.R0;
+import java.io.PrintStream;
+import java.util.Objects;
+
 import static fr.ensimag.ima.pseudocode.Register.getR;
 
 /**
@@ -56,11 +57,15 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        s.print("(");
+        if (!Objects.equals(getOperatorName(), "=")){
+            s.print("(");
+        }
         getLeftOperand().decompile(s);
         s.print(" " + getOperatorName() + " ");
         getRightOperand().decompile(s);
-        s.print(")");
+        if (!Objects.equals(getOperatorName(), "=")){
+            s.print(")");
+        }
     }
 
     abstract protected String getOperatorName();
