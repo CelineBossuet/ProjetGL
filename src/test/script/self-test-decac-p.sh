@@ -56,9 +56,45 @@ done
 
 #Gestion des cas non valide
 
+echo -e "${jaune}Cas valide donné ${blanc}"
+
+for i in ./src/test/deca/syntax/valid/provided/*.deca
+do
+  fichier=$(basename $i)
+  if decac -p "$i" 2>&1 | grep -q -e "$fichier" -e 'Error'
+  then
+    decac -p "$i" > "${i%.deca}".decap 2>&1 &
+    echo -e "$fichier ${rouge} FAILED ${blanc} (failure)"
+    head -1 "${i%.deca}".decap
+    status=1
+  else
+    decac -p "$i" > "${i%.deca}".decap 2>&1 &
+    echo -e "$fichier ${vert} PASSED ${blanc}"
+
+  fi
+done
+
+echo -e "${jaune}Cas valide créé ${blanc}"
+
+for i in ./src/test/deca/syntax/valid/self/*.deca
+do
+  fichier=$(basename $i)
+  if decac -p "$i" 2>&1 | grep -q -e "$fichier" -e 'Error'
+  then
+    decac -p "$i" > "${i%.deca}".decap 2>&1 &
+    echo -e "$fichier ${rouge} FAILED ${blanc} (failure)"
+    head -1 "${i%.deca}".decap
+    status=1
+  else
+    decac -p "$i" > "${i%.deca}".decap 2>&1 &
+    echo -e "$fichier ${vert} PASSED ${blanc}"
+
+  fi
+done
+
 echo -e "${jaune}Cas non valide donné ${blanc}"
 
-for i in ./src/test/deca/context/invalid/provided/*.deca
+for i in ./src/test/deca/syntax/invalid/provided/*.deca
 do
   fichier=$(basename $i)
   if decac -p "$i" 2>&1 | grep -q -e "$fichier" -e 'Error'
@@ -74,7 +110,7 @@ done
 
 echo -e "${jaune}Cas non valide créé ${blanc}"
 
-for i in ./src/test/deca/context/invalid/self/*.deca
+for i in ./src/test/deca/syntax/invalid/self/*.deca
 do
   fichier=$(basename $i)
   if decac -p "$i" 2>&1 | grep -q -e "$fichier" -e 'Error'
@@ -87,7 +123,5 @@ do
     status=1
   fi
 done
-
-#On exit sous le bon status
 
 exit ${status}
