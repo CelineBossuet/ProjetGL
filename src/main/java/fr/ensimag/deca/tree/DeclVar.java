@@ -65,7 +65,6 @@ public class DeclVar extends AbstractDeclVar {
         DAddr o = compiler.getMemoryManager().allocGB(1);
         d.setOperand(o);
         initialization.codeGeneInit(compiler, d.getOperand());
-        //System.out.println("DeclVar codeGenVar FIN");
         return 1;
     }
 

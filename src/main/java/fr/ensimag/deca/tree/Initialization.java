@@ -52,7 +52,7 @@ public class Initialization extends AbstractInitialization {
     protected void codeGeneInit(DecacCompiler compiler, DAddr target) {
         // System.out.println("Init");
         compiler.addInstruction(new STORE(expression.codeGenReg(compiler), target));
-        //System.out.println("Init FIN");
+
         //la valeur du registre expression.codeGenReg() est stored dans l'adresse target
     }
 

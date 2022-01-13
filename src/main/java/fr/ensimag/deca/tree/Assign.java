@@ -50,7 +50,7 @@ public class Assign extends AbstractBinaryExpr {
 
     @Override
     protected GPRegister codeGenReg(DecacCompiler compiler){
-        //System.out.println("Assign codeGenReg");
+        getLOG().trace("Assign codeGenReg");
         AbstractLValue left = getLeftOperand();
         AbstractExpr right =getRightOperand();
 

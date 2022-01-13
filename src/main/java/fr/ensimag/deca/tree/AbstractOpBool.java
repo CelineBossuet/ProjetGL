@@ -15,6 +15,7 @@ import fr.ensimag.ima.pseudocode.instructions.BNE;
 import fr.ensimag.ima.pseudocode.instructions.BRA;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -25,6 +26,12 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
 
     public AbstractOpBool(AbstractExpr leftOperand, AbstractExpr rightOperand) {
         super(leftOperand, rightOperand);
+    }
+
+    private static final Logger LOG = Logger.getLogger(AbstractOpBool.class);
+
+    public static Logger getLOG() {
+        return LOG;
     }
 
     @Override
@@ -48,7 +55,7 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
 
     @Override
     protected GPRegister codeGenReg(DecacCompiler compiler) {
-        //System.out.println("AbsOpBool codeGenReg");
+        getLOG().trace("AbsOpBool codeGenReg");
         Label elseBranch = compiler.getLabelManager().newLabel("elseC2R");
         Label endBranch = compiler.getLabelManager().newLabel("endC2R");
         GPRegister r = compiler.getRegisterManager().getCurrent();

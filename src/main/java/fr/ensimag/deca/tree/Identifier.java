@@ -113,7 +113,6 @@ public class Identifier extends AbstractIdentifier {
     @Override
     public VariableDefinition getVariableDefinition() {
         try {
-            //System.out.println(definition);
             return (VariableDefinition) definition;
         } catch (ClassCastException e) {
             throw new DecacInternalError(
