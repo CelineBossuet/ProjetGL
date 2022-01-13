@@ -16,20 +16,19 @@ import java.io.PrintStream;
  */
 public class NoInitialization extends AbstractInitialization {
 
-
     @Override
     protected void verifyInitialization(DecacCompiler compiler, Type t,
             Environment<ExpDefinition> localEnv, ClassDefinition currentClass)
             throws ContextualError {
-        
-        //Pas d'initialisation
-        //On pourrait mettre un log
-        //throw new UnsupportedOperationException("not yet implemented");
+
+        // Pas d'initialisation
+        // On pourrait mettre un log
+        // throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override
     protected void codeGeneInit(DecacCompiler compiler, DAddr target) {
-        //rien à faire
+        // rien à faire
     }
 
     /**
@@ -42,7 +41,7 @@ public class NoInitialization extends AbstractInitialization {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        // nothing
+        s.println(";");
     }
 
     @Override

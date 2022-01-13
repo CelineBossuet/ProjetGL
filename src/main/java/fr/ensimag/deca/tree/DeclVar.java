@@ -58,20 +58,23 @@ public class DeclVar extends AbstractDeclVar {
 
     @Override
     protected int codeGenVar(DecacCompiler compiler) {
-        //TODO
-        //System.out.println("DeclVar");
+        // TODO
+        // System.out.println("DeclVar");
         VariableDefinition d = varName.getVariableDefinition();
 
         DAddr o = compiler.getMemoryManager().allocGB(1);
         d.setOperand(o);
-        //System.out.println(o);
+        // System.out.println(o);
         initialization.codeGeneInit(compiler, d.getOperand());
         return 1;
     }
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("not yet implemented");
+        type.decompile(s);
+        s.print(" ");
+        varName.decompile(s);
+        initialization.decompile(s);
     }
 
     @Override

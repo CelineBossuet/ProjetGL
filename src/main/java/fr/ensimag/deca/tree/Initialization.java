@@ -7,7 +7,6 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.Environment;
 import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.deca.tree.AbstractExpr;
 import java.io.PrintStream;
 
 import fr.ensimag.ima.pseudocode.DAddr;
@@ -41,24 +40,27 @@ public class Initialization extends AbstractInitialization {
             Environment<ExpDefinition> localEnv, ClassDefinition currentClass)
             throws ContextualError {
         // A FAIRE TODO !!
-        Type expr=getExpression().verifyExpr(compiler, localEnv, currentClass);
-        if(!expr.sameType(t)){
+        Type expr = getExpression().verifyExpr(compiler, localEnv, currentClass);
+        if (!expr.sameType(t)) {
             throw new UnsupportedOperationException("pas même type");
         }
         setExpression(expression.verifyRValue(compiler, localEnv, currentClass, t));
-        //throw new UnsupportedOperationException("not yet implemented");
+        // throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override
     protected void codeGeneInit(DecacCompiler compiler, DAddr target) {
-        //System.out.println("Init");
+        // System.out.println("Init");
         compiler.addInstruction(new STORE(expression.codeGenReg(compiler), target));
-        //la valeur du registre expression.codeGenReg() est stored dans l'adresse target
+        // la valeur du registre expression.codeGenReg() est stored dans l'adresse
+        // target
     }
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        s.print(" = ");
+        getExpression().decompile(s);
+        s.println(";");
     }
 
     @Override
