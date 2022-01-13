@@ -28,7 +28,8 @@ public class NoOperation extends AbstractInst {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler, Label returnLabel, Label local) {
-        throw new UnsupportedOperationException("not yet implemented");
+        //throw new UnsupportedOperationException("not yet implemented");
+        compiler.addComment("Aucune instruction donnée");
     }
 
     @Override

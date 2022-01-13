@@ -12,6 +12,15 @@ public class ListExpr extends TreeList<AbstractExpr> {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        //throw new UnsupportedOperationException("Not yet implemented");
+        int compteur = 1;
+        for (AbstractExpr i : getList()) {
+            if (compteur!= getList().size()){
+                i.decompileInst(s);
+                s.print(",");
+            }else{
+                i.decompile(s);
+            }
+        }
     }
 }
