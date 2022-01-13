@@ -12,8 +12,8 @@ import static fr.ensimag.ima.pseudocode.Register.getR;
  * @date 10/01/2022
  */
 public class RegisterManager {
-    private int current;
-    private int max;
+    private int current=2;
+    private int max=15;
     private int lastUsed=-1;
 
     public void initRegister(){
@@ -44,7 +44,7 @@ public class RegisterManager {
      */
     public GPRegister allocRegister() {
         Validate.isTrue(current<=max); //pas de registre libre
-        Validate.isTrue(lastUsed>0); //pas encore appelé la fonction initRegistre()
+        //Validate.isTrue(lastUsed>0); //pas encore appelé la fonction initRegistre()
 
         GPRegister reg = getR(current);
         current++;
@@ -65,7 +65,7 @@ public class RegisterManager {
      * @param r Register to free
      */
     public void releaseRegister(GPRegister r){
-        Validate.isTrue(lastUsed==-1); //pas initialisé le registre
+        //Validate.isTrue(lastUsed==-1); //pas initialisé le registre
         int i = r.getNumber();
         Validate.isTrue(i==current-1); //ce n'est pas le dernier registre appelé
         current--;

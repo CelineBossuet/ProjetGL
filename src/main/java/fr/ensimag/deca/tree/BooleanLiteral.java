@@ -10,6 +10,8 @@ import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.ImmediateInteger;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.instructions.BRA;
 
 import java.io.PrintStream;
 
@@ -69,5 +71,17 @@ public class BooleanLiteral extends AbstractExpr {
         } else {
             return new ImmediateInteger(0);
         }
+    }
+
+    @Override
+    protected void codeGenCond(DecacCompiler compiler, Label l, boolean saut){
+        //System.out.println("BooleanLit codeGenCond");
+        if(saut==getValue()){
+            compiler.addInstruction(new BRA(l));
+        }
+        else{
+            getLOG().info("pas besoin de jump le boolean litteral "+getValue());
+        }
+        //System.out.println("BooleanLit codeGenCond FIN");
     }
 }

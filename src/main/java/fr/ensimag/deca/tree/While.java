@@ -4,9 +4,12 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.instructions.BRA;
 import org.apache.commons.lang.Validate;
 
 import java.io.PrintStream;
+
+import static fr.ensimag.deca.tree.AbstractExpr.getLOG;
 
 /**
  *
@@ -34,7 +37,18 @@ public class While extends AbstractInst {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler, Label returnLabel, Label local) {
-        throw new UnsupportedOperationException("not yet implemented");
+        //System.out.println("While codeGenInst");
+        Label debutwhile = compiler.getLabelManager().newLabel("while");
+        Label condwhile = compiler.getLabelManager().newLabel("condWhile");
+        compiler.addInstruction(new BRA(condwhile));
+        compiler.addLabel(debutwhile);
+        this.body.codeGenListInst(compiler, returnLabel, condwhile);
+        compiler.addLabel(condwhile);
+        this.condition.codeGenCond(compiler, debutwhile, true);
+        getLOG().info("création et fixation du Label de début du while");
+        //System.out.println("While codeGenInst FIN");
+
+        //throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override

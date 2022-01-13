@@ -2,6 +2,7 @@
 
 {
     int x;
+    println("Ecrire la valeur de x : ");
     x=readInt() ;
-    println(x);
+    println("je suis ",x);
 }

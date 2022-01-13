@@ -21,6 +21,7 @@ public class Println extends AbstractPrint {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler, Label returnLabel, Label local) {
+        //System.out.println("Println codeGenInst");
         super.codeGenInst(compiler, returnLabel, local);
         compiler.addInstruction(new WNL());
     }
