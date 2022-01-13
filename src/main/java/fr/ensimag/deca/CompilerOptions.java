@@ -44,12 +44,18 @@ public class CompilerOptions {
         return verif;
     }
 
+    public boolean getJava() {
+        return java;
+    }
+
     private int debug = 0;
     private boolean parallel = false;
     private boolean printBanner = false;
     private List<File> sourceFiles = new ArrayList<File>();
     private boolean parser = false;
     private boolean verif = false;
+
+    private boolean java = false;
 
     public void parseArgs(String[] args) throws CLIException {
         for (String arg : args) {
@@ -77,6 +83,9 @@ public class CompilerOptions {
                     break;
                 case "-P":
                     parallel = true;
+                    break;
+                case "-j":
+                    java = true;
                     break;
                 default:
                     sourceFiles.add(new File(arg));
@@ -132,6 +141,7 @@ public class CompilerOptions {
                 "traces.\n" +
                 ". -P (parallel) : s'il y a plusieurs fichiers sources, " +
                 "lance la compilation des fichiers en " +
-                "parallèle (pour accélérer la compilation).");
+                "parallèle (pour accélérer la compilation).\n" +
+                ". -j (java bytecode) : Compile le fichier en bytecode Java, au format .class exécutable par une JVM.");
     }
 }
