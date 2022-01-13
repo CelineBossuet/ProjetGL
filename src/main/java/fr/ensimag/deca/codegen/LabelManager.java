@@ -9,7 +9,7 @@ import fr.ensimag.ima.pseudocode.Label;
  */
 public class LabelManager {
     private Label label;
-    private Label io_errorLabel;
+    private Label i_errorLabel; //label permettant de gérer un mauvais input pour readInt, readFloat
     private int counter=0;
 
 
@@ -18,10 +18,10 @@ public class LabelManager {
         return new Label(name, counter);
     }
 
-    public Label getIoErrorLabel() {
-        if (io_errorLabel == null) {
-            io_errorLabel = new Label("error", 0);
+    public Label getIErrorLabel() {
+        if (i_errorLabel == null) {
+            i_errorLabel = new Label("error", 0);
         }
-        return io_errorLabel;
+        return i_errorLabel;
     }
 }
