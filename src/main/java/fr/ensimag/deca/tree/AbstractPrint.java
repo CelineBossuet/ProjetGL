@@ -38,18 +38,16 @@ public abstract class AbstractPrint extends AbstractInst {
         for (AbstractExpr a : getArguments().getList()) {
             a.verifyInst(compiler, localEnv, currentClass, returnType);
         }
-        // throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override
     protected void codeGenInst(DecacCompiler compiler, Label returnLabel, Label local) {
-        //System.out.println("AbsPrint codeGenInst");
         for (AbstractExpr a : getArguments().getList()) {
             if (this.printHex)
-                //print en hexa
+                // print en hexa
                 a.codeGenPrintHexa(compiler);
             else
-                //print normal
+                // print normal
                 a.codeGenPrint(compiler);
 
         }
@@ -63,8 +61,7 @@ public abstract class AbstractPrint extends AbstractInst {
     public void decompile(IndentPrintStream s) {
         s.print("println(");
         this.arguments.decompile(s);
-        s.print(");");
-        //throw new UnsupportedOperationException("not yet implemented");
+        s.print(")");
     }
 
     @Override
