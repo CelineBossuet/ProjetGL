@@ -75,13 +75,12 @@ public class BooleanLiteral extends AbstractExpr {
 
     @Override
     protected void codeGenCond(DecacCompiler compiler, Label l, boolean saut){
-        //System.out.println("BooleanLit codeGenCond");
+        getLOG().trace("BooleanLit codeGenCond");
         if(saut==getValue()){
             compiler.addInstruction(new BRA(l));
         }
         else{
             getLOG().info("pas besoin de jump le boolean litteral "+getValue());
         }
-        //System.out.println("BooleanLit codeGenCond FIN");
     }
 }

@@ -5,6 +5,7 @@ import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.BOV;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import org.apache.log4j.Logger;
 
 import static fr.ensimag.ima.pseudocode.Register.getR;
 
@@ -22,6 +23,12 @@ public abstract class AbstractReadExpr extends AbstractExpr {
 
     protected abstract NullaryInstruction geneInstru();
 
+    private static final Logger LOG = Logger.getLogger(AbstractReadExpr.class);
+
+    public static Logger getLOG() {
+        return LOG;
+    }
+
     @Override
     protected DVal codeGenNoReg(DecacCompiler compiler) {
         throw new DecacInternalError("pas possible car pas feuille de AbstractEpression");
@@ -29,7 +36,7 @@ public abstract class AbstractReadExpr extends AbstractExpr {
 
     @Override
     protected GPRegister codeGenReg(DecacCompiler compiler) {
-        //System.out.println("AbsReadExpr codeGenReg");
+        getLOG().trace("AbsReadExpr codeGenReg");
         getLOG().info("redéfinition de geneInstru() dans AbstractReadExpr");
         //// redéfinition de la méthode car il faut pouvoir utiliser geneInstru() de
         //// AbstractReadExpr
@@ -38,8 +45,8 @@ public abstract class AbstractReadExpr extends AbstractExpr {
         compiler.addInstruction(geneInstru());
 
         // on branche le label io_error avec BOV
-        Label label = compiler.getLabelManager().getIErrorLabel();
-        compiler.addInstruction(new BOV(label));
+        //Label label = compiler.getLabelManager().getIErrorLabel();
+        //compiler.addInstruction(new BOV(label));
 
         // on LOAD dans le registre courrant la valeur de R1
         GPRegister reg = compiler.getRegisterManager().getCurrent();

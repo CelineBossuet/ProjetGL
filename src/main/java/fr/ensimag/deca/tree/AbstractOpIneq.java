@@ -5,6 +5,7 @@ import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.ima.pseudocode.BinaryInstruction;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -17,6 +18,11 @@ public abstract class AbstractOpIneq extends AbstractOpCmp {
         super(leftOperand, rightOperand);
     }
 
+    private static final Logger LOG = Logger.getLogger(AbstractOpIneq.class);
+
+    public static Logger getLOG() {
+        return LOG;
+    }
 
     @Override
     protected BinaryInstruction geneInstru(DVal val, GPRegister reg) {

@@ -9,6 +9,7 @@ import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Instruction;
 import org.apache.commons.lang.Validate;
+import org.apache.log4j.Logger;
 
 /**
  * Unary expression.
@@ -27,6 +28,11 @@ public abstract class AbstractUnaryExpr extends AbstractExpr {
         this.operand = operand;
     }
 
+    private static final Logger LOG = Logger.getLogger(AbstractUnaryExpr.class);
+
+    public static Logger getLOG() {
+        return LOG;
+    }
 
     protected abstract String getOperatorName();
   
