@@ -252,7 +252,7 @@
                         </goals>
                     </execution>
 
-                    <!-- A décommenter une fois la génération du code faites
+                    <!-- Code a décommenter quand cela va passer
                     <execution>
                         <id>basic-decac</id>
                         <configuration>
@@ -264,7 +264,7 @@
                         </goals>
                     </execution>
                     -->
-                    <!-- A décommenter une fois la génération du code faites
+
                     <execution>
                         <id>common-tests</id>
                         <configuration>
@@ -275,7 +275,7 @@
                             <goal>exec</goal>
                         </goals>
                     </execution>
-                    -->
+
                     <execution>
                         <id>self-test-lex</id>
                         <configuration>
@@ -306,7 +306,7 @@
                             <goal>exec</goal>
                         </goals>
                     </execution>
-                    <!-- A décommenter une fois la génération du code faites
+
                     <execution>
                         <id>self-test-gen</id>
                         <configuration>
@@ -317,7 +317,7 @@
                             <goal>exec</goal>
                         </goals>
                     </execution>
-                    -->
+
                     <!-- A décommenter une fois la génération du code faites
                     <execution>
                         <id>self-test-exec</id>
