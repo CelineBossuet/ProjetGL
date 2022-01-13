@@ -15,11 +15,12 @@ public class ListExpr extends TreeList<AbstractExpr> {
         //throw new UnsupportedOperationException("Not yet implemented");
         int compteur = 1;
         for (AbstractExpr i : getList()) {
-            if (compteur!= getList().size()){
+            if (compteur != getList().size()){
                 i.decompileInst(s);
-                s.print(",");
+                s.print(" , ");
+                compteur +=1;
             }else{
-                i.decompile(s);
+                i.decompileInst(s);
             }
         }
     }

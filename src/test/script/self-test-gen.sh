@@ -65,10 +65,10 @@ do
   then
     decac "$i" > "${i%.deca}".ass 2>&1 &
     echo -e "$fichier ${rouge} FAILED ${blanc}"
+    status=1
   else
     decac "$i" > "${i%.deca}".ass 2>&1 &
     echo -e "$fichier ${vert} PASSED ${blanc}"
-    status=1
   fi
 done
 
@@ -81,10 +81,10 @@ do
   then
     decac "$i" > "${i%.deca}".ass 2>&1 &
     echo -e "$fichier ${rouge} FAILED ${blanc}"
+    status=1
   else
     decac "$i" > "${i%.deca}".ass 2>&1 &
     echo -e "$fichier ${vert} PASSED ${blanc}"
-    status=1
   fi
 done
 

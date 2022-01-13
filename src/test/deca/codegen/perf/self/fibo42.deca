@@ -10,11 +10,14 @@
 {
     int x = 0;
     int y = 1;
-    int compteur = 2;
-    while(compteur != 12){
+    int compteur = 1;
+    while(compteur != 42){
+    println(x);
+    println(y);
     y = x + y;
     x = y - x;
+    compteur = compteur + 1;
     }
-    println("Le nombre 12 de la suite de fibonacci est:");
+    println("Le nombre 42 de la suite de fibonacci est:");
     println(y);
 }
