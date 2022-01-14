@@ -14,8 +14,8 @@ public class ListExpr extends TreeList<AbstractExpr> {
     public void decompile(IndentPrintStream s) {
         boolean first = true;
         for (AbstractExpr expr : getList()) {
-            s.print(first ? "" : ",");
-            expr.decompileInst(s); // decompileInst to print ; in case of instruction
+            s.print(first ? "" : ", ");
+            expr.decompile(s);
             first = false;
         }
     }
