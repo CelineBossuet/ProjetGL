@@ -1,0 +1,7 @@
+{
+if(true && false){
+    println("mauvaise pioche");
+}else if(2==3 || 2==2){
+    println("Bravo");
+}
+}
