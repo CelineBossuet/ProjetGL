@@ -48,17 +48,19 @@ public class Not extends AbstractUnaryExpr {
 
     @Override
     protected GPRegister codeGenReg(DecacCompiler compiler) {
-        // TODO factoriser ce code avec celui dans AbstractOpBool
         Label elseLabel = compiler.getLabelManager().newLabel("elseC2R");
         Label end = compiler.getLabelManager().newLabel("endC2R");
         GPRegister r = compiler.getRegisterManager().getCurrent();
 
         compiler.addInstruction(new CMP(0, r));
-        compiler.addInstruction(new BNE(elseLabel));
+        compiler.addInstruction(new BEQ(elseLabel));
+        compiler.addInstruction(new LOAD(0, r));
         compiler.addInstruction(new BRA(end));
         compiler.addLabel(elseLabel);
 
         compiler.addInstruction(new LOAD(1, r));
+        compiler.addInstruction(new BRA(end));
+
         compiler.addLabel(end);
         return r;
     }

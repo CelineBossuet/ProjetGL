@@ -102,7 +102,7 @@ public abstract class AbstractExpr extends AbstractInst {
             abs.verifyExpr(compiler, localEnv, currentClass);
             return abs;
         } else {
-            throw new ContextualError("Mauvais Type", this.getLocation());
+            throw new ContextualError("Type incompatible", this.getLocation());
         }
         // throw new UnsupportedOperationException("not yet implemented");
     }
