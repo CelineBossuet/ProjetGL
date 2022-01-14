@@ -228,6 +228,7 @@ public class Identifier extends AbstractIdentifier {
 
     @Override
     protected DAddr codeGenNoReg(DecacCompiler compiler) {
+
         DAddr ope = this.getExpDefinition().getOperand();
         if(ope==null){
             throw new DecacInternalError("Operande null pour l'identifier "+getName()+" "+getDefinition());

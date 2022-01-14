@@ -53,7 +53,6 @@ public class Assign extends AbstractBinaryExpr {
         getLOG().trace("Assign codeGenReg");
         AbstractLValue left = getLeftOperand();
         AbstractExpr right =getRightOperand();
-
         GPRegister reg = compiler.getRegisterManager().getCurrent();
         GPRegister rightReg;
         DAddr val = left.codeGenAddr(compiler);

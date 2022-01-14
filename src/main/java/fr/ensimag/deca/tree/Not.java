@@ -43,7 +43,7 @@ public class Not extends AbstractUnaryExpr {
 
     @Override
     protected Instruction geneInstru(GPRegister reg) {
-        throw new DecacInternalError("Pas de génération d'instruction possible pour Not");
+        throw new DecacInternalError("Pas de génération d'instruction pour Not");
     }
 
     @Override
