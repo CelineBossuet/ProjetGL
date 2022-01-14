@@ -147,8 +147,11 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
                 compiler.addInstruction(new LOAD(getR(0), result));
             }
         }
-        getLOG().info("si erreur rentre dans le Label OverFlow");
-        compiler.addInstruction(new BOV(compiler.getLabelManager().getOverFlowLabel()));
+        if(getType().isFloat()){
+            getLOG().info("si erreur rentre dans le Label OverFlow");
+            compiler.addInstruction(new BOV(compiler.getLabelManager().getOverFlowLabel()));
+        }
+
         return result;
     }
 

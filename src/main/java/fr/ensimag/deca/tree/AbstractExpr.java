@@ -102,7 +102,7 @@ public abstract class AbstractExpr extends AbstractInst {
             abs.verifyExpr(compiler, localEnv, currentClass);
             return abs;
         } else {
-            throw new ContextualError("Mauvais Type", this.getLocation());
+            throw new ContextualError("Type incompatible", this.getLocation());
         }
         // throw new UnsupportedOperationException("not yet implemented");
     }
@@ -127,7 +127,10 @@ public abstract class AbstractExpr extends AbstractInst {
      */
     void verifyCondition(DecacCompiler compiler, Environment<ExpDefinition> localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        this.verifyExpr(compiler, localEnv, currentClass);
+        Type type =this.verifyExpr(compiler, localEnv, currentClass);
+        if(!type.isBoolean()){
+            throw new ContextualError("la condition doit être booléenne", getLocation());
+        }
     }
 
     /////////////////////////// Part C //////////////////////////////////
@@ -163,8 +166,11 @@ public abstract class AbstractExpr extends AbstractInst {
             compiler.addInstruction(new LOAD(this.codeGenReg(compiler), Register.getR(1)));
 
             compiler.addInstruction(new WFLOATX());
-        } else {
-            throw new DecacInternalError("Print pas supporté pour le type" + getType());
+        } else if(getType().isString()){
+            compiler.addInstruction(new WSTR(this.decompile()));
+        }
+        else {
+            throw new DecacInternalError("Printx pas supporté pour le type" + getType());
         }
     }
 

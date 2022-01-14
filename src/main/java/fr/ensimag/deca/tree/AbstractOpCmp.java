@@ -26,8 +26,13 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, Environment<ExpDefinition> localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        getRightOperand().verifyExpr(compiler, localEnv, currentClass);
-        getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
+
+        Type right =getRightOperand().verifyExpr(compiler, localEnv, currentClass);
+        Type left =getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
+        if(!left.sameType(right) && !(left.isFloat() && right.isInt()) || !(left.isInt() && right.isFloat())){
+            throw new ContextualError(
+                    "Comparaison non supportée entre types "+left + " et "+right, getLocation());
+        }
         Type sortie = new BooleanType(compiler.getSymbolTable().create("boolean"));
         setType(sortie);
         return sortie;
