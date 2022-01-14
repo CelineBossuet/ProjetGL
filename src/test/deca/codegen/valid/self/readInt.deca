@@ -1,0 +1,8 @@
+
+
+{
+    int x;
+    println("Ecrire la valeur de x : ");
+    x=readInt() ;
+    println("je suis ",x);
+}
