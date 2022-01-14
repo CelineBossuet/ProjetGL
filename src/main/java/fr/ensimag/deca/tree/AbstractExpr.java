@@ -166,8 +166,11 @@ public abstract class AbstractExpr extends AbstractInst {
             compiler.addInstruction(new LOAD(this.codeGenReg(compiler), Register.getR(1)));
 
             compiler.addInstruction(new WFLOATX());
-        } else {
-            throw new DecacInternalError("Print pas supporté pour le type" + getType());
+        } else if(getType().isString()){
+            compiler.addInstruction(new WSTR(this.decompile()));
+        }
+        else {
+            throw new DecacInternalError("Printx pas supporté pour le type" + getType());
         }
     }
 

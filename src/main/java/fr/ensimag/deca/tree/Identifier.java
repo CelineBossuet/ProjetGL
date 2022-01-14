@@ -171,7 +171,8 @@ public class Identifier extends AbstractIdentifier {
             return getType();
         }
         else{
-            throw new ContextualError("Variable non initialisé", this.getLocation());
+            throw new ContextualError(
+                    "La variable "+this.getName()+" n'a pas été déclarée", this.getLocation());
         }
         //throw new UnsupportedOperationException("not yet implemented");
     }
@@ -185,7 +186,10 @@ public class Identifier extends AbstractIdentifier {
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
         Definition def = compiler.getEnvironmentType().defOfType(getName());
         if(def==null){
-            throw new UnsupportedOperationException("Type "+def.getType()+" existe pas");
+            throw new ContextualError("Type "+def.getType()+" existe pas", getLocation());
+        }
+        if(def.getType().isVoid()){
+            throw new ContextualError("Variables ne peuvent pas être déclarées de type void", getLocation());
         }
         setType(def.getType());
         setDefinition(def);
