@@ -127,7 +127,10 @@ public abstract class AbstractExpr extends AbstractInst {
      */
     void verifyCondition(DecacCompiler compiler, Environment<ExpDefinition> localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        this.verifyExpr(compiler, localEnv, currentClass);
+        Type type =this.verifyExpr(compiler, localEnv, currentClass);
+        if(!type.isBoolean()){
+            throw new ContextualError("la condition doit être booléenne", getLocation());
+        }
     }
 
     /////////////////////////// Part C //////////////////////////////////
