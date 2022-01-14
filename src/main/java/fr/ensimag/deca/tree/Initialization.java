@@ -39,7 +39,6 @@ public class Initialization extends AbstractInitialization {
     protected void verifyInitialization(DecacCompiler compiler, Type t,
             Environment<ExpDefinition> localEnv, ClassDefinition currentClass)
             throws ContextualError {
-        // A FAIRE TODO !!
         Type expr = getExpression().verifyExpr(compiler, localEnv, currentClass);
         if (!expr.sameType(t) && !(expr.isInt() && t.isFloat())) {
             throw new ContextualError(
