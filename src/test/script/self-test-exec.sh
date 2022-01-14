@@ -48,22 +48,27 @@ echo -e "${jaune}Cas valide créé ${blanc}"
 for i in ./src/test/deca/codegen/valid/self/*.deca
 do
   fichier=$(basename $i)
-  if decac "$i" 2>&1 | grep -q -e "$fichier" -e 'Error'
+  if [ "$fichier" = "Readfloat.deca" ] || [ "$fichier" = "readInt.deca" ] || [ "$fichier" = "sansObjet.deca" ]
   then
-    decac "$i" > "${i%.deca}".ass 2>&1
-    ima "${i%.deca}".ass > "${i%.deca}".res 2>&1 &
-    echo -e "$fichier ${rouge} FAILED ${blanc}"
-    status=1
+    echo -e "$fichier ${jaune} Non exécutable ${blanc}"
   else
-    decac "$i" > "${i%.deca}".ass 2>&1
-    if ima "${i%.deca}".ass 2>&1 | grep -q -e "$fichier" -e 'Error'
+    if decac "$i" 2>&1 | grep -q -e "$fichier" -e 'Error'
     then
+      decac "$i" > "${i%.deca}".ass 2>&1
       ima "${i%.deca}".ass > "${i%.deca}".res 2>&1 &
       echo -e "$fichier ${rouge} FAILED ${blanc}"
       status=1
     else
-      ima "${i%.deca}".ass > "${i%.deca}".res 2>&1 &
-      echo -e "$fichier ${vert} PASSED ${blanc}"
+      decac "$i" > "${i%.deca}".ass 2>&1
+      if ima "${i%.deca}".ass 2>&1 | grep -q -e "$fichier" -e 'Error'
+      then
+        ima "${i%.deca}".ass > "${i%.deca}".res 2>&1 &
+        echo -e "$fichier ${rouge} FAILED ${blanc}"
+        status=1
+      else
+        ima "${i%.deca}".ass > "${i%.deca}".res 2>&1 &
+        echo -e "$fichier ${vert} PASSED ${blanc}"
+      fi
     fi
   fi
 done
