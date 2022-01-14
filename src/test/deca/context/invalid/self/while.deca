@@ -1,0 +1,5 @@
+{
+    while (2){
+        println("aie");
+    }
+}

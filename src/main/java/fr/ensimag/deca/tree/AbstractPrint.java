@@ -45,7 +45,9 @@ public abstract class AbstractPrint extends AbstractInst {
         for (AbstractExpr a : getArguments().getList()) {
             Type type=a.verifyExpr(compiler, localEnv, currentClass);
             if(!type.isInt() && !type.isFloat() && !type.isString()){
-                throw new ContextualError("Type "+type+" non supporté pour print/println", new Location(0,0,"no_source.deca"));
+                throw new ContextualError(
+                        "Type "+type+" non supporté pour print/println",
+                        getLocation());
             }
         }
         // throw new UnsupportedOperationException("not yet implemented");
@@ -55,7 +57,7 @@ public abstract class AbstractPrint extends AbstractInst {
     protected void codeGenInst(DecacCompiler compiler, Label returnLabel, Label local) {
         getLOG().trace("AbsPrint codeGenInst");
         for (AbstractExpr a : getArguments().getList()) {
-            if (this.printHex)
+            if (this.getPrintHex())
                 //print en hexa
                 a.codeGenPrintHexa(compiler);
             else

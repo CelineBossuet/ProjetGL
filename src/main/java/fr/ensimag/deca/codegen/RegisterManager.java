@@ -28,9 +28,6 @@ public class RegisterManager {
         return max;
     }
 
-    public void setMax(int max) {
-        this.max = max;
-    }
     public int getCurrentv(){return current;}
 
     public GPRegister getCurrent() {return getR(current);}
