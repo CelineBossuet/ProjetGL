@@ -55,18 +55,13 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         this.rightOperand = rightOperand;
     }
 
-
     @Override
     public void decompile(IndentPrintStream s) {
-        if (!Objects.equals(getOperatorName(), "=")){
-            s.print("(");
-        }
+        s.print("(");
         getLeftOperand().decompile(s);
         s.print(" " + getOperatorName() + " ");
         getRightOperand().decompile(s);
-        if (!Objects.equals(getOperatorName(), "=")){
-            s.print(")");
-        }
+        s.print(")");
     }
 
     abstract protected String getOperatorName();
@@ -83,39 +78,38 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         rightOperand.prettyPrint(s, prefix, true);
     }
 
-
     /**
      * Fonction pour générer les instruction pour les Opération Arithmétiques
      * Si est appelé pour autre chose renvoi une erreur
+     * 
      * @param val
      * @param reg
      * @return
-     * */
+     */
     protected abstract BinaryInstruction geneInstru(DVal val, GPRegister reg);
 
     @Override
-    protected DVal codeGenNoReg(DecacCompiler compiler){
+    protected DVal codeGenNoReg(DecacCompiler compiler) {
         throw new DecacInternalError("pas possible car pas feuille de AbstractEpression");
     }
 
     @Override
     protected GPRegister codeGenReg(DecacCompiler compiler) {
-        //System.out.println("AbsBinary Expr codeGenReg");
+        // System.out.println("AbsBinary Expr codeGenReg");
         return codeGenRegInternal(compiler, true);
     }
 
-    protected GPRegister codeGenRegInternal(DecacCompiler compiler, boolean useful){
+    protected GPRegister codeGenRegInternal(DecacCompiler compiler, boolean useful) {
         AbstractExpr right = getRightOperand();
         AbstractExpr left = getLeftOperand();
         GPRegister result;
         GPRegister leftValue = left.codeGenReg(compiler);
-        //System.out.println("AbsBinaryExpr codeGenRegInternal");
-        if(!right.NeedsRegister()){
+        // System.out.println("AbsBinaryExpr codeGenRegInternal");
+        if (!right.NeedsRegister()) {
             geneOneOrMoreInstru(compiler, right.codeGenNoReg(compiler), leftValue, useful);
             getLOG().info("cas ou pas besoin de registre");
-            result =leftValue;
-        }
-        else if (compiler.getRegisterManager().getMax() -compiler.getRegisterManager().getCurrentv() +1 > 1) {
+            result = leftValue;
+        } else if (compiler.getRegisterManager().getMax() - compiler.getRegisterManager().getCurrentv() + 1 > 1) {
 
             GPRegister r = compiler.allocate();
             DVal rightValue = right.codeGenReg(compiler);
@@ -123,8 +117,7 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
             compiler.addComment("non-trivial expression, registers available");
             geneOneOrMoreInstru(compiler, rightValue, leftValue, useful);
             result = leftValue;
-        }
-        else{
+        } else {
             compiler.getMemoryManager().allocLB(1);
             compiler.addInstruction(new PUSH(leftValue));
 
@@ -143,9 +136,8 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         return result;
     }
 
-
-    protected void geneOneOrMoreInstru(DecacCompiler compiler, DVal val, GPRegister reg, boolean usefull){
-        //System.out.println("AbsBinaryExpr geneOneOrMoreInstru");
+    protected void geneOneOrMoreInstru(DecacCompiler compiler, DVal val, GPRegister reg, boolean usefull) {
+        // System.out.println("AbsBinaryExpr geneOneOrMoreInstru");
         compiler.addInstruction(geneInstru(val, reg));
     }
 }

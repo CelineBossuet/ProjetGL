@@ -113,7 +113,7 @@ public class Identifier extends AbstractIdentifier {
     @Override
     public VariableDefinition getVariableDefinition() {
         try {
-            //System.out.println(definition);
+            // System.out.println(definition);
             return (VariableDefinition) definition;
         } catch (ClassCastException e) {
             throw new DecacInternalError(
@@ -165,16 +165,15 @@ public class Identifier extends AbstractIdentifier {
     @Override
     public Type verifyExpr(DecacCompiler compiler, Environment<ExpDefinition> localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        if(localEnv.get(this.getName())!=null){
-            Definition def =localEnv.get(getName()); //TODO
+        if (localEnv.get(this.getName()) != null) {
+            Definition def = localEnv.get(getName()); // TODO
             this.setDefinition(def);
             this.setType(def.getType());
             return getType();
-        }
-        else{
+        } else {
             throw new ContextualError("Variable non initialisé", this.getLocation());
         }
-        //throw new UnsupportedOperationException("not yet implemented");
+        // throw new UnsupportedOperationException("not yet implemented");
     }
 
     /**
@@ -185,8 +184,8 @@ public class Identifier extends AbstractIdentifier {
     @Override
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
         Definition def = compiler.getEnvironmentType().defOfType(getName());
-        if(def==null){
-            throw new UnsupportedOperationException("Type "+def.getType()+" existe pas");
+        if (def == null) {
+            throw new UnsupportedOperationException("Type " + def.getType() + " existe pas");
         }
         setType(def.getType());
         setDefinition(def);
@@ -230,16 +229,17 @@ public class Identifier extends AbstractIdentifier {
     @Override
     protected DAddr codeGenNoReg(DecacCompiler compiler) {
         DAddr ope = this.getExpDefinition().getOperand();
-        if(ope==null){
-            throw new DecacInternalError("Operande null pour l'identifier "+getName()+" "+getDefinition());
+        if (ope == null) {
+            throw new DecacInternalError("Operande null pour l'identifier " + getName() + " " + getDefinition());
         }
         return ope;
     }
 
     @Override
-    protected GPRegister codeGenReg(DecacCompiler compiler){
-        if(getDefinition().isField()){
-            //cas particulier pour les fields qui ne peuvent pas être générés avec un seul opérand
+    protected GPRegister codeGenReg(DecacCompiler compiler) {
+        if (getDefinition().isField()) {
+            // cas particulier pour les fields qui ne peuvent pas être générés avec un seul
+            // opérand
             getLOG().info("cas particulier pour les fields, génération par plusieurs opérandes");
             GPRegister current = compiler.getRegisterManager().getCurrent();
             compiler.addInstruction(new LOAD(codeGenAddr(compiler), current));
@@ -248,14 +248,13 @@ public class Identifier extends AbstractIdentifier {
         return super.codeGenReg(compiler);
     }
 
-
     @Override
     public DAddr codeGenAddr(DecacCompiler compiler) {
-        if(getDefinition().isField()){
+        if (getDefinition().isField()) {
             getLOG().info("cas particulier pour les fields, génération par plusieurs opérandes");
             GPRegister current = compiler.getRegisterManager().getCurrent();
             RegisterOffset offset = new RegisterOffset(-2, Register.LB);
-            RegisterOffset field = new RegisterOffset(getFieldDefinition().getIndex() +1, current);
+            RegisterOffset field = new RegisterOffset(getFieldDefinition().getIndex() + 1, current);
             compiler.addInstruction(new LOAD(offset, current));
             return field;
         }

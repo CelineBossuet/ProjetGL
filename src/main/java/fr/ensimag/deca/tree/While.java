@@ -37,7 +37,7 @@ public class While extends AbstractInst {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler, Label returnLabel, Label local) {
-        //System.out.println("While codeGenInst");
+        // System.out.println("While codeGenInst");
         Label debutwhile = compiler.getLabelManager().newLabel("while");
         Label condwhile = compiler.getLabelManager().newLabel("condWhile");
         compiler.addInstruction(new BRA(condwhile));
@@ -46,9 +46,9 @@ public class While extends AbstractInst {
         compiler.addLabel(condwhile);
         this.condition.codeGenCond(compiler, debutwhile, true);
         getLOG().info("création et fixation du Label de début du while");
-        //System.out.println("While codeGenInst FIN");
+        // System.out.println("While codeGenInst FIN");
 
-        //throw new UnsupportedOperationException("not yet implemented");
+        // throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override
@@ -56,7 +56,7 @@ public class While extends AbstractInst {
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
         Type cond = this.getCondition().verifyExpr(compiler, localEnv, currentClass);
-        if (!cond.isBoolean()){
+        if (!cond.isBoolean()) {
             throw new ContextualError("Une condition d'un while doit être un booléen", this.getLocation());
         }
 
@@ -65,13 +65,13 @@ public class While extends AbstractInst {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        s.print("while (");
+        s.print("while(");
         getCondition().decompile(s);
-        s.println(") {");
+        s.println("){");
         s.indent();
         getBody().decompile(s);
         s.unindent();
-        s.print("}");
+        s.println("}");
     }
 
     @Override
