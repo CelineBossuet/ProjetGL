@@ -15,6 +15,7 @@ public class DecacMain {
     public static void main(String[] args) {
         LOG.info("Decac compiler started");
         final CompilerOptions options = new CompilerOptions();
+        boolean error = false;
         try {
             options.parseArgs(args);
         } catch (CLIException e) {
@@ -32,17 +33,9 @@ public class DecacMain {
         }
         if (options.getParser()) {
             LOG.debug("Decac compiler will stop after parsing");
-            for (File source : options.getSourceFiles()) {
-                DecacCompiler compiler = new DecacCompiler(options, source);
-                System.exit(compiler.compile() ? 1 : 0); // if no errors, tree displayed by compile function
-            }
         }
         if (options.getVerif()) {
             LOG.debug("Decac compiler will stop after verification");
-            for (File source : options.getSourceFiles()) {
-                DecacCompiler compiler = new DecacCompiler(options, source);
-                System.exit(compiler.compile() ? 1 : 0); // no display if no errors
-            }
         }
         if (options.getParallel()) {
             // A FAIRE : instancier DecacCompiler pour chaque fichier à
@@ -51,11 +44,18 @@ public class DecacMain {
             // java.util.concurrent de la bibliothèque standard Java.
             throw new UnsupportedOperationException("Parallel build not yet implemented");
         } else { // Normal execution
-            LOG.debug("Decac compiler will fully compile");
             for (File source : options.getSourceFiles()) {
                 DecacCompiler compiler = new DecacCompiler(options, source);
-                System.exit(compiler.compile() ? 1 : 0);
+                try {
+                    if (compiler.compile())
+                        error = true;
+                } catch (Exception e) { // finish other files
+                    e.printStackTrace();
+                    error = true;
+                }
             }
         }
+
+        System.exit(error ? 1 : 0);
     }
 }
