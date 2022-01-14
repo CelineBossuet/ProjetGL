@@ -23,8 +23,8 @@ public class Or extends AbstractOpBool {
     }
     else{
         Label endOr= compiler.getLabelManager().newLabel("endOr"); //on créé notre label correspondant à la fin du Or
-        getRightOperand().codeGenCond(compiler, l, saut);
         getLeftOperand().codeGenCond(compiler, endOr, !saut);
+        getRightOperand().codeGenCond(compiler, l, saut);
         compiler.addLabel(endOr); //on ajoute notre label au compilateur
     }
     }

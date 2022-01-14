@@ -55,7 +55,6 @@ public class Not extends AbstractUnaryExpr {
 
         compiler.addInstruction(new CMP(0, r));
         compiler.addInstruction(new BNE(elseLabel));
-
         compiler.addInstruction(new BRA(end));
         compiler.addLabel(elseLabel);
 
