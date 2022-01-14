@@ -19,7 +19,7 @@ import org.apache.log4j.Logger;
  */
 public abstract class Tree {
 
-    private static final Logger LOG = Logger.getLogger(Main.class);
+    private static final Logger LOG = Logger.getLogger(Tree.class);
 
     public Location getLocation() {
         return location;

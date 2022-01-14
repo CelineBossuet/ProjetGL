@@ -43,7 +43,10 @@ public abstract class AbstractPrint extends AbstractInst {
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
         for (AbstractExpr a : getArguments().getList()) {
-            a.verifyInst(compiler, localEnv, currentClass, returnType);
+            Type type=a.verifyExpr(compiler, localEnv, currentClass);
+            if(!type.isInt() && !type.isFloat() && !type.isString()){
+                throw new ContextualError("Type "+type+" non supporté pour print/println", new Location(0,0,"no_source.deca"));
+            }
         }
         // throw new UnsupportedOperationException("not yet implemented");
     }

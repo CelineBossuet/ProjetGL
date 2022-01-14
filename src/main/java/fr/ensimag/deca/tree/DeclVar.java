@@ -47,7 +47,7 @@ public class DeclVar extends AbstractDeclVar {
             varName.setDefinition(new VariableDefinition(type.getType(), getLocation()));
             localEnv.declare(varName.getName(), varName.getExpDefinition());
         } catch (DoubleDefException e) {
-            throw new ContextualError("Double definition of this identifier.", getLocation());
+            throw new ContextualError("Double definition of this identifier", getLocation());
         }
 
         // A FAIRE TODO verifier initialisation
