@@ -29,7 +29,7 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
 
         Type right =getRightOperand().verifyExpr(compiler, localEnv, currentClass);
         Type left =getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
-        if(!left.sameType(right) && !(left.isFloat() && right.isInt()) || !(left.isInt() && right.isFloat())){
+        if(!left.sameType(right) && !(left.isFloat() && right.isInt()) && !(left.isInt() && right.isFloat())){
             throw new ContextualError(
                     "Comparaison non supportée entre types "+left + " et "+right, getLocation());
         }
