@@ -8,6 +8,7 @@
 //    cree le 06/01/2022
 
 {
+    int x;
     x = 10;
     x = x + 12;
     println(x);

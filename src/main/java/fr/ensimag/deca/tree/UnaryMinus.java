@@ -27,7 +27,7 @@ public class UnaryMinus extends AbstractUnaryExpr {
         Type ope = getOperand().verifyExpr(compiler, localEnv, currentClass);
 
         if ( !ope.isInt() && !ope.isFloat()){
-            throw new UnsupportedOperationException("Unary pas possible pour le type"+ope);
+            throw new ContextualError("Unary pas possible pour le type "+ope, getLocation());
         }
         setType(ope);
         return getType();

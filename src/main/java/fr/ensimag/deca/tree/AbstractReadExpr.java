@@ -2,7 +2,10 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.DecacInternalError;
-import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.NullaryInstruction;
 import fr.ensimag.ima.pseudocode.instructions.BOV;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import org.apache.log4j.Logger;
@@ -16,6 +19,7 @@ import static fr.ensimag.ima.pseudocode.Register.getR;
  * @date 01/01/2022
  */
 public abstract class AbstractReadExpr extends AbstractExpr {
+
 
     public AbstractReadExpr() {
         super();
@@ -45,8 +49,10 @@ public abstract class AbstractReadExpr extends AbstractExpr {
         compiler.addInstruction(geneInstru());
 
         // on branche le label io_error avec BOV
-        //Label label = compiler.getLabelManager().getIErrorLabel();
-        //compiler.addInstruction(new BOV(label));
+        Label label = compiler.getLabelManager().getIErrorLabel();
+        //
+        //
+        compiler.addInstruction(new BOV(label));
 
         // on LOAD dans le registre courrant la valeur de R1
         GPRegister reg = compiler.getRegisterManager().getCurrent();

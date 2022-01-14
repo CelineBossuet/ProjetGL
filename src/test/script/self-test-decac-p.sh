@@ -124,4 +124,39 @@ do
   fi
 done
 
+for i in ./src/test/deca/codegen/valid/provided/*.deca
+do
+  fichier=$(basename $i)
+  if decac -p "$i" 2>&1 | grep -q -e "$fichier" -e 'Error'
+  then
+    decac -p "$i" > "${i%.deca}".decap 2>&1 &
+    echo -e "$fichier ${rouge} FAILED ${blanc} (failure)"
+    head -1 "${i%.deca}".decap
+    status=1
+  else
+    decac -p "$i" > "${i%.deca}".decap 2>&1 &
+    echo -e "$fichier ${vert} PASSED ${blanc}"
+
+  fi
+done
+
+echo -e "${jaune}Cas valide créé ${blanc}"
+
+for i in ./src/test/deca/codegen/valid/self/*.deca
+do
+  fichier=$(basename $i)
+  if decac -p "$i" 2>&1 | grep -q -e "$fichier" -e 'Error'
+  then
+    decac -p "$i" > "${i%.deca}".decap 2>&1 &
+    echo -e "$fichier ${rouge} FAILED ${blanc} (failure)"
+    head -1 "${i%.deca}".decap
+    status=1
+  else
+    decac -p "$i" > "${i%.deca}".decap 2>&1 &
+    echo -e "$fichier ${vert} PASSED ${blanc}"
+
+  fi
+done
+
+
 exit ${status}

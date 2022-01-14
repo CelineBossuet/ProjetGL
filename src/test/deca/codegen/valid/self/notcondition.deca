@@ -1,0 +1,7 @@
+{
+    boolean b = false;
+    b = !b;
+    if(b){
+        println("Not tests");
+    }
+}

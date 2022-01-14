@@ -130,19 +130,23 @@ inst returns[AbstractInst tree]
     | PRINT OPARENT list_expr CPARENT SEMI {
             assert($list_expr.tree != null); //tjs tester si c'est pas null
             $tree = new Print(false, $list_expr.tree); //false car on veut pas du hexa
+            setLocation($tree, $PRINT);
 
         }//TOBETESTED
     | PRINTLN OPARENT list_expr CPARENT SEMI {
             assert($list_expr.tree != null);
             $tree= new Println(false, $list_expr.tree); //pareil false car pas en hexa
+            setLocation($tree, $PRINTLN);
         }
     | PRINTX OPARENT list_expr CPARENT SEMI {
             assert($list_expr.tree != null);
             $tree = new Print(true, $list_expr.tree); //true car on veut de l'hexa
+            setLocation($tree, $PRINTX);
         }//TOBETESTED
     | PRINTLNX OPARENT list_expr CPARENT SEMI {
             assert($list_expr.tree != null);
             $tree = new Println(true, $list_expr.tree);
+            setLocation($tree, $PRINTLNX);
         } //TOBETESTED
     | if_then_else {
             assert($if_then_else.tree != null);
