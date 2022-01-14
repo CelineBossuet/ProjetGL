@@ -43,7 +43,8 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
             this.setType(left);
             return left;
         }else{
-            throw new ContextualError("Une opérande n'est pas un booléen", this.getLocation());
+            throw new ContextualError(
+                    "Un opérande n'est pas un booléen impossible pour opération And/Or", this.getLocation());
         }
         //throw new UnsupportedOperationException("not yet implemented");
     }

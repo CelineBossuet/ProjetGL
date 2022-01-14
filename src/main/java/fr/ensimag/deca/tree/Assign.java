@@ -34,6 +34,10 @@ public class Assign extends AbstractBinaryExpr {
         Type left = this.getLeftOperand().verifyExpr(compiler, localEnv,currentClass);
         AbstractExpr right = this.getRightOperand().verifyRValue(compiler, localEnv, currentClass, left);
         setRightOperand(right);
+        if(!left.sameType(right.getType()) && !(left.isFloat() && right.getType().isInt())){
+            throw new ContextualError(
+                    right.getType()+" n'est pas un sous type de "+left+"et ne peut pas lui être assigné", getLocation());
+        }
         return left;
         //throw new UnsupportedOperationException("not yet implemented");
     }
