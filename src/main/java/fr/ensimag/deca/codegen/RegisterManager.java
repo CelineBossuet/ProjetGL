@@ -15,7 +15,7 @@ import static fr.ensimag.ima.pseudocode.Register.getR;
  */
 public class RegisterManager {
     private int current = 2;
-    private int max = 15; // default registers max number
+    private int max = 15; // default registers max index
     private int lastUsed = -1;
 
     public void initRegister() {
@@ -30,8 +30,12 @@ public class RegisterManager {
         return max;
     }
 
+    /**
+     * 
+     * @param max Maximum registers
+     */
     public void setMax(int max) {
-        this.max = max;
+        this.max = max - 1;
     }
 
     public int getCurrentv() {
@@ -50,11 +54,11 @@ public class RegisterManager {
      *         qu'il n'a pas été free
      */
     public GPRegister allocRegister() {
-        Validate.isTrue(current <= max); // pas de registre libre
+        Validate.isTrue(this.current <= max); // pas de registre libre
         // Validate.isTrue(lastUsed>0); //pas encore appelé la fonction initRegistre()
 
         GPRegister reg = getR(current);
-        current++;
+        this.current++;
         if (this.lastUsed < this.current) {
             this.lastUsed = this.current;
         }
