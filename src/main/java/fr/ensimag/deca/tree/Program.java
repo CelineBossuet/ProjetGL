@@ -43,7 +43,9 @@ public class Program extends AbstractProgram {
     public void verifyProgram(DecacCompiler compiler) throws ContextualError {
 
         // A FAIRE TODO 3 passes pour langage complet
-        // getClasses().verifyListClass(compiler);
+        getClasses().verifyListClass(compiler); //Passe 1
+        getClasses().verifyListClassMembers(compiler); //Passe 2
+        getClasses().verifyListClassBody(compiler); //Passe 3
         // LOG.debug("Pass 1 verification");
         // LOG.debug("Pass 2 verification");
         // LOG.debug("Pass 3 verification");
