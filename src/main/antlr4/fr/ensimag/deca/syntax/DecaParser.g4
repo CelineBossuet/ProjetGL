@@ -521,7 +521,7 @@ ident returns[AbstractIdentifier tree]
 
 /****     Class related rules     ****/
 
-//TODO
+
 list_classes returns[ListDeclClass tree]
 @init{
     $tree = new ListDeclClass();
@@ -545,17 +545,17 @@ class_extension returns[AbstractIdentifier tree]
             $tree=$ident.tree;
         }
     | /* epsilon */ {
-
-        }//TODO
+            $tree = new Identifier(getDecacCompiler().getSymbolTable().create("Object"));
+        }
     ;
 
-class_body returns[AbstractDeclField field, AbstractDeclMethod method]
+class_body returns[ListDeclField field, ListDeclMethod method]
 @init{
- method = new ListDeclMethod();
- field = new ListDeclField();
+ $method = new ListDeclMethod();
+ $field = new ListDeclField();
 }
     : (m=decl_method {
-            method.add($m.tree);
+            $method.add($m.tree);
         }
       | decl_field_set [$field]
 
@@ -577,9 +577,6 @@ visibility returns[Visibility tree]
     ;
 
 list_decl_field [ListDeclField tree, Visibility v, AbstractIdentifier iden]
-@init{
-    $tree = new ListDeclField();
-}
     : dv1=decl_field [$v, $iden]
     {
         $tree.add($dv1.tree);
@@ -612,14 +609,32 @@ decl_field [Visibility v, AbstractIdentifier t] returns[AbstractDeclField tree]
         }
     ;
 
+//TODO
 decl_method returns[DeclMethod tree]
 @init {
+    AbstractMethodBody body = null;
 }
     : type ident OPARENT params=list_params CPARENT (block {
+            body = new MethodBody($block.decls, $block.insts);
+            setLocation(body, $block.start);
         }
       | ASM OPARENT code=multi_line_string CPARENT SEMI {
+            String s = $code.text;
+            StringBuffer f = new StringBuffer();
+            for (int i = 1; i < s.length() - 1; i++) {
+                    if (s.charAt(i) == '\\') {
+                            i++;
+                    }
+                    f.append(s.charAt(i));
+            }
+            AbstractStringLiteral asmCode = new StringLiteral(f.toString());
+            asmCode.setLocation($code.location);
+            body = new MethodAsmBody(asmCode);
+            setLocation(body, $ASM);
         }
       ) {
+            $tree = new DeclMethod($type.tree, $ident.tree, $params.tree, body);
+            setLocation($tree, $type.start);
         }
     ;
 

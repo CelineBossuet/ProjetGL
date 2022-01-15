@@ -14,10 +14,10 @@ import java.io.PrintStream;
 public class DeclClass extends AbstractDeclClass {
     private AbstractIdentifier name;
     private AbstractIdentifier superClass;
-    private AbstractDeclField field;
-    private AbstractDeclMethod method;
+    private ListDeclField field;
+    private ListDeclMethod method;
 
-    public DeclClass(AbstractIdentifier name, AbstractIdentifier superClass, AbstractDeclField field, AbstractDeclMethod method){
+    public DeclClass(AbstractIdentifier name, AbstractIdentifier superClass, ListDeclField field, ListDeclMethod method){
         this.name = name;
         this.superClass=superClass;
         this.field=field;
