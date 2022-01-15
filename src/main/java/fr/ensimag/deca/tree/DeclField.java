@@ -25,8 +25,8 @@ public class DeclField extends AbstractDeclField{
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix){
         this.type.prettyPrintType(s, prefix);
-        this.fieldName.prettyPrint(s, prefix, false);
-        this.init.prettyPrint(s, prefix, false);
+        this.fieldName.prettyPrint(s, prefix, true);
+        this.init.prettyPrint(s, prefix, true);
     }
 
     @Override
