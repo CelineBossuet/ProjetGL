@@ -1,19 +1,13 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.Environment;
-import fr.ensimag.deca.context.ExpDefinition;
-import fr.ensimag.deca.context.VariableDefinition;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.context.Environment.DoubleDefException;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import java.io.PrintStream;
-
 import fr.ensimag.ima.pseudocode.DAddr;
-import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.RegisterOffset;
 import org.apache.commons.lang.Validate;
+
+import java.io.PrintStream;
 
 /**
  * @author gl13
@@ -45,6 +39,7 @@ public class DeclVar extends AbstractDeclVar {
         // name
         try {
             varName.setDefinition(new VariableDefinition(type.getType(), getLocation()));
+            System.out.println("declare "+varName.getName());
             localEnv.declare(varName.getName(), varName.getExpDefinition());
         } catch (DoubleDefException e) {
             throw new ContextualError("Double definition of this identifier", getLocation());

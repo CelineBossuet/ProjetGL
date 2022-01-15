@@ -16,6 +16,7 @@ import java.util.Iterator;
 public class ListDeclClass extends TreeList<AbstractDeclClass> {
     private static final Logger LOG = Logger.getLogger(ListDeclClass.class);
 
+
     @Override
     public void decompile(IndentPrintStream s) {
         for (AbstractDeclClass c : getList()) {
@@ -30,8 +31,10 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
     void verifyListClass(DecacCompiler compiler) throws ContextualError {
         LOG.debug("verify listClass: start");
         for (Iterator<AbstractDeclClass> i = this.iterator(); i.hasNext();) {
+            System.out.println("Hey");
             i.next().verifyClass(compiler);
         }
+
         LOG.debug("verify listClass: end");
     }
 

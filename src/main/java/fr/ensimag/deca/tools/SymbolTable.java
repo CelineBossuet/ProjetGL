@@ -31,6 +31,7 @@ public class SymbolTable {
     public Symbol create(String name) {
 
         if (this.map.get(name) == null) {
+            System.out.println("merde :"+name);
             Symbol symb = new Symbol(name);
             this.map.put(name, symb);
             return symb;

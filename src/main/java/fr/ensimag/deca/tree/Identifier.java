@@ -22,6 +22,8 @@ import java.io.PrintStream;
  */
 public class Identifier extends AbstractIdentifier {
 
+    private boolean verify = true;
+
     @Override
     protected void checkDecoration() {
         if (getDefinition() == null) {
@@ -184,17 +186,27 @@ public class Identifier extends AbstractIdentifier {
      */
     @Override
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
+        System.out.println("VerifyType spec");
+        System.out.println(getName());
         Definition def = compiler.getEnvironmentType().defOfType(getName());
-        if(def==null){
+        System.out.println(def);
+        if(def==null && verify ){
             throw new ContextualError("Type n'existe pas", getLocation());
         }
-        if(def.getType().isVoid()){
+        if(verify && def.getType().isVoid()){
             throw new ContextualError("Variables ne peuvent pas être déclarées de type void", getLocation());
         }
+        System.out.println("verifyTypeget");
         setType(def.getType());
         setDefinition(def);
         return getType();
 
+    }
+
+    public void VerifyTypeClass(DecacCompiler compiler) throws ContextualError{
+        System.out.println("veryfyType");
+        verify = false;
+        verifyType(compiler);
     }
 
     private Definition definition;

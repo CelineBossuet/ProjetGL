@@ -3,22 +3,16 @@ package fr.ensimag.deca;
 import fr.ensimag.deca.codegen.LabelManager;
 import fr.ensimag.deca.codegen.MemoryManager;
 import fr.ensimag.deca.codegen.RegisterManager;
-import fr.ensimag.deca.context.Environment;
-import fr.ensimag.deca.context.TypeDefinition;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.syntax.DecaLexer;
 import fr.ensimag.deca.syntax.DecaParser;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.deca.tree.AbstractProgram;
+import fr.ensimag.deca.tree.Location;
 import fr.ensimag.deca.tree.LocationException;
+import fr.ensimag.deca.tree.ObjectType;
 import fr.ensimag.ima.pseudocode.*;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.PrintStream;
-
 import fr.ensimag.ima.pseudocode.instructions.ERROR;
 import fr.ensimag.ima.pseudocode.instructions.WNL;
 import fr.ensimag.ima.pseudocode.instructions.WSTR;
@@ -59,6 +53,28 @@ public class DecacCompiler {
         super();
         this.compilerOptions = compilerOptions;
         this.source = source;
+        declareBuiltinTypes(this);
+    }
+
+    private void declareBuiltinTypes(DecacCompiler compiler) {
+        try {
+            compiler.getEnvironmentType().declare(compiler.getSymbolTable().create("void"),
+                    new TypeDefinition(new VoidType(compiler.getSymbolTable().create("void")), Location.BUILTIN));
+            compiler.getEnvironmentType().declare(compiler.getSymbolTable().create("boolean"),
+                    new TypeDefinition(new BooleanType(compiler.getSymbolTable().create("boolean")), Location.BUILTIN));
+            compiler.getEnvironmentType().declare(compiler.getSymbolTable().create("float"),
+                    new TypeDefinition(new FloatType(compiler.getSymbolTable().create("float")), Location.BUILTIN));
+            compiler.getEnvironmentType().declare(compiler.getSymbolTable().create("int"),
+                    new TypeDefinition(new IntType(compiler.getSymbolTable().create("int")), Location.BUILTIN));
+            compiler.getEnvironmentType().declare(compiler.getSymbolTable().create("string"),
+                    new TypeDefinition(new StringType(compiler.getSymbolTable().create("string")), Location.BUILTIN));
+            compiler.getEnvironmentType().declare(compiler.getSymbolTable().create("null"),
+                    new TypeDefinition(new NullType(compiler.getSymbolTable().create("null")), Location.BUILTIN));
+            ObjectType objectType = new ObjectType(compiler.getSymbolTable().create("Object"), null, compiler.getProgram());
+            compiler.getEnvironmentType().declare(compiler.getSymbolTable().create("Object"), new  TypeDefinition(objectType, Location.BUILTIN));
+        } catch (Environment.DoubleDefException e) {
+            throw new DecacInternalError("Double built in type definition");
+        }
     }
 
     /**
@@ -230,7 +246,7 @@ public class DecacCompiler {
             return false;
         }
 
-        // assert(prog.checkAllLocations()); A FAIRE
+        assert(prog.checkAllLocations());
         LOG.info("Starting verification");
         prog.verifyProgram(this);
         // assert(prog.checkAllDecorations()); A FAIRE
