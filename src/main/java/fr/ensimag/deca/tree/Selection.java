@@ -3,20 +3,18 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.DAddr;
 import fr.ensimag.ima.pseudocode.DVal;
-import org.apache.commons.lang.Validate;
 
 import java.io.PrintStream;
 
-public class MethodCall extends AbstractExpr{
-    private  AbstractExpr implicitParam;
-    private  AbstractIdentifier methodName;
-    private  ListExpr param;
+public class Selection extends AbstractLValue{
+    private AbstractExpr object;
+    private AbstractIdentifier field;
 
-    public MethodCall(AbstractExpr implicitParameter, AbstractIdentifier methodName, ListExpr params) {
-        this.implicitParam = implicitParameter;
-        this.methodName = methodName;
-        this.param = params;
+    public Selection(AbstractExpr object, AbstractIdentifier field){
+        this.field=field;
+        this.object=object;
     }
 
     @Override
@@ -26,6 +24,11 @@ public class MethodCall extends AbstractExpr{
 
     @Override
     protected DVal codeGenNoReg(DecacCompiler compiler) {
+        return null;
+    }
+
+    @Override
+    public DAddr codeGenAddr(DecacCompiler compiler) {
         return null;
     }
 

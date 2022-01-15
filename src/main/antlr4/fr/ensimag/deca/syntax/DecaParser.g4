@@ -405,14 +405,18 @@ select_expr returns[AbstractExpr tree]
     | e1=select_expr DOT i=ident {
             assert($e1.tree != null);
             assert($i.tree != null);
-        }//TODO compilateur avec objet
+        }//TODO gestion des erreurs ?
         (o=OPARENT args=list_expr CPARENT {
             // we matched "e1.i(args)"
             assert($args.tree != null);
-        }//TODO compilateur avec objet
+            $tree = new MethodCall($e1.tree, $i.tree, $args.tree);
+            setLocation($tree, $o);
+        }//TOBETESTED
         | /* epsilon */ {
             // we matched "e.i"
-        }//TODO
+            $tree = new Selection($e1.tree, $i.tree);;
+            setLocation($tree, $DOT);
+        }//TOBETESTED
         )
     ;
 
@@ -426,8 +430,12 @@ primary_expr returns[AbstractExpr tree]
     | m=ident OPARENT args=list_expr CPARENT {
             assert($args.tree != null);
             assert($m.tree != null);
+            This t = new This(true); // m() signifie this.m()
+            //setLocation(t, $m.tree.getLocation()); marche pas :(
 
-        }//TODO
+            $tree = new MethodCall(t, $m.tree, $args.tree);
+            setLocation($tree, $OPARENT);
+        }//TOBETESTED
     | OPARENT expr CPARENT {
             assert($expr.tree != null);
             $tree=$expr.tree;
@@ -442,12 +450,16 @@ primary_expr returns[AbstractExpr tree]
         }//TOBETESTED
     | NEW ident OPARENT CPARENT {
             assert($ident.tree != null);
-        }//TODO
+            $tree = new New($ident.tree);
+            setLocation($tree, $NEW);
+        }//TOBETESTED
     | cast=OPARENT type CPARENT OPARENT expr CPARENT {
             assert($type.tree != null);
             assert($expr.tree != null);
+            $tree = new Cast($type.tree, $expr.tree);
+            setLocation($tree, $cast);
 
-        }//TODO
+        }//TOBETESTED
     | literal {
             assert($literal.tree != null);
             $tree=$literal.tree;
@@ -609,7 +621,7 @@ decl_field [Visibility v, AbstractIdentifier t] returns[AbstractDeclField tree]
         }
     ;
 
-//TODO
+
 decl_method returns[DeclMethod tree]
 @init {
     AbstractMethodBody body = null;
