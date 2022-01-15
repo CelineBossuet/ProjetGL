@@ -19,16 +19,18 @@ public class DeclField extends AbstractDeclField{
 
     @Override
     public void decompile(IndentPrintStream s) {
-
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix){
-
+        this.type.prettyPrintType(s, prefix);
+        this.fieldName.prettyPrint(s, prefix, false);
+        this.init.prettyPrint(s, prefix, false);
     }
 
     @Override
     protected void iterChildren(TreeFunction f) {
-
+        throw new UnsupportedOperationException("Not implemented yet");
     }
 }
