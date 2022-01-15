@@ -29,7 +29,7 @@ public abstract class AbstractReadExpr extends AbstractExpr {
 
     @Override
     protected GPRegister codeGenReg(DecacCompiler compiler) {
-        //System.out.println("AbsReadExpr codeGenReg");
+        // System.out.println("AbsReadExpr codeGenReg");
         getLOG().info("redéfinition de geneInstru() dans AbstractReadExpr");
         //// redéfinition de la méthode car il faut pouvoir utiliser geneInstru() de
         //// AbstractReadExpr
@@ -39,7 +39,7 @@ public abstract class AbstractReadExpr extends AbstractExpr {
 
         // on branche le label io_error avec BOV
         Label label = compiler.getLabelManager().getIErrorLabel();
-        compiler.addInstruction(new BOV(label));
+        compiler.addInstruction(new BOV(label, compiler.getCompilerOptions().getNoCheck()));
 
         // on LOAD dans le registre courrant la valeur de R1
         GPRegister reg = compiler.getRegisterManager().getCurrent();

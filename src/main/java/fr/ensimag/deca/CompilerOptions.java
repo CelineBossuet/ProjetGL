@@ -52,6 +52,10 @@ public class CompilerOptions {
         return registers;
     }
 
+    public boolean getNoCheck() {
+        return noCheck;
+    }
+
     private int debug = 0;
     private boolean parallel = false;
     private boolean printBanner = false;
@@ -59,6 +63,7 @@ public class CompilerOptions {
     private boolean parser = false;
     private boolean verif = false;
     private int registers = -1;
+    private boolean noCheck = false;
 
     public void parseArgs(String[] args) throws CLIException {
         boolean register = false;
@@ -79,7 +84,7 @@ public class CompilerOptions {
                         verif = true;
                         break;
                     case "-n":
-                        // A FAIRE
+                        noCheck = true;
                         break;
                     case "-r":
                         register = true;
