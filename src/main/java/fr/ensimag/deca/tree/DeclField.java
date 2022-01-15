@@ -1,5 +1,9 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.tools.IndentPrintStream;
+
+import java.io.PrintStream;
+
 public class DeclField extends AbstractDeclField{
     private Visibility visibility;
     private AbstractIdentifier type;
@@ -11,5 +15,20 @@ public class DeclField extends AbstractDeclField{
         this.type=type;
         this.fieldName=fieldName;
         this.init=init;
+    }
+
+    @Override
+    public void decompile(IndentPrintStream s) {
+
+    }
+
+    @Override
+    protected void prettyPrintChildren(PrintStream s, String prefix){
+
+    }
+
+    @Override
+    protected void iterChildren(TreeFunction f) {
+
     }
 }
