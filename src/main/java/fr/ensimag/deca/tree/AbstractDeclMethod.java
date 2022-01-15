@@ -4,19 +4,6 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 
 import java.io.PrintStream;
 
-public class AbstractDeclMethod extends Tree{
-    @Override
-    public void decompile(IndentPrintStream s) {
+public abstract class AbstractDeclMethod extends Tree{
 
-    }
-
-    @Override
-    protected void prettyPrintChildren(PrintStream s, String prefix) {
-
-    }
-
-    @Override
-    protected void iterChildren(TreeFunction f) {
-
-    }
 }

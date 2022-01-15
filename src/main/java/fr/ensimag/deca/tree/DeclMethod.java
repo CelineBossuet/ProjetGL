@@ -1,5 +1,9 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.tools.IndentPrintStream;
+
+import java.io.PrintStream;
+
 public class DeclMethod extends AbstractDeclMethod{
     private AbstractIdentifier type;
     private AbstractIdentifier name;
@@ -11,5 +15,23 @@ public class DeclMethod extends AbstractDeclMethod{
         this.name=name;
         this.param=param;
         this.type=type;
+    }
+
+    @Override
+    public void decompile(IndentPrintStream s) {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    @Override
+    protected void prettyPrintChildren(PrintStream s, String prefix) {
+        type.prettyPrint(s, prefix, false);
+        name.prettyPrint(s, prefix, false);
+        param.prettyPrint(s, prefix, false);
+        body.prettyPrint(s, prefix, true);
+    }
+
+    @Override
+    protected void iterChildren(TreeFunction f) {
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 }

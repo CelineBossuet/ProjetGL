@@ -15,26 +15,26 @@ public class Return extends AbstractInst{
     }
     @Override
     protected void verifyInst(DecacCompiler compiler, Environment<ExpDefinition> localEnv, ClassDefinition currentClass, Type returnType) throws ContextualError {
-
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 
     @Override
     protected void codeGenInst(DecacCompiler compiler, Label returnLabel, Label local) {
-
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 
     @Override
     public void decompile(IndentPrintStream s) {
-
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-
+        returnValue.prettyPrint(s, prefix, true);
     }
 
     @Override
     protected void iterChildren(TreeFunction f) {
-
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 }

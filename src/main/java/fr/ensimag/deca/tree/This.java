@@ -22,26 +22,26 @@ public class This extends AbstractExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, Environment<ExpDefinition> localEnv, ClassDefinition currentClass)
             throws ContextualError {
-        return null;
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 
     @Override
     protected DVal codeGenNoReg(DecacCompiler compiler) {
-        return null; // TODO
+        throw new UnsupportedOperationException("Not yet implemented"); // TODO
     }
 
     @Override
     public void decompile(IndentPrintStream s) {
-
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-
+        //nothing to do
     }
 
     @Override
     protected void iterChildren(TreeFunction f) {
-
+        //nothing to do
     }
 }

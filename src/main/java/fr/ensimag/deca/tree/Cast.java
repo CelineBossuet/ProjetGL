@@ -28,16 +28,17 @@ public class Cast extends AbstractExpr{
 
     @Override
     public void decompile(IndentPrintStream s) {
-
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-
+        typeToCheck.prettyPrint(s, prefix, false);
+        expr.prettyPrint(s, prefix, true);
     }
 
     @Override
     protected void iterChildren(TreeFunction f) {
-
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 }

@@ -19,31 +19,32 @@ public class Selection extends AbstractLValue{
 
     @Override
     public Type verifyExpr(DecacCompiler compiler, Environment<ExpDefinition> localEnv, ClassDefinition currentClass) throws ContextualError {
-        return null;
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 
     @Override
     protected DVal codeGenNoReg(DecacCompiler compiler) {
-        return null;
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 
     @Override
     public DAddr codeGenAddr(DecacCompiler compiler) {
-        return null;
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 
     @Override
     public void decompile(IndentPrintStream s) {
-
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-
+        object.prettyPrint(s, prefix, false);
+        field.prettyPrint(s, prefix, true);
     }
 
     @Override
     protected void iterChildren(TreeFunction f) {
-
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 }

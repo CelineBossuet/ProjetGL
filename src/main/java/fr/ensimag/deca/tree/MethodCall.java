@@ -21,26 +21,27 @@ public class MethodCall extends AbstractExpr{
 
     @Override
     public Type verifyExpr(DecacCompiler compiler, Environment<ExpDefinition> localEnv, ClassDefinition currentClass) throws ContextualError {
-        return null;
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 
     @Override
     protected DVal codeGenNoReg(DecacCompiler compiler) {
-        return null;
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 
     @Override
     public void decompile(IndentPrintStream s) {
-
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-
+        implicitParam.prettyPrint(s, prefix, false);
+        methodName.prettyPrint(s, prefix, false);
     }
 
     @Override
     protected void iterChildren(TreeFunction f) {
-
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 }
