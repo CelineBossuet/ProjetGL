@@ -39,7 +39,7 @@ public class DeclField extends AbstractDeclField{
     }
 
     @Override
-    protected void verifyPass2(DecacCompiler compiler, ClassDefinition superClass, ClassDefinition currentClass) throws ContextualError {
+    protected void verifyMember(DecacCompiler compiler, ClassDefinition superClass, ClassDefinition currentClass) throws ContextualError {
         FieldDefinition field = new FieldDefinition(this.type.verifyType(compiler), this.getLocation(), this.visibility, currentClass, currentClass.getNumberOfFields());
         currentClass.incNumberOfFields();
         fieldName.setDefinition(field);
@@ -47,7 +47,7 @@ public class DeclField extends AbstractDeclField{
     }
 
     @Override
-    protected void verifyPass3(DecacCompiler compiler, ClassDefinition superClass, ClassDefinition currenClass) throws ContextualError {
+    protected void verifyBody(DecacCompiler compiler, ClassDefinition superClass, ClassDefinition currenClass) throws ContextualError {
         this.init.verifyInitialization(compiler, this.type.verifyType(compiler), currenClass.getMembers(), currenClass);
     }
 }
