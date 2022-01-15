@@ -13,7 +13,7 @@ public abstract class AbstractDeclField extends Tree{
      * @param currentClass
      * @throws ContextualError
      */
-    protected abstract void verifyMember(DecacCompiler compiler, ClassDefinition superClass, ClassDefinition currentClass) throws ContextualError;
+    protected abstract void verifyMembers(DecacCompiler compiler, ClassDefinition superClass, ClassDefinition currentClass) throws ContextualError;
 
     /**
      * Vérifie la passe 3

@@ -1,8 +1,9 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
+
 import java.io.PrintStream;
 
 /**
@@ -31,14 +32,33 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     protected void verifyClass(DecacCompiler compiler) throws ContextualError { // A FAIRE
-
-        throw new UnsupportedOperationException("not yet implemented");
+        Type cla = this.superClass.verifyType(compiler);
+        if (!cla.isClass()){
+            throw new ContextualError("Ce n'est pas une classe", this.getLocation());
+        }
+        ClassType newClass = new ClassType(this.name.getName(), this.getLocation(), this.superClass.getClassDefinition());
+        try {
+            compiler.getEnvironmentType().declareClass(this.name.getName(), newClass.getDefinition());
+        }catch (Environment.DoubleDefException e) {
+            throw new ContextualError("Classe déjà déclaré", this.getLocation());
+        }
+        this.name.setDefinition(newClass.getDefinition());
     }
 
     @Override
     protected void verifyClassMembers(DecacCompiler compiler)
             throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        //throw new UnsupportedOperationException("not yet implemented");
+        ClassDefinition currentDef = this.name.getClassDefinition();
+        ClassDefinition superDef = this.superClass.getClassDefinition();
+        currentDef.setNumberOfFields(superDef.getNumberOfFields());
+        currentDef.setNumberOfMethods(superDef.getNumberOfMethods());
+        for(AbstractDeclField adf : this.field.getList()){
+            adf.verifyMembers(compiler, superDef, currentDef);
+        }
+        for(AbstractDeclMethod adm : this.method.getList()){
+            adm.verifyMembers(compiler, superDef, currentDef);
+        }
     }
 
     @Override

@@ -1,8 +1,8 @@
 package fr.ensimag.deca.context;
 
-import java.util.HashMap;
-
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
+
+import java.util.HashMap;
 
 /**
  * Dictionary associating identifier's D to their names.
@@ -75,6 +75,15 @@ public class Environment<D extends Definition> {
         else
             environment.put(name, def); // create symbol in this environment without modify upper block
 
+    }
+
+    public void declareClass(Symbol name, D def) throws Environment.DoubleDefException {
+        D previousDef = this.environment.get(def);
+        if (previousDef != null) {
+            this.environment.put(name, def);
+        } else {
+            throw new DoubleDefException();
+        }
     }
 
 }
