@@ -57,6 +57,9 @@ public class DecacCompiler {
         super();
         this.compilerOptions = compilerOptions;
         this.source = source;
+        getRegisterManager().setMax(
+                compilerOptions.getRegisters() == -1 ? getRegisterManager().getMax() : compilerOptions.getRegisters()); // registers
+                                                                                                                        // limit
     }
 
     /**
