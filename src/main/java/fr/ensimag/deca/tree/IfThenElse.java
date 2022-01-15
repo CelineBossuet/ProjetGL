@@ -56,7 +56,7 @@ public class IfThenElse extends AbstractInst {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler, Label returnLabel, Label local) {
-        // System.out.println("IfThenElse codeGenInst");
+        getLOG().trace("IfThenElse codeGenInst");
         Label endIf;
         if (local == null) {
             getLOG().info("on est pas déjà dans une boucle de if donc faut créer le label de fin de if");

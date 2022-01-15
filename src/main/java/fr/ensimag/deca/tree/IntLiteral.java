@@ -74,7 +74,7 @@ public class IntLiteral extends AbstractExpr {
 
     @Override
     protected GPRegister codeGenReg(DecacCompiler compiler) {
-        //System.out.println("IntLiteral codeGenReg");
+        getLOG().trace("IntLiteral codeGenReg");
         GPRegister reg = compiler.getRegisterManager().getCurrent();
         compiler.addInstruction(new LOAD(new ImmediateInteger(getValue()), reg));
         return reg;

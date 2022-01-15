@@ -11,6 +11,7 @@ import fr.ensimag.ima.pseudocode.instructions.POP;
 import fr.ensimag.ima.pseudocode.instructions.PUSH;
 import fr.ensimag.ima.pseudocode.instructions.BOV;
 import org.apache.commons.lang.Validate;
+import org.apache.log4j.Logger;
 
 import java.io.PrintStream;
 import java.util.Objects;
@@ -93,41 +94,50 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         throw new DecacInternalError("pas possible car pas feuille de AbstractEpression");
     }
 
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(AbstractExpr.class);
+
+    public static Logger getLOG() {
+        return LOG;
+    }
+
     @Override
     protected GPRegister codeGenReg(DecacCompiler compiler) {
-        // System.out.println("AbsBinary Expr codeGenReg");
+        getLOG().trace("AbsBinary Expr codeGenReg");
         return codeGenRegInternal(compiler, true);
     }
 
     protected GPRegister codeGenRegInternal(DecacCompiler compiler, boolean useful) {
+        getLOG().trace("AbsBinaryExpr codeGenRegInternal");
         AbstractExpr right = getRightOperand();
         AbstractExpr left = getLeftOperand();
         GPRegister result;
         GPRegister leftValue = left.codeGenReg(compiler);
-        // System.out.println("AbsBinaryExpr codeGenRegInternal");
         if (!right.NeedsRegister()) {
-            geneOneOrMoreInstru(compiler, right.codeGenNoReg(compiler), leftValue, useful);
             getLOG().info("cas ou pas besoin de registre");
+            geneOneOrMoreInstru(compiler, right.codeGenNoReg(compiler), leftValue, useful);
             result = leftValue;
         } else if (compiler.getRegisterManager().getMax() - compiler.getRegisterManager().getCurrentv() + 1 > 1) {
-
-            GPRegister r = compiler.allocate();
+            getLOG().info("cas ou il y a des registres libres qu'on peut allouer");
+            GPRegister r = compiler.allocate(); // on alloue un registre
             DVal rightValue = right.codeGenReg(compiler);
             compiler.release(r);
-            compiler.addComment("non-trivial expression, registers available");
             geneOneOrMoreInstru(compiler, rightValue, leftValue, useful);
             result = leftValue;
         } else {
+            getLOG().info("cas ou pas de registre libre ");
+            getLOG().info("on essaye d'utiliser les registres LB de la zone pile");
             compiler.getMemoryManager().allocLB(1);
             compiler.addInstruction(new PUSH(leftValue));
-
+            // PUSH décrémente le pointeur de la pile et entrepose leftValue en haut de la
+            // pile
             DVal rightValue = right.codeGenReg(compiler);
 
             compiler.addInstruction(new POP(getR(0)));
+            // POP permet de désempiler de la pile un mot et la met dans R0
             geneOneOrMoreInstru(compiler, rightValue, getR(0), useful);
             result = compiler.getRegisterManager().getCurrent();
             if (useful) {
-                // The result was computed in R0, move it to the right register.
+                getLOG().info("besoin de mettre le résultat dans le bon registre car résultat dans R0");
                 compiler.addInstruction(new LOAD(getR(0), result));
             }
         }
@@ -137,8 +147,8 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         return result;
     }
 
-    protected void geneOneOrMoreInstru(DecacCompiler compiler, DVal val, GPRegister reg, boolean usefull) {
-        // System.out.println("AbsBinaryExpr geneOneOrMoreInstru");
+    protected void geneOneOrMoreInstru(DecacCompiler compiler, DVal val, GPRegister reg, boolean useful) {
+        getLOG().trace("AbsBinaryExpr geneOneOrMoreInstru");
         compiler.addInstruction(geneInstru(val, reg));
     }
 }

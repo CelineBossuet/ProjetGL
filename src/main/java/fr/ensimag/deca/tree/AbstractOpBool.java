@@ -15,6 +15,7 @@ import fr.ensimag.ima.pseudocode.instructions.BNE;
 import fr.ensimag.ima.pseudocode.instructions.BRA;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -27,6 +28,12 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
         super(leftOperand, rightOperand);
     }
 
+    private static final Logger LOG = Logger.getLogger(AbstractOpBool.class);
+
+    public static Logger getLOG() {
+        return LOG;
+    }
+
     @Override
     public Type verifyExpr(DecacCompiler compiler, Environment<ExpDefinition> localEnv,
             ClassDefinition currentClass) throws ContextualError {
@@ -36,7 +43,8 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
             this.setType(left);
             return left;
         }else{
-            throw new ContextualError("Une opérande n'est pas un booléen", this.getLocation());
+            throw new ContextualError(
+                    "Un opérande n'est pas un booléen impossible pour opération And/Or", this.getLocation());
         }
         //throw new UnsupportedOperationException("not yet implemented");
     }
@@ -48,7 +56,7 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
 
     @Override
     protected GPRegister codeGenReg(DecacCompiler compiler) {
-        //System.out.println("AbsOpBool codeGenReg");
+        getLOG().trace("AbsOpBool codeGenReg");
         Label elseBranch = compiler.getLabelManager().newLabel("elseC2R");
         Label endBranch = compiler.getLabelManager().newLabel("endC2R");
         GPRegister r = compiler.getRegisterManager().getCurrent();

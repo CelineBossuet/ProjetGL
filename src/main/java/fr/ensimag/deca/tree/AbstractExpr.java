@@ -21,7 +21,7 @@ import java.io.PrintStream;
  * @date 01/01/2022
  */
 public abstract class AbstractExpr extends AbstractInst {
-    private static final Logger LOG = Logger.getLogger(DecacCompiler.class);
+    private static final Logger LOG = Logger.getLogger(AbstractExpr.class);
 
     public static Logger getLOG() {
         return LOG;
@@ -102,7 +102,7 @@ public abstract class AbstractExpr extends AbstractInst {
             abs.verifyExpr(compiler, localEnv, currentClass);
             return abs;
         } else {
-            throw new ContextualError("Mauvais Type", this.getLocation());
+            throw new ContextualError("Type incompatible", this.getLocation());
         }
         // throw new UnsupportedOperationException("not yet implemented");
     }
@@ -127,7 +127,10 @@ public abstract class AbstractExpr extends AbstractInst {
      */
     void verifyCondition(DecacCompiler compiler, Environment<ExpDefinition> localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        this.verifyExpr(compiler, localEnv, currentClass);
+        Type type = this.verifyExpr(compiler, localEnv, currentClass);
+        if (!type.isBoolean()) {
+            throw new ContextualError("la condition doit être booléenne", getLocation());
+        }
     }
 
     /////////////////////////// Part C //////////////////////////////////
@@ -163,8 +166,10 @@ public abstract class AbstractExpr extends AbstractInst {
             compiler.addInstruction(new LOAD(this.codeGenReg(compiler), Register.getR(1)));
 
             compiler.addInstruction(new WFLOATX());
+        } else if (getType().isString()) {
+            compiler.addInstruction(new WSTR(this.decompile()));
         } else {
-            throw new DecacInternalError("Print pas supporté pour le type" + getType());
+            throw new DecacInternalError("Printx pas supporté pour le type" + getType());
         }
     }
 
@@ -172,7 +177,7 @@ public abstract class AbstractExpr extends AbstractInst {
      * */
     @Override
     protected void codeGenInst(DecacCompiler compiler, Label returnLabel, Label local) {
-        // System.out.println("AbsExpr codeGenInst");
+        getLOG().trace("AbsExpr codeGenInst");
         codeGenExprIgnored(compiler);
         // peut être ajouter des labels en paramètre...
         // throw new UnsupportedOperationException("not yet implemented");
@@ -221,12 +226,11 @@ public abstract class AbstractExpr extends AbstractInst {
      * @return Registre ou se trouve notre code généré
      */
     protected GPRegister codeGenReg(DecacCompiler compiler) {
-        // System.out.println("AbsExpr codeGenReg");
+        getLOG().trace("AbsExpr codeGenReg");
         GPRegister reg = compiler.getRegisterManager().getCurrent();
         compiler.addInstruction(new LOAD(codeGenNoReg(compiler), reg));
         // cette instruction permet de charger une valeur dans un registre ici le
         // Registre Current
-        // System.out.println("AbsExpr codeGenReg FIN");
         return reg;
     }
 
@@ -240,7 +244,7 @@ public abstract class AbstractExpr extends AbstractInst {
      * @return GPRegister reg
      */
     protected void codeGenCond(DecacCompiler compiler, Label l, boolean saut) {
-        // System.out.println("AbsExpr codeGenCond");
+        getLOG().trace("AbsExpr codeGenCond");
         compiler.addInstruction(new CMP(0, codeGenReg(compiler)));
         // Cette instruction permet d'effectuer une comparaison comme si une
         // soustraction avait été effectuée.

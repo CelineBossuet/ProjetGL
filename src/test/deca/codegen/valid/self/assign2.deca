@@ -1,0 +1,40 @@
+{
+int a =1;
+int b =2;
+int c =3;
+int d =4;
+int e =5;
+int f = 6;
+
+int g =1;
+int h =2;
+int i =3;
+int j =4;
+int k =5;
+int l = 6;
+
+int m =1;
+int n =2;
+int o =3;
+int p =4;
+int q =5;
+int r = 6;
+
+println(r);
+println(a);
+println(m);
+println(b);
+println(c);
+println(d);
+println(e);
+println(f);
+println(g);
+println(h);
+println(i);
+println(j);
+println(k);
+println(l);
+println(m);
+println(o);
+println(q);
+}

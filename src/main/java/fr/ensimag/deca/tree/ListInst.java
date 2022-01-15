@@ -50,7 +50,6 @@ public class ListInst extends TreeList<AbstractInst> {
                 i.codeGenInst(compiler, returnLabel, local);
             }
         }
-        // System.out.println("ListInst codeGenListInst FIN");
     }
 
     @Override

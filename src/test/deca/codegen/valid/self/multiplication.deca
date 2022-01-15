@@ -1,0 +1,9 @@
+{
+println("multiplication de 5*4 : ", 5*4);
+println("multiplication de 6*(-2) : ", -2*6);
+
+println();
+println("Maintenant pour les Float !");
+println("multiplication de 5.2*4.3 : ", 5.2*4.3);
+println("multiplication de 6.1*(-2.3) : ", -2.1*6.3);
+}

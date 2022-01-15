@@ -9,8 +9,6 @@ import org.apache.commons.lang.Validate;
 
 import java.io.PrintStream;
 
-import static fr.ensimag.deca.tree.AbstractExpr.getLOG;
-
 /**
  *
  * @author gl13
@@ -37,7 +35,7 @@ public class While extends AbstractInst {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler, Label returnLabel, Label local) {
-        // System.out.println("While codeGenInst");
+        getLOG().trace("While codeGenInst");
         Label debutwhile = compiler.getLabelManager().newLabel("while");
         Label condwhile = compiler.getLabelManager().newLabel("condWhile");
         compiler.addInstruction(new BRA(condwhile));
@@ -46,7 +44,6 @@ public class While extends AbstractInst {
         compiler.addLabel(condwhile);
         this.condition.codeGenCond(compiler, debutwhile, true);
         getLOG().info("création et fixation du Label de début du while");
-        // System.out.println("While codeGenInst FIN");
 
         // throw new UnsupportedOperationException("not yet implemented");
     }
@@ -57,7 +54,7 @@ public class While extends AbstractInst {
             throws ContextualError {
         Type cond = this.getCondition().verifyExpr(compiler, localEnv, currentClass);
         if (!cond.isBoolean()) {
-            throw new ContextualError("Une condition d'un while doit être un booléen", this.getLocation());
+            throw new ContextualError("La condition d'un while doit être un booléen", this.getLocation());
         }
 
         this.body.verifyListInst(compiler, localEnv, currentClass, returnType);
