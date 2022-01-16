@@ -1,10 +1,9 @@
 package fr.ensimag.bytecode.pseudocode.instructions;
 
-import fr.ensimag.bytecode.pseudocode.BinaryInstruction;
-import fr.ensimag.bytecode.pseudocode.Operand;
+import fr.ensimag.bytecode.pseudocode.*;
 
-public class if_acmpeq extends BinaryInstruction {
+public class if_acmpeq extends BinaryInstructionDValToReg {
 
-    public if_acmpeq(Operand op1, Operand op2){super(op1, op2);}
+    public if_acmpeq(DVal op1, GPRegister op2){super(op1, op2);}
 
 }
