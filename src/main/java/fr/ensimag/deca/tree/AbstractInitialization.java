@@ -38,4 +38,8 @@ public abstract class AbstractInitialization extends Tree {
      */
     protected abstract void codeGeneInit(DecacCompiler compiler, DAddr target);
 
+
+    // TODO codeGen for Bytecode
+    protected  abstract void codeGeneInitBytecode(DecacCompiler compiler, DAddr target);
+
 }

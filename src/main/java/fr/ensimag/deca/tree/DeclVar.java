@@ -69,6 +69,23 @@ public class DeclVar extends AbstractDeclVar {
         return 1;
     }
 
+
+
+    // TODO codeGen for bytecode
+    @Override
+    protected int codeGenVarBytecode(DecacCompiler compiler) {
+        VariableDefinition d = varName.getVariableDefinition();
+
+        DAddr o = compiler.getMemoryManager().allocGB(1);
+        d.setOperand(o);
+        initialization.codeGeneInitBytecode(compiler, d.getOperand());
+        //System.out.println("DeclVar codeGenVar FIN");
+        return 1;
+    }
+
+
+
+
     @Override
     public void decompile(IndentPrintStream s) {
         type.decompile(s);

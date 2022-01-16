@@ -304,6 +304,65 @@ public class DecacCompiler {
     // A FAIRE methods addPUSH, addADDSP, addSUBSP, ...
 
 
+
+    // TODO docompile pour le bytecode
+    private boolean doCompileBytecode(String sourceName, String destName,
+                              PrintStream out, PrintStream err)
+            throws DecacFatalError, LocationException {
+        AbstractProgram prog = doLexingAndParsing(sourceName, err);
+
+        if (prog == null) {
+            LOG.info("Parsing failed");
+            return true;
+        }
+
+        if (compilerOptions.getParser()) { // Stop compiling if -p option
+            prog.decompile(out);
+            return false;
+        }
+
+        // assert(prog.checkAllLocations()); A FAIRE
+        LOG.info("Starting verification");
+        prog.verifyProgram(this);
+        // assert(prog.checkAllDecorations()); A FAIRE
+
+        if (compilerOptions.getVerif()) // Stop compiling if -v option
+            return false;
+
+        addComment("start main program");
+        prog.codeGenProgram(this);
+        addComment("end main program");
+
+        //Génération des Label d'erreurs
+        this.addLabel(this.getLabelManager().getIErrorLabel());
+        this.addInstruction(new WSTR("Input Error"));
+        this.addInstruction(new WNL());
+        this.addInstruction(new ERROR());
+
+        this.addLabel(this.labelManager.getOverFlowLabel());
+        this.addInstruction(new WSTR("OverFlow Error"));
+        this.addInstruction(new WNL());
+        this.addInstruction(new ERROR());
+
+        LOG.debug("Generated assembly code:" + nl + program.display());
+        LOG.info("Output file assembly file is: " + destName);
+
+        FileOutputStream fstream = null;
+        try {
+            fstream = new FileOutputStream(destName);
+        } catch (FileNotFoundException e) {
+            throw new DecacFatalError("Failed to open output file: " + e.getLocalizedMessage());
+        }
+
+        LOG.info("Writing assembler file ...");
+
+        program.display(new PrintStream(fstream));
+        LOG.info("Compilation of " + sourceName + " successful.");
+        return false;
+    }
+
+
+
     // TODO adaptation du programme de compilation pour générer des fichiers .j
     public boolean compile_byte() {
         String sourceFile = source.getAbsolutePath();
@@ -315,7 +374,7 @@ public class DecacCompiler {
         PrintStream out = System.out;
         LOG.debug("Compiling file " + sourceFile + " to bytecode file " + destFile);
         try {
-            return doCompile(sourceFile, destFile, out, err);
+            return doCompileBytecode(sourceFile, destFile, out, err);
         } catch (LocationException e) {
             e.display(err);
             return true;

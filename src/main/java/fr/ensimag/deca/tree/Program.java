@@ -85,6 +85,17 @@ public class Program extends AbstractProgram {
         compiler.addInstruction(new HALT());
     }
 
+
+    // TODO codeGenProgram for bytecode
+
+    @Override
+    public void codeGenProgramBytecode(DecacCompiler compiler) {
+        compiler.addComment("Main program");
+        main.codeGenMainBytecode(compiler);
+        // TODO find a solution for return
+    }
+
+
     @Override
     public void decompile(IndentPrintStream s) {
         getClasses().decompile(s);

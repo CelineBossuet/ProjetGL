@@ -53,6 +53,25 @@ public class ListInst extends TreeList<AbstractInst> {
         //System.out.println("ListInst codeGenListInst FIN");
     }
 
+
+    // TODO codeGenListInst for bytecode
+    public void codeGenListInstBytecode(DecacCompiler compiler, Label returnLabel, Label local) {
+        //System.out.println("LinstInst codeGenListInst");
+        int compteur = 1;
+        for (AbstractInst i : getList()) {
+            if (compteur != this.getList().size()){
+                i.codeGenInstBytecode(compiler, returnLabel, null);
+                compteur += 1;
+            }else{
+                i.codeGenInstBytecode(compiler, returnLabel, local);
+            }
+        }
+        //System.out.println("ListInst codeGenListInst FIN");
+    }
+
+
+
+
     @Override
     public void decompile(IndentPrintStream s) {
         for (AbstractInst i : getList()) {
