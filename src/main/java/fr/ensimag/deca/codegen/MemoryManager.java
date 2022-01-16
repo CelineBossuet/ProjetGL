@@ -1,7 +1,8 @@
 package fr.ensimag.deca.codegen;
 
-import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.STORE;
 
 
 /**
@@ -20,9 +21,12 @@ public class MemoryManager {
 
     public int getCurrentLB() {return currentLB;}
 
+    public RegisterOffset getCurrentGBOperand(){
+        return new RegisterOffset(currentGB, Register.GB);
+    }
+
 
     public void initLGB(){
-        currentGB=0;
         currentLB=0;
         maxLB=0;
     }
@@ -48,6 +52,14 @@ public class MemoryManager {
         if(currentLB +2 > maxLB){
             maxLB=currentLB+2;
         }
+    }
+
+    public RegisterOffset createConstant(DVal value, IMAProgram program){
+        assert(value!=null);
+        DAddr add = allocGB(1);
+        program.addInstruction(new LOAD(value, Register.getR(0)));
+        program.addInstruction(new STORE(Register.getR(0), add));
+        return new RegisterOffset(currentGB, Register.GB);
     }
 
 }

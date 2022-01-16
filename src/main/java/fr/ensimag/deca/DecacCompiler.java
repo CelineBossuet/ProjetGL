@@ -10,9 +10,7 @@ import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.deca.tree.*;
 import fr.ensimag.ima.pseudocode.*;
-import fr.ensimag.ima.pseudocode.instructions.ERROR;
-import fr.ensimag.ima.pseudocode.instructions.WNL;
-import fr.ensimag.ima.pseudocode.instructions.WSTR;
+import fr.ensimag.ima.pseudocode.instructions.*;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.apache.log4j.Logger;
@@ -182,6 +180,37 @@ public class DecacCompiler {
         return program;
     }
 
+    public void startBlock(){
+        assert(currentBlock==program);
+        currentBlock=new IMAProgram();
+        getMemoryManager().initLGB();
+        getRegisterManager().initRegister();
+    }
+
+    public void endBlock(boolean error, boolean saveReg, int size, Label returnLabel){
+        if (error){
+            addInstruction(new BRA(getLabelManager().getNoReturnLabel()));
+        }
+        if (returnLabel!=null){
+            addLabel(returnLabel);
+        }
+
+        if(saveReg){
+            for(int i=2; i<getRegisterManager().getLastUsed(); i++){
+                currentBlock.addFirst(new PUSH(Register.getR(i)));
+                currentBlock.addInstruction(new POP(Register.getR(i)));
+            }
+        }
+        if(size!=0){
+            currentBlock.addFirst(new ADDSP(size));
+        }
+        if(returnLabel!=null){
+            addInstruction(new RTS());
+        }
+        program.append(currentBlock);
+        currentBlock = program;
+    }
+
     /**
      * 
      * @return Type environment which includes in particular builtin types.
@@ -285,6 +314,11 @@ public class DecacCompiler {
 
         this.addLabel(this.labelManager.getPilePleineLabel());
         this.addInstruction(new WSTR("Error: Pile Pleine"));
+        this.addInstruction(new WNL());
+        this.addInstruction(new ERROR());
+
+        this.addLabel(this.labelManager.getNoReturnLabel());
+        this.addInstruction(new WSTR("Error: Pas de Return dans la méthode"));
         this.addInstruction(new WNL());
         this.addInstruction(new ERROR());
 

@@ -17,6 +17,8 @@ public class RegisterManager {
     private int lastUsed=-1;
 
     public void initRegister(){
+        assert(current ==2);
+        //peut pas reinitialiser si des regitres sont déjà alloués
         this.lastUsed=1;
     }
 

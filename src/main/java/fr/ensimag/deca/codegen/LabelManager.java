@@ -12,12 +12,20 @@ public class LabelManager {
     private Label overFlowLabel; //label gérant les overflow error
     private Label stack_overflowLabel;
     private Label pilePleineLabel; //utilisée pour le NEW()
+    private Label noReturnLabel; //erreur pas de return dans une méthode non void
     private int counter=0; //compteur pour générer des Labels numérotés
 
 
     public Label newLabel(String name){
         this.counter++;
         return new Label(name, this.counter);
+    }
+
+    public Label getNoReturnLabel(){
+        if(this.noReturnLabel ==null){
+            this.noReturnLabel =new Label("noReturnLabel", 0);
+        }
+        return noReturnLabel;
     }
 
     public Label getStack_overflowLabel(){

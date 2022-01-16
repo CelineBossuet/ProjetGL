@@ -1,12 +1,23 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.VTable;
+import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable;
+import fr.ensimag.ima.pseudocode.DAddr;
+import fr.ensimag.ima.pseudocode.LabelOperand;
+import fr.ensimag.ima.pseudocode.NullOperand;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.LEA;
+import fr.ensimag.ima.pseudocode.instructions.STORE;
+import org.apache.log4j.Logger;
+import sun.jvm.hotspot.debugger.cdbg.Sym;
 
 import java.io.PrintStream;
 import java.util.HashSet;
+import java.util.Map;
 
 /**
  * Declaration of a class (<code>class name extends superClass {members}<code>).
@@ -20,6 +31,11 @@ public class DeclClass extends AbstractDeclClass {
     private ListDeclField field;
     private ListDeclMethod method;
     private HashSet<SymbolTable.Symbol> alreadyUsed= new HashSet<>();
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DeclClass.class);
+
+    public static Logger getLOG() {
+        return LOG;
+    }
 
 
     public DeclClass(AbstractIdentifier name, AbstractIdentifier superClass, ListDeclField field, ListDeclMethod method){
@@ -80,6 +96,51 @@ public class DeclClass extends AbstractDeclClass {
     protected void verifyClassBody(DecacCompiler compiler) throws ContextualError {
         //throw new UnsupportedOperationException("not yet implemented");
 
+    }
+
+    @Override
+    protected void codeGenClass(DecacCompiler compiler) {
+        ClassDefinition currentDef = name.getClassDefinition();
+        ClassDefinition superDef =currentDef.getSuperClass();
+        currentDef.setConstructorLabel(compiler.getLabelManager().newLabel("init."+name.getName()));
+        //on a créé le Label pour l'initialisation de la classe
+
+        VTable vTable;
+        VTable superVTable;
+        if(superDef==null){
+            superVTable =null;
+            compiler.getMemoryManager().createConstant(new NullOperand(), compiler.getCurrentBlock());
+            //pas de VTable parent pour notre classe
+        }
+        else{
+            LOG.info("on garde en mémoire le pointeur vers la VTable parent");
+            superVTable=superDef.getvTable();
+            DAddr tab = compiler.getMemoryManager().allocGB(1);
+            DAddr AddrVTable = compiler.getMemoryManager().getCurrentGBOperand();
+            compiler.addInstruction(new LEA(superVTable.getOperand(), Register.getR(0)));
+            compiler.addInstruction(new STORE(Register.getR(0), AddrVTable));
+
+        }
+        vTable= new VTable(currentDef.getNumberOfMethods(), superVTable);
+        //on peut donc créer notre VTable maintenant
+        currentDef.setvTable(vTable); //on l'ajoute dans notre definition
+        vTable.setOperand(compiler.getMemoryManager().getCurrentGBOperand());
+
+        for (Map.Entry<Symbol, ExpDefinition> e : currentDef.getMembers().getEnvironment().entrySet()){
+            if(e.getValue().isMethod()){
+                MethodDefinition m=(MethodDefinition) e.getValue();
+                Symbol name = e.getKey();
+                vTable.set(m.getIndex(), new LabelOperand(m.getLabel()));
+            }
+        }
+        vTable.codeGen(compiler);
+
+        //throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    @Override
+    protected void codeGenClassBody(DecacCompiler compiler) {
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 
     @Override
