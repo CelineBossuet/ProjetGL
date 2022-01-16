@@ -50,4 +50,9 @@ public class DeclMethod extends AbstractDeclMethod{
 
 
     }
+
+    @Override
+    protected void codeGenMethodBody(DecacCompiler compiler) {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
 }

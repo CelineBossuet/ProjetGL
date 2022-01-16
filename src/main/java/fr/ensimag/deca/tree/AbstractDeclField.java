@@ -3,6 +3,7 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.ima.pseudocode.GPRegister;
 
 public abstract class AbstractDeclField extends Tree{
 
@@ -24,4 +25,8 @@ public abstract class AbstractDeclField extends Tree{
      */
     protected abstract void verifyBody(DecacCompiler compiler, ClassDefinition superClass, ClassDefinition currenClass) throws ContextualError;
 
+
+    protected abstract boolean codeFieldNeedsInit(DecacCompiler compiler, GPRegister reg);
+
+    protected abstract boolean codeGenFieldBody(DecacCompiler compiler, GPRegister reg);
 }

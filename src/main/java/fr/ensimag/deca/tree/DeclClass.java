@@ -6,11 +6,10 @@ import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable;
-import fr.ensimag.ima.pseudocode.DAddr;
-import fr.ensimag.ima.pseudocode.LabelOperand;
-import fr.ensimag.ima.pseudocode.NullOperand;
-import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.LEA;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.RTS;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
 import org.apache.log4j.Logger;
 import sun.jvm.hotspot.debugger.cdbg.Sym;
@@ -140,7 +139,39 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     protected void codeGenClassBody(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        ClassDefinition currentdef = name.getClassDefinition();
+        compiler.addLabel(currentdef.getConstructorLabel());
+        compiler.startBlock();
+
+        GPRegister thisReg = Register.getR(1);
+        compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), thisReg));
+
+        boolean needsInit=false;
+        LOG.info("initialisation des attributs par défaut");
+        for(AbstractDeclField f : field.getList()){
+            if(needsInit){
+                f.codeFieldNeedsInit(compiler, thisReg);
+            }else{
+            needsInit = f.codeFieldNeedsInit(compiler, thisReg);}
+        }
+
+        if(needsInit){
+            thisReg = compiler.allocate();
+            compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), thisReg));
+            for(AbstractDeclField f : field.getList()){
+                f.codeGenFieldBody(compiler, thisReg);
+            }
+            compiler.release(thisReg);
+        }
+
+
+        compiler.endBlock(false, true, 0, null);
+        compiler.addInstruction(new RTS());
+        for (AbstractDeclMethod m : method.getList()){
+            m.codeGenMethodBody(compiler);
+        }
+
+        //throw new UnsupportedOperationException("Not yet implemented");
     }
 
     @Override

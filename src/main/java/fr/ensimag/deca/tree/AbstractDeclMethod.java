@@ -10,4 +10,6 @@ import java.io.PrintStream;
 public abstract class AbstractDeclMethod extends Tree{
 
     protected abstract void verifyMembers(DecacCompiler compiler, ClassDefinition superClass, ClassDefinition currentClass) throws ContextualError;
+
+    protected abstract void codeGenMethodBody(DecacCompiler compiler);
 }

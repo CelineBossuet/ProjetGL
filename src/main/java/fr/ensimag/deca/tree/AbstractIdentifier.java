@@ -11,6 +11,7 @@ import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.context.VariableDefinition;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.SymbolTable;
+import fr.ensimag.ima.pseudocode.GPRegister;
 
 /**
  *
@@ -95,4 +96,6 @@ public abstract class AbstractIdentifier extends AbstractLValue {
     public abstract Type verifyType(DecacCompiler compiler) throws ContextualError;
 
     public abstract Type verifyTypeClass(DecacCompiler compiler) throws ContextualError;
+
+    public abstract GPRegister initDefaultValue(DecacCompiler compiler, GPRegister reg);
 }
