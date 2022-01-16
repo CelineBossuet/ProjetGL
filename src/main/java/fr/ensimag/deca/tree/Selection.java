@@ -19,7 +19,21 @@ public class Selection extends AbstractLValue{
 
     @Override
     public Type verifyExpr(DecacCompiler compiler, Environment<ExpDefinition> localEnv, ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("Not yet implemented");
+        //throw new UnsupportedOperationException("Not yet implemented");
+        Type t = this.object.verifyExpr(compiler, localEnv, currentClass);
+        ClassType type;
+        try{
+            type = t.asClassType("Doit être une classe avant séparateur", this.getLocation());
+        }catch (ContextualError c){
+            throw c;
+        }
+        FieldDefinition fieldDefinition = field.verifyField(compiler, type);
+        if (fieldDefinition.getVisibility() == Visibility.PROTECTED){
+            //TODO
+        }
+        field.setDefinition(fieldDefinition);
+        setType(fieldDefinition.getType());
+        return this.getType();
     }
 
     @Override

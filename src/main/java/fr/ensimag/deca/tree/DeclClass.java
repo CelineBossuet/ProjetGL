@@ -53,9 +53,7 @@ public class DeclClass extends AbstractDeclClass {
     @Override
     protected void verifyClass(DecacCompiler compiler) throws ContextualError { // A FAIRE
         if (superClass.getDefinition()==null){
-            System.out.println("oh");
             this.superClass.setDefinition(compiler.OBJECT);
-            System.out.println(superClass.getClassDefinition());
         }else{
             superClass.verifyTypeClass(compiler);
         }
@@ -79,7 +77,6 @@ public class DeclClass extends AbstractDeclClass {
             throws ContextualError {
         //throw new UnsupportedOperationException("not yet implemented");
         ClassDefinition currentDef = (ClassDefinition) this.name.getDefinition();
-        System.out.println(superClass.getDefinition());
         ClassDefinition superDef = (ClassDefinition) this.superClass.getDefinition();
         currentDef.setNumberOfFields(superDef.getNumberOfFields());
         currentDef.setNumberOfMethods(superDef.getNumberOfMethods());
@@ -94,7 +91,13 @@ public class DeclClass extends AbstractDeclClass {
     @Override
     protected void verifyClassBody(DecacCompiler compiler) throws ContextualError {
         //throw new UnsupportedOperationException("not yet implemented");
-
+        ClassDefinition currentDef = (ClassDefinition) this.name.getDefinition();
+        for(AbstractDeclField adf : this.field.getList()){
+            adf.verifyBody(compiler, currentDef);
+        }
+        for(AbstractDeclMethod adm : this.method.getList()){
+            adm.verifyBody(compiler, currentDef);
+        }
     }
 
     @Override

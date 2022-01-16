@@ -23,7 +23,7 @@ public abstract class AbstractDeclField extends Tree{
      * @param currenClass
      * @throws ContextualError
      */
-    protected abstract void verifyBody(DecacCompiler compiler, ClassDefinition superClass, ClassDefinition currenClass) throws ContextualError;
+    protected abstract void verifyBody(DecacCompiler compiler, ClassDefinition currenClass) throws ContextualError;
 
 
     protected abstract boolean codeFieldNeedsInit(DecacCompiler compiler, GPRegister reg);

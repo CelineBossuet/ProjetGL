@@ -1,9 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
 import java.io.PrintStream;
@@ -41,14 +39,36 @@ public class DeclMethod extends AbstractDeclMethod{
 
     @Override
     protected void verifyMembers(DecacCompiler compiler, ClassDefinition superClass, ClassDefinition currentClass) throws ContextualError {
-        Type type = this.type.verifyType(compiler);
-
-
-
-
         //throw new UnsupportedOperationException("Not yet implemented");
+        Type type = this.type.verifyMethodType(compiler);
+        Signature sig = this.param.verifyParameters(compiler);
+        int toVerify = 0;
+        if (superClass != null){
+            Definition superClassDef = superClass.getMembers().get(this.name.getName());
+            if(superClassDef == null){
+                toVerify = currentClass.getNumberOfMethods();
+            }else {
+                MethodDefinition superMethode = superClassDef.asMethodDefinition("Tentative de lecture de l'arbre", this.getLocation());
+                toVerify = superMethode.getIndex();
+            }
 
+        }
+        MethodDefinition newDef= new MethodDefinition(type, this.getLocation(), sig, toVerify);
+        newDef.setLabel(compiler.getLabelManager().newLabel(name.getName().getName()));
+        try{
+            currentClass.getMembers().declare(this.name.getName(), newDef);
+        } catch (Environment.DoubleDefException e) {
+            throw new ContextualError("Méthode déjà créée", this.getLocation());
+        }
+        this.name.setDefinition(newDef);
+    }
 
+    @Override
+    public void verifyBody(DecacCompiler compiler, ClassDefinition currentDef) throws ContextualError{
+        //throw new UnsupportedOperationException("Not yet implemeted");
+        Environment<ExpDefinition> localEnv = new Environment<ExpDefinition>(currentDef.getMembers());
+        this.param.verifyBody(compiler, localEnv);
+        this.body.verifyBody(compiler, localEnv, currentDef, this.type.getType());
     }
 
     @Override
