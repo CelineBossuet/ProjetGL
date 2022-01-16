@@ -6,5 +6,5 @@ import fr.ensimag.bytecode.pseudocode.UnaryInstructionToReg;
 public class astore extends UnaryInstructionToReg {
 
     public astore(GPRegister op){super(op);}
-    
+
 }

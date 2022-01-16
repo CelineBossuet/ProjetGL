@@ -1,17 +1,11 @@
 package fr.ensimag.bytecode.pseudocode.instructions;
 
-import fr.ensimag.bytecode.pseudocode.BinaryInstructionDValToReg;
-import fr.ensimag.bytecode.pseudocode.DVal;
-import fr.ensimag.bytecode.pseudocode.GPRegister;
-import fr.ensimag.bytecode.pseudocode.ImmediateInteger;
-import fr.ensimag.bytecode.pseudocode.Operand;
-import fr.ensimag.bytecode.pseudocode.UnaryInstruction;
+import fr.ensimag.bytecode.pseudocode.*;
 
-public class bipush extends UnaryInstruction {
+public class bipush extends UnaryInstructionToReg {
 
-    public bipush(Operand op1) {
+    public bipush(GPRegister op1) {
         super(op1);
     }
-    
 
 }
