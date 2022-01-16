@@ -130,19 +130,23 @@ inst returns[AbstractInst tree]
     | PRINT OPARENT list_expr CPARENT SEMI {
             assert($list_expr.tree != null); //tjs tester si c'est pas null
             $tree = new Print(false, $list_expr.tree); //false car on veut pas du hexa
+            setLocation($tree, $PRINT);
 
         }//TOBETESTED
     | PRINTLN OPARENT list_expr CPARENT SEMI {
             assert($list_expr.tree != null);
             $tree= new Println(false, $list_expr.tree); //pareil false car pas en hexa
+            setLocation($tree, $PRINTLN);
         }
     | PRINTX OPARENT list_expr CPARENT SEMI {
             assert($list_expr.tree != null);
             $tree = new Print(true, $list_expr.tree); //true car on veut de l'hexa
+            setLocation($tree, $PRINTX);
         }//TOBETESTED
     | PRINTLNX OPARENT list_expr CPARENT SEMI {
             assert($list_expr.tree != null);
             $tree = new Println(true, $list_expr.tree);
+            setLocation($tree, $PRINTLNX);
         } //TOBETESTED
     | if_then_else {
             assert($if_then_else.tree != null);
@@ -464,9 +468,11 @@ type returns[AbstractIdentifier tree]
 literal returns[AbstractExpr tree]
     : INT {
         $tree = new IntLiteral(Integer.parseInt($INT.getText()));
+        setLocation($tree, $INT);
         }//TOBETESTED
     | fd=FLOAT {
         $tree = new FloatLiteral(Float.parseFloat($fd.text));
+        setLocation($tree, $fd);
         }//TOBETESTED
     | STRING
         //Pour ne pas afficher les guillemets dans un String il faut le filtrer, le parcourir
@@ -489,15 +495,19 @@ literal returns[AbstractExpr tree]
         }
     | TRUE {
         $tree = new BooleanLiteral(true);
+        setLocation($tree, $TRUE);
         }//TOBETESTED
     | FALSE {
         $tree = new BooleanLiteral(false);
+        setLocation($tree, $FALSE);
         }//TOBETESTED
     | THIS {
         $tree = new This(true);
+        setLocation($tree, $THIS);
         }//TOBETESTED
     | NULL {
         $tree = new Null();
+        setLocation($tree, $NULL);
         }//TOBETESTED
     ;
 
@@ -505,6 +515,7 @@ literal returns[AbstractExpr tree]
 ident returns[AbstractIdentifier tree]
     : IDENT {
         $tree = new Identifier(getDecacCompiler().getSymbolTable().create($IDENT.getText()));
+        setLocation($tree, $IDENT);
         }//TOBETESTED
     ;
 

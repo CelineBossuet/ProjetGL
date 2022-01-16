@@ -8,12 +8,15 @@
 //    cree le 10/01/2022
 
 {
-    int x = 0
-    int y = 1
-    compteur = 2
+    int x = 0;
+    int y = 1;
+    int compteur = 1;
     while(compteur != 42){
+    println(x);
+    println(y);
     y = x + y;
     x = y - x;
+    compteur = compteur + 1;
     }
     println("Le nombre 42 de la suite de fibonacci est:");
     println(y);

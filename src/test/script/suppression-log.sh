@@ -9,6 +9,7 @@ cd ./src/test/deca
 find . -name "*.lis" -type f -delete
 find . -name "*.ass" -type f -delete
 find . -name "*.res" -type f -delete
+find . -name "*.decap" -type f -delete
 
 echo -e "Fichiers supprimés avec succés"
 

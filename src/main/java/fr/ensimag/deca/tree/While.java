@@ -1,14 +1,13 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.Environment;
-import fr.ensimag.deca.context.ExpDefinition;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import java.io.PrintStream;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.instructions.BRA;
 import org.apache.commons.lang.Validate;
+
+import java.io.PrintStream;
 
 /**
  *
@@ -35,25 +34,41 @@ public class While extends AbstractInst {
     }
 
     @Override
-    protected void codeGenInst(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
+    protected void codeGenInst(DecacCompiler compiler, Label returnLabel, Label local) {
+        getLOG().trace("While codeGenInst");
+        Label debutwhile = compiler.getLabelManager().newLabel("while");
+        Label condwhile = compiler.getLabelManager().newLabel("condWhile");
+        compiler.addInstruction(new BRA(condwhile));
+        compiler.addLabel(debutwhile);
+        this.body.codeGenListInst(compiler, returnLabel, condwhile);
+        compiler.addLabel(condwhile);
+        this.condition.codeGenCond(compiler, debutwhile, true);
+        getLOG().info("création et fixation du Label de début du while");
+
+        // throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override
     protected void verifyInst(DecacCompiler compiler, Environment<ExpDefinition> localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
+        Type cond = this.getCondition().verifyExpr(compiler, localEnv, currentClass);
+        if (!cond.isBoolean()) {
+            throw new ContextualError("La condition d'un while doit être un booléen", this.getLocation());
+        }
+
+        this.body.verifyListInst(compiler, localEnv, currentClass, returnType);
     }
 
     @Override
     public void decompile(IndentPrintStream s) {
-        s.print("while (");
+        s.print("while(");
         getCondition().decompile(s);
-        s.println(") {");
+        s.println("){");
         s.indent();
         getBody().decompile(s);
         s.unindent();
-        s.print("}");
+        s.println("}");
     }
 
     @Override

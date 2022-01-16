@@ -1,12 +1,10 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.Environment;
-import fr.ensimag.deca.context.ExpDefinition;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.DAddr;
+
 import java.io.PrintStream;
 
 /**
@@ -22,8 +20,15 @@ public class NoInitialization extends AbstractInitialization {
     protected void verifyInitialization(DecacCompiler compiler, Type t,
             Environment<ExpDefinition> localEnv, ClassDefinition currentClass)
             throws ContextualError {
-        // A FAIRE TODO
-        throw new UnsupportedOperationException("not yet implemented");
+
+        // Pas d'initialisation
+        // On pourrait mettre un log
+        // throw new UnsupportedOperationException("not yet implemented");
+    }
+
+    @Override
+    protected void codeGeneInit(DecacCompiler compiler, DAddr target) {
+        // rien à faire
     }
 
     /**

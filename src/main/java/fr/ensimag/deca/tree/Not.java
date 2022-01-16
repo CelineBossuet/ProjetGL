@@ -26,7 +26,14 @@ public class Not extends AbstractUnaryExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, Environment<ExpDefinition> localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        //throw new UnsupportedOperationException("not yet implemented");
+        Type ope = this.getOperand().verifyExpr(compiler, localEnv, currentClass);
+        if (ope.isBoolean()){
+            this.setType(ope);
+            return ope;
+        }else{
+            throw new ContextualError("Une négation peut être faite seulement sur un booléen", this.getLocation());
+        }
     }
 
     @Override
@@ -36,24 +43,31 @@ public class Not extends AbstractUnaryExpr {
 
     @Override
     protected Instruction geneInstru(GPRegister reg) {
-        throw new DecacInternalError("Pas de génération d'instruction possible pour Not");
+        throw new DecacInternalError("Pas de génération d'instruction pour Not");
     }
 
     @Override
     protected GPRegister codeGenReg(DecacCompiler compiler) {
-        // TODO factoriser ce code avec celui dans AbstractOpBool
         Label elseLabel = compiler.getLabelManager().newLabel("elseC2R");
         Label end = compiler.getLabelManager().newLabel("endC2R");
         GPRegister r = compiler.getRegisterManager().getCurrent();
 
         compiler.addInstruction(new CMP(0, r));
-        compiler.addInstruction(new BNE(elseLabel));
-
+        compiler.addInstruction(new BEQ(elseLabel));
+        compiler.addInstruction(new LOAD(0, r));
         compiler.addInstruction(new BRA(end));
         compiler.addLabel(elseLabel);
 
         compiler.addInstruction(new LOAD(1, r));
+        compiler.addInstruction(new BRA(end));
+
         compiler.addLabel(end);
         return r;
+    }
+
+    @Override
+    protected void codeGenCond(DecacCompiler compiler, Label l, boolean saut){
+        getLOG().info("le Not inverse la logique dans codeGenCond");
+        getOperand().codeGenCond(compiler, l, !saut);
     }
 }

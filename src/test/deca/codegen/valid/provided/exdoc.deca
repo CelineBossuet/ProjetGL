@@ -9,6 +9,7 @@
 
 // Un exemple de programme Deca
 
+/* A décomenter aprés les classes
 class A {
    protected int x ;
    int getX() {
@@ -25,3 +26,4 @@ class A {
    a.setX(1) ;
    println("a.getX() = ", a.getX()) ;
 }
+*/

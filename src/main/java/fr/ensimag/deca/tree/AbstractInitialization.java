@@ -6,6 +6,7 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.Environment;
 import fr.ensimag.deca.context.ExpDefinition;
+import fr.ensimag.ima.pseudocode.DAddr;
 
 /**
  * Initialization (of variable, field, ...)
@@ -28,5 +29,13 @@ public abstract class AbstractInitialization extends Tree {
     protected abstract void verifyInitialization(DecacCompiler compiler,
             Type t, Environment<ExpDefinition> localEnv, ClassDefinition currentClass)
             throws ContextualError;
+
+
+    /**
+     * Genération du code assembleur pour l'initialisation de variables
+     * @param compiler
+     * @param target adresse ou Store la valeur du registre
+     */
+    protected abstract void codeGeneInit(DecacCompiler compiler, DAddr target);
 
 }

@@ -8,20 +8,35 @@ import fr.ensimag.ima.pseudocode.Label;
  * @date 10/01/2022
  */
 public class LabelManager {
-    private Label label;
-    private Label io_errorLabel;
-    private int counter=0;
+    private Label input_errorLabel; //label permettant de gérer un mauvais input pour readInt, readFloat
+    private Label overFlowLabel; //label gérant les overflow error
+    private Label stack_overflowLabel;
+    private int counter=0; //compteur pour générer des Labels numérotés
 
 
     public Label newLabel(String name){
-        counter++;
-        return new Label(name);
+        this.counter++;
+        return new Label(name, this.counter);
     }
 
-    public Label getIoErrorLabel() {
-        if (io_errorLabel == null) {
-            io_errorLabel = new Label("error");
+    public Label getStack_overflowLabel(){
+        if(this.stack_overflowLabel==null){
+            this.stack_overflowLabel = new Label("stackOverflow", 0);
         }
-        return io_errorLabel;
+        return this.stack_overflowLabel;
+    }
+
+    public Label getIErrorLabel() {
+        if (this.input_errorLabel == null) {
+            this.input_errorLabel = new Label("inputError", 0);
+        }
+        return input_errorLabel;
+    }
+
+    public Label getOverFlowLabel(){
+        if (this.overFlowLabel ==null){
+            this.overFlowLabel =new Label("overFlowError", 0);
+        }
+        return this.overFlowLabel;
     }
 }

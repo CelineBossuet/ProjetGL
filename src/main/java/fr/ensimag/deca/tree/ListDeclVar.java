@@ -17,7 +17,10 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        for (AbstractDeclVar var : this.getList()) {
+            var.decompile(s);
+            s.println();
+        }
     }
 
     /**
@@ -43,12 +46,13 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
             dV.verifyDeclVar(compiler, localEnv, currentClass);
     }
 
-
-    protected int codeGenListVar(DecacCompiler compiler){
-        int size=0; //TODO fini ?
-        for (AbstractDeclVar var : this.getList()){
-            size+=var.codeGenVar(compiler);
+    protected int codeGenListVar(DecacCompiler compiler) {
+        // System.out.println("ListDeclVar codeGenListVar");
+        int size = 0; // TODO fini ?
+        for (AbstractDeclVar var : this.getList()) {
+            size += var.codeGenVar(compiler);
         }
+        // System.out.println("ListDeclVar codeGenListVar FIN");
         return size;
     }
 }

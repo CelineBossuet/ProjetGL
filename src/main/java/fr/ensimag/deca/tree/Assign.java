@@ -1,18 +1,12 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.Type;
-import fr.ensimag.deca.tree.Identifier;
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.Environment;
-import fr.ensimag.deca.context.ExpDefinition;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.DecacInternalError;
-import fr.ensimag.ima.pseudocode.BinaryInstruction;
-import fr.ensimag.ima.pseudocode.DAddr;
-import fr.ensimag.ima.pseudocode.DVal;
-import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.PEA;
+import fr.ensimag.ima.pseudocode.instructions.POP;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
 
 /**
@@ -37,7 +31,12 @@ public class Assign extends AbstractBinaryExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, Environment<ExpDefinition> localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        Type left = this.getLeftOperand().verifyExpr(compiler, localEnv,currentClass);
+        AbstractExpr right = this.getRightOperand().verifyRValue(compiler, localEnv, currentClass, left);
+        setRightOperand(right);
+
+        return left;
+        //throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override
@@ -52,15 +51,22 @@ public class Assign extends AbstractBinaryExpr {
 
     @Override
     protected GPRegister codeGenReg(DecacCompiler compiler){
+        getLOG().trace("Assign codeGenReg");
         AbstractLValue left = getLeftOperand();
         AbstractExpr right =getRightOperand();
-
         GPRegister reg = compiler.getRegisterManager().getCurrent();
         GPRegister rightReg;
         DAddr val = left.codeGenAddr(compiler);
-        if(compiler.getRegisterManager().getLastUsed()-compiler.getRegisterManager().getCurrentv()+1 <=0){
-            rightReg=reg;
-            //pas de registre disponible TODO
+        if(compiler.getRegisterManager().getMax()-compiler.getRegisterManager().getCurrentv()+1 <=0){
+            rightReg = right.codeGenReg(compiler);
+            getLOG().info("pas de registre disponible il faut en allouer un");
+            getLOG().debug("pas de registre disponible if faut en allouer un");
+            compiler.getMemoryManager().allocLB(1); //on suppose une taille de 1 pour les variables
+            compiler.addInstruction(new PEA(val));
+            compiler.addInstruction(new POP(Register.getR(0)));
+            getLOG().info("POP permet de restoré la valeur lvalue sauvée ");
+            val= new RegisterOffset(0,Register.getR(0));
+
         }
         else{
             GPRegister alloc = compiler.allocate();
@@ -69,6 +75,7 @@ public class Assign extends AbstractBinaryExpr {
         }
         compiler.addInstruction(new STORE(rightReg, val));
         compiler.addInstruction(new LOAD(rightReg, reg));
+        //permet de d'assigner la valeur pour la variable puis de la LOAD
         return reg;
     }
 }

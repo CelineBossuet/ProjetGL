@@ -1,0 +1,20 @@
+{
+    boolean b=true==true;
+    boolean b1=true;
+    boolean b2=false;
+    boolean b3;
+    if(b){
+        println("b est true");
+    }
+    else{
+        println("b est false");
+    }
+
+    b3=b1!=b2;
+    if(b3){
+        println("b3 est true");
+    }else{
+        println("b3 est false");
+    }
+
+}

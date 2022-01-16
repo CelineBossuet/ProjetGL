@@ -33,7 +33,7 @@ public class Main extends AbstractMain {
         LOG.debug("verify Main: start");
         Environment<ExpDefinition> envi = new Environment<ExpDefinition>(null);
         declVariables.verifyListDeclVariable(compiler, envi, null); // no parent to env
-                                                                                                    // this is in
+                                                                    // this is in
         // main
         insts.verifyListInst(compiler, envi, null, null);
         LOG.debug("verify Main: end");
@@ -42,9 +42,10 @@ public class Main extends AbstractMain {
     @Override
     protected void codeGenMain(DecacCompiler compiler) {
         // A FAIRE: traiter les déclarations de variables.
+        // System.out.println("Main");
         declVariables.codeGenListVar(compiler);
         compiler.addComment("Beginning of main instructions:");
-        insts.codeGenListInst(compiler);
+        insts.codeGenListInst(compiler, null, null);
     }
 
     @Override

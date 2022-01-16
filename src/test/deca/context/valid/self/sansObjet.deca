@@ -1,0 +1,31 @@
+{
+    int x=20;
+    int y;
+    float z;
+    int c=0;
+    println("Donnez l'entier y = ");
+    y = readInt();
+    println("donnez un float pour z : ");
+    z = readFloat();
+
+    println();
+    println("je suis un gentil float : ", z);
+    print("je suis tout autant gentil en hexa : ");
+    printlnx(z);
+    println();
+
+    if(x<y){
+        println("y est plus grand que x !");
+    }else{
+        println("x est plus grand que y !");
+    }
+    println();
+
+    println("comptons jusqu'à 10 !");
+    while (c<=10){
+        print(c, ", ");
+        c=c+1;
+    }
+    println("...");
+
+}

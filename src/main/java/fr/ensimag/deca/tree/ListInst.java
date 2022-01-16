@@ -2,6 +2,7 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.Type;
 
+import fr.ensimag.ima.pseudocode.Label;
 import org.apache.log4j.Logger;
 
 import fr.ensimag.deca.DecacCompiler;
@@ -38,17 +39,23 @@ public class ListInst extends TreeList<AbstractInst> {
             i.verifyInst(compiler, localEnv, currentClass, returnType);
     }
 
-    public void codeGenListInst(DecacCompiler compiler) {
+    public void codeGenListInst(DecacCompiler compiler, Label returnLabel, Label local) {
+        // System.out.println("LinstInst codeGenListInst");
+        int compteur = 1;
         for (AbstractInst i : getList()) {
-            System.out.println(i);
-            i.codeGenInst(compiler);
+            if (compteur != this.getList().size()) {
+                i.codeGenInst(compiler, returnLabel, null);
+                compteur += 1;
+            } else {
+                i.codeGenInst(compiler, returnLabel, local);
+            }
         }
     }
 
     @Override
     public void decompile(IndentPrintStream s) {
-        for (AbstractInst i : getList()) {
-            i.decompileInst(s);
+        for (AbstractInst inst : getList()) {
+            inst.decompileInst(s);
             s.println();
         }
     }

@@ -1,14 +1,13 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.Environment;
-import fr.ensimag.deca.context.ExpDefinition;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import java.io.PrintStream;
+import fr.ensimag.ima.pseudocode.Label;
 import org.apache.commons.lang.Validate;
+import org.apache.log4j.Logger;
+
+import java.io.PrintStream;
 
 /**
  * Print statement (print, println, ...).
@@ -20,6 +19,12 @@ public abstract class AbstractPrint extends AbstractInst {
 
     private boolean printHex;
     private ListExpr arguments = new ListExpr();
+
+    private static final Logger LOG = Logger.getLogger(AbstractPrint.class);
+
+    public static Logger getLOG() {
+        return LOG;
+    }
 
     abstract String getSuffix();
 
@@ -38,18 +43,24 @@ public abstract class AbstractPrint extends AbstractInst {
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
         for (AbstractExpr a : getArguments().getList()) {
-            a.verifyInst(compiler, localEnv, currentClass, returnType);
+            Type type = a.verifyExpr(compiler, localEnv, currentClass);
+            if (!type.isInt() && !type.isFloat() && !type.isString()) {
+                throw new ContextualError(
+                        "Type " + type + " non supporté pour print/println",
+                        getLocation());
+            }
         }
-        // throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override
-    protected void codeGenInst(DecacCompiler compiler) {
+    protected void codeGenInst(DecacCompiler compiler, Label returnLabel, Label local) {
+        getLOG().trace("AbsPrint codeGenInst");
         for (AbstractExpr a : getArguments().getList()) {
-            System.out.println(a);
-            if (this.printHex)
+            if (this.getPrintHex())
+                // print en hexa
                 a.codeGenPrintHexa(compiler);
             else
+                // print normal
                 a.codeGenPrint(compiler);
 
         }
@@ -61,7 +72,9 @@ public abstract class AbstractPrint extends AbstractInst {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("not yet implemented");
+        s.print("print" + getSuffix() + (getPrintHex() ? "x" : "") + "(");
+        getArguments().decompile(s);
+        s.print(");");
     }
 
     @Override

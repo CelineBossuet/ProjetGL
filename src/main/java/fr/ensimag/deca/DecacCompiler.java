@@ -18,6 +18,10 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+
+import fr.ensimag.ima.pseudocode.instructions.ERROR;
+import fr.ensimag.ima.pseudocode.instructions.WNL;
+import fr.ensimag.ima.pseudocode.instructions.WSTR;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.apache.log4j.Logger;
@@ -98,6 +102,7 @@ public class DecacCompiler {
      *      fr.ensimag.ima.pseudocode.IMAProgram#addInstruction(fr.ensimag.ima.pseudocode.Instruction)
      */
     public void addInstruction(Instruction instruction) {
+        // System.out.println("DecacCompiler add Instru : " +instruction);
         program.addInstruction(instruction);
     }
 
@@ -211,6 +216,12 @@ public class DecacCompiler {
     private boolean doCompile(String sourceName, String destName,
             PrintStream out, PrintStream err)
             throws DecacFatalError, LocationException {
+
+        // set registers limit
+        getRegisterManager().setMax(
+                compilerOptions.getRegisters() == -1 ? getRegisterManager().getMax() : compilerOptions.getRegisters()); // registers
+                                                                                                                        // limit
+
         AbstractProgram prog = doLexingAndParsing(sourceName, err);
 
         if (prog == null) {
@@ -219,7 +230,7 @@ public class DecacCompiler {
         }
 
         if (compilerOptions.getParser()) { // Stop compiling if -p option
-            prog.prettyPrint(System.out); // Print tree
+            prog.decompile(out);
             return false;
         }
 
@@ -231,9 +242,27 @@ public class DecacCompiler {
         if (compilerOptions.getVerif()) // Stop compiling if -v option
             return false;
 
+        LOG.info("Starting generation");
         addComment("start main program");
         prog.codeGenProgram(this);
         addComment("end main program");
+
+        // Génération des Label d'erreurs
+        this.addLabel(this.getLabelManager().getIErrorLabel());
+        this.addInstruction(new WSTR("Error: Input/Output Error"));
+        this.addInstruction(new WNL());
+        this.addInstruction(new ERROR());
+
+        this.addLabel(this.labelManager.getOverFlowLabel());
+        this.addInstruction(new WSTR("Error: Overflow during arithmetic operation"));
+        this.addInstruction(new WNL());
+        this.addInstruction(new ERROR());
+
+        this.addLabel(this.labelManager.getStack_overflowLabel());
+        this.addInstruction(new WSTR("Error: Stack Overflow"));
+        this.addInstruction(new WNL());
+        this.addInstruction(new ERROR());
+
         LOG.debug("Generated assembly code:" + nl + program.display());
         LOG.info("Output file assembly file is: " + destName);
 

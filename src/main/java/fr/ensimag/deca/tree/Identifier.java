@@ -1,28 +1,18 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.Type;
-import fr.ensimag.deca.context.TypeDefinition;
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.Definition;
-import fr.ensimag.deca.context.Environment;
-import fr.ensimag.deca.context.ExpDefinition;
-import fr.ensimag.deca.context.FieldDefinition;
-import fr.ensimag.deca.context.MethodDefinition;
-import fr.ensimag.deca.context.ExpDefinition;
-import fr.ensimag.deca.context.VariableDefinition;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
-
-import static org.mockito.ArgumentMatchers.nullable;
+import fr.ensimag.ima.pseudocode.DAddr;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import org.apache.commons.lang.Validate;
 
 import java.io.PrintStream;
-
-import fr.ensimag.ima.pseudocode.DAddr;
-import fr.ensimag.ima.pseudocode.DVal;
-import org.apache.commons.lang.Validate;
 
 /**
  * Deca Identifier
@@ -174,16 +164,16 @@ public class Identifier extends AbstractIdentifier {
     @Override
     public Type verifyExpr(DecacCompiler compiler, Environment<ExpDefinition> localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        if(localEnv.get(this.getName())!=null){
-            Definition def =localEnv.get(getName()); //TODO
+        if (localEnv.get(this.getName()) != null) {
+            Definition def = localEnv.get(getName()); // TODO
             this.setDefinition(def);
             this.setType(def.getType());
             return getType();
+        } else {
+            throw new ContextualError(
+                    "La variable " + this.getName() + " n'a pas été déclarée", this.getLocation());
         }
-        else{
-            throw new UnsupportedOperationException("pas de Name peut pas définir");
-        }
-        //throw new UnsupportedOperationException("not yet implemented");
+        // throw new UnsupportedOperationException("not yet implemented");
     }
 
     /**
@@ -194,8 +184,11 @@ public class Identifier extends AbstractIdentifier {
     @Override
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
         Definition def = compiler.getEnvironmentType().defOfType(getName());
-        if(def==null){
-            throw new UnsupportedOperationException("Type "+def.getType()+" existe pas");
+        if (def == null) {
+            throw new ContextualError("Type n'existe pas", getLocation());
+        }
+        if (def.getType().isVoid()) {
+            throw new ContextualError("Variables ne peuvent pas être déclarées de type void", getLocation());
         }
         setType(def.getType());
         setDefinition(def);
@@ -238,13 +231,37 @@ public class Identifier extends AbstractIdentifier {
 
     @Override
     protected DAddr codeGenNoReg(DecacCompiler compiler) {
+
         DAddr ope = this.getExpDefinition().getOperand();
-        return ope; // TODO assert...
+        if (ope == null) {
+            throw new DecacInternalError("Operande null pour l'identifier " + getName() + " " + getDefinition());
+        }
+        return ope;
     }
 
+    @Override
+    protected GPRegister codeGenReg(DecacCompiler compiler) {
+        if (getDefinition().isField()) {
+            // cas particulier pour les fields qui ne peuvent pas être générés avec un seul
+            // opérand
+            getLOG().info("cas particulier pour les fields, génération par plusieurs opérandes");
+            GPRegister current = compiler.getRegisterManager().getCurrent();
+            compiler.addInstruction(new LOAD(codeGenAddr(compiler), current));
+            return current;
+        }
+        return super.codeGenReg(compiler);
+    }
 
     @Override
     public DAddr codeGenAddr(DecacCompiler compiler) {
+        if (getDefinition().isField()) {
+            getLOG().info("cas particulier pour les fields, génération par plusieurs opérandes");
+            GPRegister current = compiler.getRegisterManager().getCurrent();
+            RegisterOffset offset = new RegisterOffset(-2, Register.LB);
+            RegisterOffset field = new RegisterOffset(getFieldDefinition().getIndex() + 1, current);
+            compiler.addInstruction(new LOAD(offset, current));
+            return field;
+        }
         DAddr ope = codeGenNoReg(compiler);
         return ope;
     }

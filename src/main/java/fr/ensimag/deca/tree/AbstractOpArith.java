@@ -6,6 +6,7 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.Environment;
 import fr.ensimag.deca.context.ExpDefinition;
+import org.apache.log4j.Logger;
 
 /**
  * Arithmetic binary operations (+, -, /, ...)
@@ -19,14 +20,33 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
         super(leftOperand, rightOperand);
     }
 
+    private static final Logger LOG = Logger.getLogger(AbstractOpArith.class);
+
+    public static Logger getLOG() {
+        return LOG;
+    }
+
     @Override
     public Type verifyExpr(DecacCompiler compiler, Environment<ExpDefinition> localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
-        getRightOperand().verifyExpr(compiler, localEnv, currentClass);
+        Type left = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
         Type right = getRightOperand().verifyExpr(compiler, localEnv, currentClass);
-        setType(right);
-        return right;
+        if(left.isFloat() && right.isInt()){
+            ConvFloat conversion = new ConvFloat(getRightOperand());
+            conversion.verifyExpr(compiler, localEnv, currentClass);
+            setRightOperand(conversion);
+            this.setType(left);
+            return left;
+        }else if(left.isInt() && right.isFloat()){
+            ConvFloat conversion = new ConvFloat(getLeftOperand());
+            conversion.verifyExpr(compiler, localEnv, currentClass);
+            setLeftOperand(conversion);
+            this.setType(right);
+            return right;
+        }else{
+            setType(right);
+            return right;
+        }
         // throw new UnsupportedOperationException("not yet implemented");
     }
 }

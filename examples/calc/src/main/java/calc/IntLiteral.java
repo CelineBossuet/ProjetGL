@@ -13,6 +13,11 @@ public class IntLiteral extends AbstractExpr {
     }
 
     @Override
+    public void decompile(IndentPrintStream s) {
+        s.print(Integer.toString(value));
+    }
+
+    @Override
     public String toString() {
         return Integer.toString(value);
     }

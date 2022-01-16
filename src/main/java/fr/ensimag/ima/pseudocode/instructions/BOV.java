@@ -10,8 +10,10 @@ import fr.ensimag.ima.pseudocode.Label;
  */
 public class BOV extends BranchInstruction {
 
-    public BOV(Label op) {
+    public BOV(Label op, boolean disable) {
         super(op);
+        if (disable)
+            this.disable();
     }
 
 }

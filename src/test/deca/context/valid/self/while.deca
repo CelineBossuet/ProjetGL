@@ -1,0 +1,7 @@
+{
+int compteur = 1;
+while(compteur <=3){
+    println(compteur);
+    compteur = compteur +1;
+}
+}
