@@ -57,9 +57,6 @@ public class DecacCompiler {
         super();
         this.compilerOptions = compilerOptions;
         this.source = source;
-        getRegisterManager().setMax(
-                compilerOptions.getRegisters() == -1 ? getRegisterManager().getMax() : compilerOptions.getRegisters()); // registers
-                                                                                                                        // limit
     }
 
     /**
@@ -219,6 +216,12 @@ public class DecacCompiler {
     private boolean doCompile(String sourceName, String destName,
             PrintStream out, PrintStream err)
             throws DecacFatalError, LocationException {
+
+        // set registers limit
+        getRegisterManager().setMax(
+                compilerOptions.getRegisters() == -1 ? getRegisterManager().getMax() : compilerOptions.getRegisters()); // registers
+                                                                                                                        // limit
+
         AbstractProgram prog = doLexingAndParsing(sourceName, err);
 
         if (prog == null) {
