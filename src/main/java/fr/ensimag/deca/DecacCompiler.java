@@ -77,8 +77,7 @@ public class DecacCompiler {
     }
 
     /**
-     * @see
-     *      fr.ensimag.ima.pseudocode.IMAProgram#add(fr.ensimag.ima.pseudocode.AbstractLine)
+     * @see fr.ensimag.ima.pseudocode.IMAProgram#add(fr.ensimag.ima.pseudocode.AbstractLine)
      */
     public void add(AbstractLine line) {
         program.add(line);
@@ -92,16 +91,14 @@ public class DecacCompiler {
     }
 
     /**
-     * @see
-     *      fr.ensimag.ima.pseudocode.IMAProgram#addLabel(fr.ensimag.ima.pseudocode.Label)
+     * @see fr.ensimag.ima.pseudocode.IMAProgram#addLabel(fr.ensimag.ima.pseudocode.Label)
      */
     public void addLabel(Label label) {
         program.addLabel(label);
     }
 
     /**
-     * @see
-     *      fr.ensimag.ima.pseudocode.IMAProgram#addInstruction(fr.ensimag.ima.pseudocode.Instruction)
+     * @see fr.ensimag.ima.pseudocode.IMAProgram#addInstruction(fr.ensimag.ima.pseudocode.Instruction)
      */
     public void addInstruction(Instruction instruction) {
         //System.out.println("DecacCompiler add Instru : " +instruction);
@@ -109,17 +106,15 @@ public class DecacCompiler {
     }
 
     /**
-     * @see
-     *      fr.ensimag.ima.pseudocode.IMAProgram#addInstruction(fr.ensimag.ima.pseudocode.Instruction,
-     *      java.lang.String)
+     * @see fr.ensimag.ima.pseudocode.IMAProgram#addInstruction(fr.ensimag.ima.pseudocode.Instruction,
+     * java.lang.String)
      */
     public void addInstruction(Instruction instruction, String comment) {
         program.addInstruction(instruction, comment);
     }
 
     /**
-     * @see
-     *      fr.ensimag.ima.pseudocode.IMAProgram#display()
+     * @see fr.ensimag.ima.pseudocode.IMAProgram#display()
      */
     public String displayIMAProgram() {
         return program.display();
@@ -158,7 +153,6 @@ public class DecacCompiler {
     }
 
     /**
-     * 
      * @return Type environment which includes in particular builtin types.
      */
     public Environment<TypeDefinition> getEnvironmentType() {
@@ -212,11 +206,10 @@ public class DecacCompiler {
      * @param destName   name of the destination (assembly) file
      * @param out        stream to use for standard output (output of decac -p)
      * @param err        stream to use to display compilation errors
-     *
      * @return true on error
      */
     private boolean doCompile(String sourceName, String destName,
-            PrintStream out, PrintStream err)
+                              PrintStream out, PrintStream err)
             throws DecacFatalError, LocationException {
         AbstractProgram prog = doLexingAndParsing(sourceName, err);
 
@@ -309,4 +302,40 @@ public class DecacCompiler {
     }
 
     // A FAIRE methods addPUSH, addADDSP, addSUBSP, ...
+
+
+    // TODO adaptation du programme de compilation pour générer des fichiers .j
+    public boolean compile_byte() {
+        String sourceFile = source.getAbsolutePath();
+        String destFile = null;
+
+        destFile = sourceFile.substring(0, sourceFile.lastIndexOf('.')) + ".j";
+
+        PrintStream err = System.err;
+        PrintStream out = System.out;
+        LOG.debug("Compiling file " + sourceFile + " to bytecode file " + destFile);
+        try {
+            return doCompile(sourceFile, destFile, out, err);
+        } catch (LocationException e) {
+            e.display(err);
+            return true;
+        } catch (DecacFatalError e) {
+            err.println(e.getMessage());
+            return true;
+        } catch (StackOverflowError e) {
+            LOG.debug("stack overflow", e);
+            err.println("Stack overflow while compiling file " + sourceFile + ".");
+            return true;
+        } catch (Exception e) {
+            LOG.fatal("Exception raised while compiling file " + sourceFile
+                    + ":", e);
+            err.println("Internal compiler error while compiling file " + sourceFile + ", sorry.");
+            return true;
+        } catch (AssertionError e) {
+            LOG.fatal("Assertion failed while compiling file " + sourceFile
+                    + ":", e);
+            err.println("Internal compiler error while compiling file " + sourceFile + ", sorry.");
+            return true;
+        }
+    }
 }
