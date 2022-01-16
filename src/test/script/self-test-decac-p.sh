@@ -6,7 +6,7 @@ cd "$(dirname "$0")"/../../.. || exit 1
 
 #définition des constantes de bases
 
-PATH=./src/test/script/launchers:"$PATH"
+PATH=./src/test/script/launchers:./src/main/bin:"$PATH"
 
 rouge='\e[31m'
 vert='\e[32m'
