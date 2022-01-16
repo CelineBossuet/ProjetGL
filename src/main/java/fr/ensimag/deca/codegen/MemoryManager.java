@@ -44,4 +44,10 @@ public class MemoryManager {
         currentLB-=size;
     }
 
+    public void allocBSR(){
+        if(currentLB +2 > maxLB){
+            maxLB=currentLB+2;
+        }
+    }
+
 }

@@ -97,14 +97,14 @@ public class DecacCompiler {
      *      fr.ensimag.ima.pseudocode.IMAProgram#add(fr.ensimag.ima.pseudocode.AbstractLine)
      */
     public void add(AbstractLine line) {
-        program.add(line);
+        getCurrentBlock().add(line);
     }
 
     /**
      * @see fr.ensimag.ima.pseudocode.IMAProgram#addComment(java.lang.String)
      */
     public void addComment(String comment) {
-        program.addComment(comment);
+        getCurrentBlock().addComment(comment);
     }
 
     /**
@@ -112,7 +112,7 @@ public class DecacCompiler {
      *      fr.ensimag.ima.pseudocode.IMAProgram#addLabel(fr.ensimag.ima.pseudocode.Label)
      */
     public void addLabel(Label label) {
-        program.addLabel(label);
+        getCurrentBlock().addLabel(label);
     }
 
     /**
@@ -121,7 +121,7 @@ public class DecacCompiler {
      */
     public void addInstruction(Instruction instruction) {
         //System.out.println("DecacCompiler add Instru : " +instruction);
-        program.addInstruction(instruction);
+        getCurrentBlock().addInstruction(instruction);
     }
 
     /**
@@ -130,7 +130,7 @@ public class DecacCompiler {
      *      java.lang.String)
      */
     public void addInstruction(Instruction instruction, String comment) {
-        program.addInstruction(instruction, comment);
+        getCurrentBlock().addInstruction(instruction, comment);
     }
 
     /**
@@ -150,12 +150,21 @@ public class DecacCompiler {
      * The main program. Every instruction generated will eventually end up here.
      */
     private final IMAProgram program = new IMAProgram();
+
+    /**
+     * IMA code Block ou sont généré les instructions, cela peut changé en fonction
+     * de si c'est pour une méthode ou c'est le main programme.
+     * Par défaut il correspond au main program
+     */
+    private IMAProgram currentBlock = program;
     private final SymbolTable symbolTable = new SymbolTable();
     private Environment<TypeDefinition> environmentType = new Environment<TypeDefinition>(null);
 
     public SymbolTable getSymbolTable() {
         return symbolTable;
     }
+
+    public IMAProgram getCurrentBlock(){return currentBlock;}
 
     public RegisterManager getRegisterManager() {
         return registerManager;
@@ -274,6 +283,11 @@ public class DecacCompiler {
         this.addInstruction(new WNL());
         this.addInstruction(new ERROR());
 
+        this.addLabel(this.labelManager.getPilePleineLabel());
+        this.addInstruction(new WSTR("Error: Pile Pleine"));
+        this.addInstruction(new WNL());
+        this.addInstruction(new ERROR());
+
         LOG.debug("Generated assembly code:" + nl + program.display());
         LOG.info("Output file assembly file is: " + destName);
 
@@ -285,6 +299,8 @@ public class DecacCompiler {
         }
 
         LOG.info("Writing assembler file ...");
+
+        getCurrentBlock().display(new PrintStream(fstream));
 
         program.display(new PrintStream(fstream));
         LOG.info("Compilation of " + sourceName + " successful.");

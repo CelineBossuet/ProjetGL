@@ -3,6 +3,7 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
 import java.io.PrintStream;
@@ -40,6 +41,11 @@ public class DeclMethod extends AbstractDeclMethod{
 
     @Override
     protected void verifyMembers(DecacCompiler compiler, ClassDefinition superClass, ClassDefinition currentClass) throws ContextualError {
+        Type type = this.type.verifyType(compiler);
+
+
+
+
         //throw new UnsupportedOperationException("Not yet implemented");
 
 

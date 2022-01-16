@@ -432,7 +432,7 @@ primary_expr returns[AbstractExpr tree]
             assert($args.tree != null);
             assert($m.tree != null);
             This t = new This(true); // m() signifie this.m()
-            //setLocation(t, $m.tree.getLocation()); marche pas :(
+            t.setLocation($m.tree.getLocation());
 
             $tree = new MethodCall(t, $m.tree, $args.tree);
             //encore une fois on appelle une méthode mais sans vraiment de paramètres implicites

@@ -1,6 +1,8 @@
 package fr.ensimag.deca.context;
 
+import fr.ensimag.deca.codegen.VTable;
 import fr.ensimag.deca.tree.Location;
+import fr.ensimag.ima.pseudocode.Label;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -10,6 +12,17 @@ import org.apache.commons.lang.Validate;
  * @date 01/01/2022
  */
 public class ClassDefinition extends TypeDefinition {
+    private Label constructorLabel;
+    private VTable vTable;
+
+    public VTable getvTable() {
+        return vTable;
+    }
+
+    public Label getConstructorLabel() {
+        return constructorLabel;
+    }
+
     public void setNumberOfFields(int numberOfFields) {
         this.numberOfFields = numberOfFields;
     }

@@ -11,6 +11,7 @@ public class LabelManager {
     private Label input_errorLabel; //label permettant de gérer un mauvais input pour readInt, readFloat
     private Label overFlowLabel; //label gérant les overflow error
     private Label stack_overflowLabel;
+    private Label pilePleineLabel; //utilisée pour le NEW()
     private int counter=0; //compteur pour générer des Labels numérotés
 
 
@@ -38,5 +39,12 @@ public class LabelManager {
             this.overFlowLabel =new Label("overFlowError", 0);
         }
         return this.overFlowLabel;
+    }
+
+    public Label getPilePleineLabel(){
+        if(this.pilePleineLabel ==null){
+            this.pilePleineLabel = new Label("pilePleineLabel", 0);
+        }
+        return pilePleineLabel;
     }
 }

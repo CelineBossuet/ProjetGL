@@ -1,5 +1,8 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
 import java.io.PrintStream;
@@ -11,6 +14,15 @@ public class DeclParam extends AbstractDeclParam{
     public DeclParam(AbstractIdentifier type, AbstractIdentifier name){
         this.type=type;
         this.name=name;
+    }
+
+    @Override
+    protected Type verifParam(DecacCompiler compiler) throws ContextualError {
+        Type type = this.type.verifyType(compiler);
+        if(type.isVoid()){
+            throw new ContextualError("Paramètres ne peuvent pas être void", getLocation());
+        }
+        return type;
     }
 
     @Override

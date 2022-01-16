@@ -3,7 +3,8 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.instructions.*;
 
 import java.io.PrintStream;
 
@@ -20,7 +21,29 @@ public class New extends AbstractExpr{
 
     @Override
     protected DVal codeGenNoReg(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        throw new UnsupportedOperationException("codeGenNoReg impossible pour New"); //besoin du tas voir p223
+    }
+
+    @Override
+    protected GPRegister codeGenReg(DecacCompiler compiler){
+        GPRegister reg = compiler.getRegisterManager().getCurrent();
+        ClassDefinition classdef = name.getClassDefinition();
+        int size=classdef.getNumberOfFields() +1; //taille de mot à allouer dans le tas
+        compiler.addInstruction(new NEW(size, reg));
+        compiler.addInstruction(new BOV(compiler.getLabelManager().getPilePleineLabel()));
+        compiler.addInstruction(new LEA(classdef.getvTable().getOperand(), Register.getR(0)));
+        //LEA : Load Effective Address
+        compiler.addInstruction(new STORE(Register.getR(0), new RegisterOffset(0, reg)));
+        //set vtable for the new object
+        compiler.addInstruction(new PUSH(reg));
+        Label label = classdef.getConstructorLabel();
+        compiler.getMemoryManager().allocBSR();
+        compiler.addInstruction(new BSR(new LabelOperand(label)));
+        compiler.addInstruction(new POP(reg));
+
+
+
+        return null;
     }
 
     @Override
