@@ -554,17 +554,19 @@ class_decl returns[DeclClass tree]
     : CLASS name=ident superclass=class_extension OBRACE class_body CBRACE {
             //chaque déclaration de classe comprend son nom, sa classe mère, ses attributs et ses méthodes
             $tree = new DeclClass($name.tree, $superclass.tree, $class_body.field, $class_body.method);
-            setLocation($tree, $CLASS);
+            setLocation($tree, $name.start);
+            setLocation($superclass.tree, $superclass.start);
+            setLocation($name.tree, $name.start);
         }
     ;
 
 class_extension returns[AbstractIdentifier tree]
     : EXTENDS ident {
             $tree=$ident.tree;
+            setLocation($ident.tree, $ident.start);
         }
     | /* epsilon */ {
             $tree = new Identifier(getDecacCompiler().getSymbolTable().create("Object"));
-            $tree.setLocation(Location.BUILTIN);
         }
     ;
 

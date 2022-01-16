@@ -52,6 +52,17 @@ public class Environment<D extends Definition> {
         return parentEnvironment.get(key);
     }
 
+    public ClassDefinition getClass(Symbol key){
+        D def = environment.get(key);
+        if (def != null && def instanceof ClassDefinition){
+            return (ClassDefinition) def;
+        }else if (parentEnvironment == null){
+            return null;
+        }else{
+            return parentEnvironment.getClass(key);
+        }
+    }
+
     /**
      * Add the definition def associated to the symbol name in the environment.
      * 

@@ -37,19 +37,15 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     protected void verifyClass(DecacCompiler compiler) throws ContextualError { // A FAIRE
-        System.out.println("ho");
-        System.out.println(superClass.getClassDefinition());
-        if(superClass.getClassDefinition() == null){
-            ObjectType type = new ObjectType(compiler.getSymbolTable().create("0bject"), null, compiler.getProgram());
-            this.superClass.setDefinition(type.getDefinition());
-            System.out.println("object def : "+type.getDefinition());
-            this.superClass.setType(type);
+        if (superClass.getDefinition()==null){
+            System.out.println("oh");
+            this.superClass.setDefinition(compiler.OBJECT);
+            System.out.println(superClass.getClassDefinition());
+        }else{
+            superClass.verifyTypeClass(compiler);
         }
-        System.out.println(superClass.getClassDefinition());
+        System.out.println(this.superClass.getClassDefinition());
         ClassType newClass = new ClassType(this.name.getName(), this.getLocation(), this.superClass.getClassDefinition());
-        this.superClass.VerifyTypeClass(compiler);
-        System.out.println("hoho");
-        System.out.println("Plus hey");
         ClassDefinition definition = newClass.getDefinition();
         try {
             compiler.getEnvironmentType().declareClass(this.name.getName(), definition);
@@ -67,9 +63,9 @@ public class DeclClass extends AbstractDeclClass {
     protected void verifyClassMembers(DecacCompiler compiler)
             throws ContextualError {
         //throw new UnsupportedOperationException("not yet implemented");
-        ClassDefinition currentDef = this.name.getClassDefinition();
-        System.out.println(superClass);
-        ClassDefinition superDef = this.superClass.getClassDefinition();
+        ClassDefinition currentDef = (ClassDefinition) this.name.getDefinition();
+        System.out.println(superClass.getDefinition());
+        ClassDefinition superDef = (ClassDefinition) this.superClass.getDefinition();
         currentDef.setNumberOfFields(superDef.getNumberOfFields());
         currentDef.setNumberOfMethods(superDef.getNumberOfMethods());
         for(AbstractDeclField adf : this.field.getList()){
@@ -82,7 +78,8 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     protected void verifyClassBody(DecacCompiler compiler) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        //throw new UnsupportedOperationException("not yet implemented");
+
     }
 
     @Override

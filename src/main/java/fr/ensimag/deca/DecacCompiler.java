@@ -8,10 +8,7 @@ import fr.ensimag.deca.syntax.DecaLexer;
 import fr.ensimag.deca.syntax.DecaParser;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.SymbolTable;
-import fr.ensimag.deca.tree.AbstractProgram;
-import fr.ensimag.deca.tree.Location;
-import fr.ensimag.deca.tree.LocationException;
-import fr.ensimag.deca.tree.ObjectType;
+import fr.ensimag.deca.tree.*;
 import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.ERROR;
 import fr.ensimag.ima.pseudocode.instructions.WNL;
@@ -39,6 +36,8 @@ import java.io.*;
  */
 public class DecacCompiler {
     private static final Logger LOG = Logger.getLogger(DecacCompiler.class);
+
+    public ClassDefinition OBJECT;
 
     public static Logger getLOG() {
         return LOG;
@@ -72,6 +71,7 @@ public class DecacCompiler {
                     new TypeDefinition(new NullType(compiler.getSymbolTable().create("null")), Location.BUILTIN));
             ObjectType objectType = new ObjectType(compiler.getSymbolTable().create("Object"), null, compiler.getProgram());
             compiler.getEnvironmentType().declare(compiler.getSymbolTable().create("Object"), new  TypeDefinition(objectType, Location.BUILTIN));
+            this.OBJECT = objectType.getDefinition();
         } catch (Environment.DoubleDefException e) {
             throw new DecacInternalError("Double built in type definition");
         }
