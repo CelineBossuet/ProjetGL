@@ -4,14 +4,15 @@ import fr.ensimag.bytecode.pseudocode.BinaryInstructionDValToReg;
 import fr.ensimag.bytecode.pseudocode.DVal;
 import fr.ensimag.bytecode.pseudocode.GPRegister;
 import fr.ensimag.bytecode.pseudocode.ImmediateInteger;
-import fr.ensimag.bytecode.pseudocode.Operand;
-import fr.ensimag.bytecode.pseudocode.UnaryInstruction;
 
-public class bipush extends UnaryInstruction {
+public class aload extends BinaryInstructionDValToReg {
 
-    public bipush(Operand op1) {
-        super(op1);
+    public aload(DVal op1, GPRegister op2) {
+        super(op1, op2);
     }
-    
+
+    public aload(int i, GPRegister r) {
+        this(new ImmediateInteger(i), r);
+    }
 
 }
