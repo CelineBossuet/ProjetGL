@@ -40,7 +40,6 @@ public class Program extends AbstractProgram {
     @Override
     public void verifyProgram(DecacCompiler compiler) throws ContextualError {
         // declare language types :
-        System.out.println("programme");
 
         // A FAIRE TODO 3 passes pour langage complet
         getClasses().verifyListClass(compiler); //Passe 1
