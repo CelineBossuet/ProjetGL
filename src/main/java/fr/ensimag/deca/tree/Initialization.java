@@ -42,7 +42,7 @@ public class Initialization extends AbstractInitialization {
         Type expr = getExpression().verifyExpr(compiler, localEnv, currentClass);
         if (!expr.sameType(t) && !(expr.isInt() && t.isFloat())) {
             throw new ContextualError(
-                    t+" n'est pas un sous type de "+expr+" et ne peut donc pas lui être assigné", getLocation());
+                    t + " n'est pas un sous type de " + expr + " et ne peut donc pas lui être assigné", getLocation());
         }
         setExpression(expression.verifyRValue(compiler, localEnv, currentClass, t));
         // throw new UnsupportedOperationException("not yet implemented");
@@ -53,14 +53,14 @@ public class Initialization extends AbstractInitialization {
         // System.out.println("Init");
         compiler.addInstruction(new STORE(expression.codeGenReg(compiler), target));
 
-        //la valeur du registre expression.codeGenReg() est stored dans l'adresse target
+        // la valeur du registre expression.codeGenReg() est stored dans l'adresse
+        // target
     }
 
     @Override
     public void decompile(IndentPrintStream s) {
         s.print(" = ");
         getExpression().decompile(s);
-        s.println(";");
     }
 
     @Override

@@ -26,8 +26,6 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.apache.log4j.Logger;
 
-import java.io.*;
-
 /**
  * Decac compiler instance.
  *
@@ -59,6 +57,9 @@ public class DecacCompiler {
         super();
         this.compilerOptions = compilerOptions;
         this.source = source;
+        getRegisterManager().setMax(
+                compilerOptions.getRegisters() == -1 ? getRegisterManager().getMax() : compilerOptions.getRegisters()); // registers
+                                                                                                                        // limit
     }
 
     /**
@@ -104,7 +105,7 @@ public class DecacCompiler {
      *      fr.ensimag.ima.pseudocode.IMAProgram#addInstruction(fr.ensimag.ima.pseudocode.Instruction)
      */
     public void addInstruction(Instruction instruction) {
-        //System.out.println("DecacCompiler add Instru : " +instruction);
+        // System.out.println("DecacCompiler add Instru : " +instruction);
         program.addInstruction(instruction);
     }
 
@@ -238,11 +239,12 @@ public class DecacCompiler {
         if (compilerOptions.getVerif()) // Stop compiling if -v option
             return false;
 
+        LOG.info("Starting generation");
         addComment("start main program");
         prog.codeGenProgram(this);
         addComment("end main program");
 
-        //Génération des Label d'erreurs
+        // Génération des Label d'erreurs
         this.addLabel(this.getLabelManager().getIErrorLabel());
         this.addInstruction(new WSTR("Error: Input/Output Error"));
         this.addInstruction(new WNL());

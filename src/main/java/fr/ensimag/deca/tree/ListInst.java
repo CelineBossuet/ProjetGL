@@ -40,13 +40,13 @@ public class ListInst extends TreeList<AbstractInst> {
     }
 
     public void codeGenListInst(DecacCompiler compiler, Label returnLabel, Label local) {
-        //System.out.println("LinstInst codeGenListInst");
+        // System.out.println("LinstInst codeGenListInst");
         int compteur = 1;
         for (AbstractInst i : getList()) {
-            if (compteur != this.getList().size()){
+            if (compteur != this.getList().size()) {
                 i.codeGenInst(compiler, returnLabel, null);
                 compteur += 1;
-            }else{
+            } else {
                 i.codeGenInst(compiler, returnLabel, local);
             }
         }
@@ -54,8 +54,8 @@ public class ListInst extends TreeList<AbstractInst> {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        for (AbstractInst i : getList()) {
-            i.decompileInst(s);
+        for (AbstractInst inst : getList()) {
+            inst.decompileInst(s);
             s.println();
         }
     }

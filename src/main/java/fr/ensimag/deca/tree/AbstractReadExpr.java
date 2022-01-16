@@ -20,44 +20,41 @@ import static fr.ensimag.ima.pseudocode.Register.getR;
  */
 public abstract class AbstractReadExpr extends AbstractExpr {
 
+        public AbstractReadExpr() {
+                super();
+        }
 
-    public AbstractReadExpr() {
-        super();
-    }
+        protected abstract NullaryInstruction geneInstru();
 
-    protected abstract NullaryInstruction geneInstru();
+        private static final Logger LOG = Logger.getLogger(AbstractReadExpr.class);
 
-    private static final Logger LOG = Logger.getLogger(AbstractReadExpr.class);
+        public static Logger getLOG() {
+                return LOG;
+        }
 
-    public static Logger getLOG() {
-        return LOG;
-    }
+        @Override
+        protected DVal codeGenNoReg(DecacCompiler compiler) {
+                throw new DecacInternalError("pas possible car pas feuille de AbstractEpression");
+        }
 
-    @Override
-    protected DVal codeGenNoReg(DecacCompiler compiler) {
-        throw new DecacInternalError("pas possible car pas feuille de AbstractEpression");
-    }
+        @Override
+        protected GPRegister codeGenReg(DecacCompiler compiler) {
+                getLOG().trace("AbsReadExpr codeGenReg");
+                getLOG().info("redéfinition de geneInstru() dans AbstractReadExpr");
+                //// redéfinition de la méthode car il faut pouvoir utiliser geneInstru() de
+                //// AbstractReadExpr
+                // d'apres exemple p19 on doit pouvoir généré les instructions RINT (ou RFLOAT),
+                //// BOV io_error et LOAD
+                compiler.addInstruction(geneInstru());
 
-    @Override
-    protected GPRegister codeGenReg(DecacCompiler compiler) {
-        getLOG().trace("AbsReadExpr codeGenReg");
-        getLOG().info("redéfinition de geneInstru() dans AbstractReadExpr");
-        //// redéfinition de la méthode car il faut pouvoir utiliser geneInstru() de
-        //// AbstractReadExpr
-        // d'apres exemple p19 on doit pouvoir généré les instructions RINT (ou RFLOAT),
-        //// BOV io_error et LOAD
-        compiler.addInstruction(geneInstru());
+                // on branche le label io_error avec BOV
+                Label label = compiler.getLabelManager().getIErrorLabel();
+                compiler.addInstruction(new BOV(label, compiler.getCompilerOptions().getNoCheck()));
 
-        // on branche le label io_error avec BOV
-        Label label = compiler.getLabelManager().getIErrorLabel();
-        //
-        //
-        compiler.addInstruction(new BOV(label));
+                // on LOAD dans le registre courrant la valeur de R1
+                GPRegister reg = compiler.getRegisterManager().getCurrent();
+                compiler.addInstruction(new LOAD(getR(1), reg));
 
-        // on LOAD dans le registre courrant la valeur de R1
-        GPRegister reg = compiler.getRegisterManager().getCurrent();
-        compiler.addInstruction(new LOAD(getR(1), reg));
-
-        return reg;
-    }
+                return reg;
+        }
 }

@@ -127,8 +127,8 @@ public abstract class AbstractExpr extends AbstractInst {
      */
     void verifyCondition(DecacCompiler compiler, Environment<ExpDefinition> localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        Type type =this.verifyExpr(compiler, localEnv, currentClass);
-        if(!type.isBoolean()){
+        Type type = this.verifyExpr(compiler, localEnv, currentClass);
+        if (!type.isBoolean()) {
             throw new ContextualError("la condition doit être booléenne", getLocation());
         }
     }
@@ -166,10 +166,9 @@ public abstract class AbstractExpr extends AbstractInst {
             compiler.addInstruction(new LOAD(this.codeGenReg(compiler), Register.getR(1)));
 
             compiler.addInstruction(new WFLOATX());
-        } else if(getType().isString()){
+        } else if (getType().isString()) {
             compiler.addInstruction(new WSTR(this.decompile()));
-        }
-        else {
+        } else {
             throw new DecacInternalError("Printx pas supporté pour le type" + getType());
         }
     }
@@ -187,6 +186,7 @@ public abstract class AbstractExpr extends AbstractInst {
     @Override
     protected void decompileInst(IndentPrintStream s) {
         decompile(s);
+        s.print(";"); // print with semicolon
     }
 
     @Override

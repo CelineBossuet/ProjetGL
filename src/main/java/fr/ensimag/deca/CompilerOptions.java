@@ -44,42 +44,69 @@ public class CompilerOptions {
         return verif;
     }
 
+    /**
+     * 
+     * @return Limit of registers or -1 if no limit.
+     */
+    public int getRegisters() {
+        return registers;
+    }
+
+    public boolean getNoCheck() {
+        return noCheck;
+    }
+
     private int debug = 0;
     private boolean parallel = false;
     private boolean printBanner = false;
     private List<File> sourceFiles = new ArrayList<File>();
     private boolean parser = false;
     private boolean verif = false;
+    private int registers = -1;
+    private boolean noCheck = false;
 
     public void parseArgs(String[] args) throws CLIException {
+        boolean register = false;
         for (String arg : args) {
-            switch (arg) {
-                case "-b":
-                    printBanner = true;
-                    break;
-                case "-p":
-                    if (verif)
-                        throw new CLIException("Impossible d'utiliser simultanément les options -p et -v.");
-                    parser = true;
-                    break;
-                case "-v":
-                    if (parser)
-                        throw new CLIException("Impossible d'utiliser simultanément les options -p et -v.");
-                    verif = true;
-                    break;
-                case "-n":
-                    // A FAIRE
-                    break;
-                case "-r": // A FAIRE
-                    break;
-                case "-d":
-                    debug++;
-                    break;
-                case "-P":
-                    parallel = true;
-                    break;
-                default:
-                    sourceFiles.add(new File(arg));
+            if (!register) {
+                switch (arg) {
+                    case "-b":
+                        printBanner = true;
+                        break;
+                    case "-p":
+                        if (verif)
+                            throw new CLIException("Impossible d'utiliser simultanément les options -p et -v.");
+                        parser = true;
+                        break;
+                    case "-v":
+                        if (parser)
+                            throw new CLIException("Impossible d'utiliser simultanément les options -p et -v.");
+                        verif = true;
+                        break;
+                    case "-n":
+                        noCheck = true;
+                        break;
+                    case "-r":
+                        register = true;
+                        break;
+                    case "-d":
+                        debug++;
+                        break;
+                    case "-P":
+                        parallel = true;
+                        break;
+                    default:
+                        sourceFiles.add(new File(arg));
+                }
+            } else { // reading integer
+                try {
+                    registers = Integer.valueOf(arg);
+                    if (registers < 4 || registers > 16)
+                        throw new CLIException("La limite de registres doit être comprise entre 4 et 16.");
+                } catch (NumberFormatException e) {
+                    throw new CLIException("L'option -r doit être suivie d'un entier.");
+                }
+                register = false;
             }
         }
         Logger logger = Logger.getRootLogger();

@@ -9,8 +9,6 @@ import org.apache.commons.lang.Validate;
 
 import java.io.PrintStream;
 
-import static fr.ensimag.deca.tree.AbstractExpr.getLOG;
-
 /**
  *
  * @author gl13
@@ -47,7 +45,7 @@ public class While extends AbstractInst {
         this.condition.codeGenCond(compiler, debutwhile, true);
         getLOG().info("création et fixation du Label de début du while");
 
-        //throw new UnsupportedOperationException("not yet implemented");
+        // throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override
@@ -55,7 +53,7 @@ public class While extends AbstractInst {
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
         Type cond = this.getCondition().verifyExpr(compiler, localEnv, currentClass);
-        if (!cond.isBoolean()){
+        if (!cond.isBoolean()) {
             throw new ContextualError("La condition d'un while doit être un booléen", this.getLocation());
         }
 
@@ -64,13 +62,13 @@ public class While extends AbstractInst {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        s.print("while (");
+        s.print("while(");
         getCondition().decompile(s);
-        s.println(") {");
+        s.println("){");
         s.indent();
         getBody().decompile(s);
         s.unindent();
-        s.print("}");
+        s.println("}");
     }
 
     @Override

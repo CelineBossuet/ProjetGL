@@ -11,8 +11,6 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
 import fr.ensimag.ima.pseudocode.DAddr;
-import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.RegisterOffset;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -58,8 +56,8 @@ public class DeclVar extends AbstractDeclVar {
 
     @Override
     protected int codeGenVar(DecacCompiler compiler) {
-        //TODO
-        //System.out.println("DeclVar codeGenVar");
+        // TODO
+        // System.out.println("DeclVar codeGenVar");
         VariableDefinition d = varName.getVariableDefinition();
 
         DAddr o = compiler.getMemoryManager().allocGB(1);
@@ -74,6 +72,7 @@ public class DeclVar extends AbstractDeclVar {
         s.print(" ");
         varName.decompile(s);
         initialization.decompile(s);
+        s.print(";");
     }
 
     @Override

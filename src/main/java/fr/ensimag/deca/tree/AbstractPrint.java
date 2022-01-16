@@ -43,14 +43,13 @@ public abstract class AbstractPrint extends AbstractInst {
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
         for (AbstractExpr a : getArguments().getList()) {
-            Type type=a.verifyExpr(compiler, localEnv, currentClass);
-            if(!type.isInt() && !type.isFloat() && !type.isString()){
+            Type type = a.verifyExpr(compiler, localEnv, currentClass);
+            if (!type.isInt() && !type.isFloat() && !type.isString()) {
                 throw new ContextualError(
-                        "Type "+type+" non supporté pour print/println",
+                        "Type " + type + " non supporté pour print/println",
                         getLocation());
             }
         }
-        // throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override
@@ -58,10 +57,10 @@ public abstract class AbstractPrint extends AbstractInst {
         getLOG().trace("AbsPrint codeGenInst");
         for (AbstractExpr a : getArguments().getList()) {
             if (this.getPrintHex())
-                //print en hexa
+                // print en hexa
                 a.codeGenPrintHexa(compiler);
             else
-                //print normal
+                // print normal
                 a.codeGenPrint(compiler);
 
         }
@@ -73,10 +72,9 @@ public abstract class AbstractPrint extends AbstractInst {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        s.print("println(");
-        this.arguments.decompile(s);
+        s.print("print" + getSuffix() + (getPrintHex() ? "x" : "") + "(");
+        getArguments().decompile(s);
         s.print(");");
-        //throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override

@@ -56,18 +56,13 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         this.rightOperand = rightOperand;
     }
 
-
     @Override
     public void decompile(IndentPrintStream s) {
-        if (!Objects.equals(getOperatorName(), "=")){
-            s.print("(");
-        }
+        s.print("(");
         getLeftOperand().decompile(s);
         s.print(" " + getOperatorName() + " ");
         getRightOperand().decompile(s);
-        if (!Objects.equals(getOperatorName(), "=")){
-            s.print(")");
-        }
+        s.print(")");
     }
 
     abstract protected String getOperatorName();
@@ -84,18 +79,18 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         rightOperand.prettyPrint(s, prefix, true);
     }
 
-
     /**
      * Fonction pour générer les instruction pour les Opération Arithmétiques
      * Si est appelé pour autre chose renvoi une erreur
+     * 
      * @param val
      * @param reg
      * @return
-     * */
+     */
     protected abstract BinaryInstruction geneInstru(DVal val, GPRegister reg);
 
     @Override
-    protected DVal codeGenNoReg(DecacCompiler compiler){
+    protected DVal codeGenNoReg(DecacCompiler compiler) {
         throw new DecacInternalError("pas possible car pas feuille de AbstractEpression");
     }
 
@@ -111,35 +106,34 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         return codeGenRegInternal(compiler, true);
     }
 
-    protected GPRegister codeGenRegInternal(DecacCompiler compiler, boolean useful){
+    protected GPRegister codeGenRegInternal(DecacCompiler compiler, boolean useful) {
         getLOG().trace("AbsBinaryExpr codeGenRegInternal");
         AbstractExpr right = getRightOperand();
         AbstractExpr left = getLeftOperand();
         GPRegister result;
         GPRegister leftValue = left.codeGenReg(compiler);
-        if(!right.NeedsRegister()){
+        if (!right.NeedsRegister()) {
             getLOG().info("cas ou pas besoin de registre");
             geneOneOrMoreInstru(compiler, right.codeGenNoReg(compiler), leftValue, useful);
-            result =leftValue;
-        }
-        else if (compiler.getRegisterManager().getMax() -compiler.getRegisterManager().getCurrentv() +1 > 1) {
+            result = leftValue;
+        } else if (compiler.getRegisterManager().getMax() - compiler.getRegisterManager().getCurrentv() + 1 > 1) {
             getLOG().info("cas ou il y a des registres libres qu'on peut allouer");
-            GPRegister r = compiler.allocate(); //on alloue un registre
+            GPRegister r = compiler.allocate(); // on alloue un registre
             DVal rightValue = right.codeGenReg(compiler);
             compiler.release(r);
             geneOneOrMoreInstru(compiler, rightValue, leftValue, useful);
             result = leftValue;
-        }
-        else{
+        } else {
             getLOG().info("cas ou pas de registre libre ");
             getLOG().info("on essaye d'utiliser les registres LB de la zone pile");
             compiler.getMemoryManager().allocLB(1);
             compiler.addInstruction(new PUSH(leftValue));
-            //PUSH décrémente le pointeur de la pile et entrepose leftValue en haut de la pile
+            // PUSH décrémente le pointeur de la pile et entrepose leftValue en haut de la
+            // pile
             DVal rightValue = right.codeGenReg(compiler);
 
             compiler.addInstruction(new POP(getR(0)));
-            //POP permet de désempiler de la pile un mot et la met dans R0
+            // POP permet de désempiler de la pile un mot et la met dans R0
             geneOneOrMoreInstru(compiler, rightValue, getR(0), useful);
             result = compiler.getRegisterManager().getCurrent();
             if (useful) {
@@ -147,16 +141,13 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
                 compiler.addInstruction(new LOAD(getR(0), result));
             }
         }
-        if(getType().isFloat()){
-            getLOG().info("si erreur rentre dans le Label OverFlow");
-            compiler.addInstruction(new BOV(compiler.getLabelManager().getOverFlowLabel()));
-        }
-
+        getLOG().info("si erreur rentre dans le Label OverFlow");
+        compiler.addInstruction(
+                new BOV(compiler.getLabelManager().getOverFlowLabel(), compiler.getCompilerOptions().getNoCheck()));
         return result;
     }
 
-
-    protected void geneOneOrMoreInstru(DecacCompiler compiler, DVal val, GPRegister reg, boolean useful){
+    protected void geneOneOrMoreInstru(DecacCompiler compiler, DVal val, GPRegister reg, boolean useful) {
         getLOG().trace("AbsBinaryExpr geneOneOrMoreInstru");
         compiler.addInstruction(geneInstru(val, reg));
     }
