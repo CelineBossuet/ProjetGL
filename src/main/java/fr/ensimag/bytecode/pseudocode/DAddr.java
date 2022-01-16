@@ -1,4 +1,4 @@
-package fr.ensimag.ima.pseudocode;
+package fr.ensimag.bytecode.pseudocode;
 
 /**
  * Operand that points to a memory location.

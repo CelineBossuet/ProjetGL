@@ -4,8 +4,8 @@ import fr.ensimag.bytecode.pseudocode.UnaryInstruction;
 import fr.ensimag.bytecode.pseudocode.DVal;
 import fr.ensimag.bytecode.pseudocode.GPRegister;
 import fr.ensimag.bytecode.pseudocode.ImmediateInteger;
-import fr.ensimag.ima.pseudocode.Operand;
-import fr.ensimag.ima.pseudocode.UnaryInstruction;
+import fr.ensimag.bytecode.pseudocode.Operand;
+import fr.ensimag.bytecode.pseudocode.UnaryInstruction;
 
 public class ret extends UnaryInstruction {
 

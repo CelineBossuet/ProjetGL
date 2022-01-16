@@ -1,4 +1,4 @@
-package fr.ensimag.ima.pseudocode;
+package fr.ensimag.bytecode.pseudocode;
 
 /**
  * Operand of an IMA Instruction.

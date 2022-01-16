@@ -1,4 +1,4 @@
-package fr.ensimag.ima.pseudocode;
+package fr.ensimag.bytecode.pseudocode;
 
 /**
  * Immediate operand containing a float value.

@@ -1,4 +1,4 @@
-package fr.ensimag.ima.pseudocode;
+package fr.ensimag.bytecode.pseudocode;
 
 import java.io.PrintStream;
 
@@ -33,16 +33,17 @@ public class Line extends AbstractLine {
         this.label = label;
     }
 
+    // TODO throw errors
     private void checkComment(final String s) {
         if (s == null) {
             return;
         }
-        if (s.contains("\n")) {
-            throw new IMAInternalError("Comment '" + s + "'contains newline character");
-        }
-        if (s.contains("\r")) {
-            throw new IMAInternalError("Comment '" + s + "'contains carriage return character");
-        }
+        //if (s.contains("\n")) {
+        //    throw new IMAInternalError("Comment '" + s + "'contains newline character");
+        //}
+        //if (s.contains("\r")) {
+        //    throw new IMAInternalError("Comment '" + s + "'contains carriage return character");
+        //}
     }
     private Instruction instruction;
     private String comment;

@@ -1,4 +1,4 @@
-package fr.ensimag.ima.pseudocode;
+package fr.ensimag.bytecode.pseudocode;
 
 /**
  * General Purpose Register operand (R0, R1, ... R15).
