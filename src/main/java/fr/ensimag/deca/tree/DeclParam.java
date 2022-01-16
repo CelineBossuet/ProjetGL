@@ -25,6 +25,7 @@ public class DeclParam extends AbstractDeclParam{
         return type;
     }
 
+
     @Override
     public void decompile(IndentPrintStream s) {
         throw new UnsupportedOperationException("Not yet implemented");

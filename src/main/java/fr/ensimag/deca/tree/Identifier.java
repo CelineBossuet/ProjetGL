@@ -197,14 +197,24 @@ public class Identifier extends AbstractIdentifier {
 
     }
 
-    public Type verifyTypeClass(DecacCompiler compiler) throws ContextualError{
+    public Type verifyTypeClass(DecacCompiler compiler) throws ContextualError {
         TypeDefinition defClass = compiler.getEnvironmentType().getClass(compiler.getSymbolTable().create(getName().getName()));
-        if(defClass == null){
+        if (defClass == null) {
             throw new ContextualError("class null", this.getLocation());
         }
         setDefinition(defClass);
         setType(defClass.getType());
         return defClass.getType();
+    }
+
+    public Type verifyMethodType(DecacCompiler compiler) throws ContextualError{
+        TypeDefinition typeMethode = compiler.getEnvironmentType().get(compiler.getSymbolTable().create(getName().getName()));
+        if (typeMethode == null){
+            throw new ContextualError("class null", this.getLocation());
+        }
+        setDefinition(typeMethode);
+        setType(typeMethode.getType());
+        return typeMethode.getType();
     }
 
     private Definition definition;

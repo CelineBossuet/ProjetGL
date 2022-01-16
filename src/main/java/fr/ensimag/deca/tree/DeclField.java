@@ -51,7 +51,7 @@ public class DeclField extends AbstractDeclField{
     }
 
     @Override
-    protected void verifyBody(DecacCompiler compiler, ClassDefinition superClass, ClassDefinition currenClass) throws ContextualError {
+    protected void verifyBody(DecacCompiler compiler, ClassDefinition currenClass) throws ContextualError {
         this.init.verifyInitialization(compiler, this.type.verifyType(compiler), currenClass.getMembers(), currenClass);
     }
 }
