@@ -8,5 +8,5 @@ public abstract class AbstractDeclMethod extends Tree{
 
     protected abstract void verifyMembers(DecacCompiler compiler, ClassDefinition superClass, ClassDefinition currentClass) throws ContextualError;
 
-    public abstract void verifyBody(DecacCompiler compiler, ClassDefinition currentDef);
+    public abstract void verifyBody(DecacCompiler compiler, ClassDefinition currentDef) throws ContextualError;
 }

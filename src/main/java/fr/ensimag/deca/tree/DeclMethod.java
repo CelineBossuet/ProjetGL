@@ -64,7 +64,10 @@ public class DeclMethod extends AbstractDeclMethod{
     }
 
     @Override
-    public void verifyBody(DecacCompiler compiler, ClassDefinition currentDef) {
-        throw new UnsupportedOperationException("Not yet implemeted");
+    public void verifyBody(DecacCompiler compiler, ClassDefinition currentDef) throws ContextualError{
+        //throw new UnsupportedOperationException("Not yet implemeted");
+        Environment<ExpDefinition> localEnv = new Environment<ExpDefinition>(currentDef.getMembers());
+        this.param.verifyBody(compiler, localEnv);
+        this.body.verifyBody(compiler, localEnv, currentDef, this.type.getType());
     }
 }

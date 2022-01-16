@@ -217,6 +217,20 @@ public class Identifier extends AbstractIdentifier {
         return typeMethode.getType();
     }
 
+
+    public FieldDefinition verifyField(DecacCompiler compiler, ClassType type) throws ContextualError {
+        Definition fieldDefinition = type.getDefinition().getMembers().get(this.getName());
+        if (fieldDefinition == null){
+            throw new ContextualError("Le champ n'a pas été déclaré", this.getLocation());
+        }
+        try{
+            fieldDefinition = fieldDefinition.asFieldDefinition("Ceci n'est pas un champ", this.getLocation());
+        }catch (ContextualError c){
+            throw c;
+        }
+        return (FieldDefinition) fieldDefinition;
+    }
+
     private Definition definition;
 
     @Override

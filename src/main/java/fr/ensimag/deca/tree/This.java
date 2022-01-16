@@ -22,7 +22,13 @@ public class This extends AbstractExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, Environment<ExpDefinition> localEnv, ClassDefinition currentClass)
             throws ContextualError {
-        throw new UnsupportedOperationException("Not yet implemented");
+        //throw new UnsupportedOperationException("Not yet implemented");
+        if (currentClass == null){
+            throw new ContextualError("L'objet est vide", this.getLocation());
+        }
+        Type t = currentClass.getType();
+        this.setType(t);
+        return t;
     }
 
     @Override
