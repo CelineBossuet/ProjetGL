@@ -22,21 +22,23 @@ public class NoOperation extends AbstractInst {
     protected void verifyInst(DecacCompiler compiler, Environment<ExpDefinition> localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
-        //throw new UnsupportedOperationException("not yet implemented");
-        //Pas d'opération donc pas de propagation
+        // throw new UnsupportedOperationException("not yet implemented");
+        // Pas d'opération donc pas de propagation
     }
 
     @Override
     protected void codeGenInst(DecacCompiler compiler, Label returnLabel, Label local) {
-        //throw new UnsupportedOperationException("not yet implemented");
+        // throw new UnsupportedOperationException("not yet implemented");
         compiler.addComment("Aucune instruction donnée");
     }
 
-    @Override
-    protected void codeGenInstBytecode(DecacCompiler compiler, Label returnLabel, Label local) {
-        //throw new UnsupportedOperationException("not yet implemented");
-        compiler.addComment("Aucune instruction donnée");
-    }
+    // TODO A FAIRE
+    // @Override
+    // protected void codeGenInstBytecode(DecacCompiler compiler, Label returnLabel,
+    // Label local) {
+    // //throw new UnsupportedOperationException("not yet implemented");
+    // compiler.addComment("Aucune instruction donnée");
+    // }
 
     @Override
     public void decompile(IndentPrintStream s) {

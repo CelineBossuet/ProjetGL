@@ -1,6 +1,5 @@
 package fr.ensimag.deca.tree;
 
-
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.BinaryInstruction;
 import fr.ensimag.ima.pseudocode.DVal;
@@ -17,7 +16,6 @@ public class Plus extends AbstractOpArith {
     public Plus(AbstractExpr leftOperand, AbstractExpr rightOperand) {
         super(leftOperand, rightOperand);
     }
- 
 
     @Override
     protected String getOperatorName() {
@@ -25,14 +23,15 @@ public class Plus extends AbstractOpArith {
     }
 
     @Override
-    protected BinaryInstruction geneInstru(DVal val, GPRegister reg){
-        //Génération de l'instruction pour une addition dans le registre reg
+    protected BinaryInstruction geneInstru(DVal val, GPRegister reg) {
+        // Génération de l'instruction pour une addition dans le registre reg
         return new ADD(val, reg);
     }
 
+    // TODO A FAIRE
+    // @Override
+    // protected void codeGenInstBytecode(DecacCompiler compiler, Label returnLabel,
+    // Label local) {
 
-    @Override
-    protected void codeGenInstBytecode(DecacCompiler compiler, Label returnLabel, Label local) {
-
-    }
+    // }
 }

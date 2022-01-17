@@ -39,10 +39,9 @@ public abstract class AbstractInst extends Tree {
      */
     protected abstract void codeGenInst(DecacCompiler compiler, Label returnLabel, Label local);
 
-
-    // TODO codeGenInst for bytecode
-    protected abstract void codeGenInstBytecode(DecacCompiler compiler, Label returnLabel, Label local);
-
+    // protected abstract void codeGenInstBytecode(DecacCompiler compiler, Label
+    // returnLabel, Label local);
+    // TODO A FAIRE
 
     /**
      * Decompile the tree, considering it as an instruction.

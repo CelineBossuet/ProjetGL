@@ -15,20 +15,19 @@ import java.io.PrintStream;
 public class EmptyMain extends AbstractMain {
     @Override
     protected void verifyMain(DecacCompiler compiler) throws ContextualError {
-        //throw new UnsupportedOperationException("not yet implemented");
+        // throw new UnsupportedOperationException("not yet implemented");
         // Il n'y a rien a vérifier car il n'y a pas de main
     }
 
-
-    // TODO codeGen bytecode
-    @Override
-    protected void codeGenMainBytecode(DecacCompiler compiler) {
-        compiler.addComment("Empty Main");
-    }
+    // TODO A FAIRE codeGen bytecode
+    // @Override
+    // protected void codeGenMainBytecode(DecacCompiler compiler) {
+    // compiler.addComment("Empty Main");
+    // }
 
     @Override
     protected void codeGenMain(DecacCompiler compiler) {
-        //throw new UnsupportedOperationException("not yet implemented");
+        // throw new UnsupportedOperationException("not yet implemented");
         compiler.addComment("Empty Main");
     }
 
@@ -39,7 +38,7 @@ public class EmptyMain extends AbstractMain {
     protected void checkLocation() {
         // nothing
     }
-    
+
     @Override
     public void decompile(IndentPrintStream s) {
         // no main program => nothing

@@ -30,16 +30,16 @@ public abstract class AbstractInitialization extends Tree {
             Type t, Environment<ExpDefinition> localEnv, ClassDefinition currentClass)
             throws ContextualError;
 
-
     /**
      * Genération du code assembleur pour l'initialisation de variables
+     * 
      * @param compiler
-     * @param target adresse ou Store la valeur du registre
+     * @param target   adresse ou Store la valeur du registre
      */
     protected abstract void codeGeneInit(DecacCompiler compiler, DAddr target);
 
-
-    // TODO codeGen for Bytecode
-    protected  abstract void codeGeneInitBytecode(DecacCompiler compiler, DAddr target);
+    // TODO A FAIRE
+    // protected abstract void codeGeneInitBytecode(DecacCompiler compiler, DAddr
+    // target);
 
 }

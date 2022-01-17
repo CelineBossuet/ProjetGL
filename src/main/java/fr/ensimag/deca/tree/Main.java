@@ -46,19 +46,17 @@ public class Main extends AbstractMain {
         declVariables.codeGenListVar(compiler);
         compiler.addComment("Beginning of main instructions:");
         insts.codeGenListInst(compiler, null, null);
-        //System.out.println("Main FIN");
+        // System.out.println("Main FIN");
     }
 
+    // TODO A FAIRE codeGen for bytecode
 
-    // TODO codeGen for bytecode
-
-    @Override
-    protected void codeGenMainBytecode(DecacCompiler compiler) {
-        declVariables.codeGenListVarBytecode(compiler);
-        compiler.addComment("Beginning of main instructions:");
-        insts.codeGenListInstBytecode(compiler, null, null);
-    }
-
+    // @Override
+    // protected void codeGenMainBytecode(DecacCompiler compiler) {
+    // declVariables.codeGenListVarBytecode(compiler);
+    // compiler.addComment("Beginning of main instructions:");
+    // insts.codeGenListInstBytecode(compiler, null, null);
+    // }
 
     @Override
     public void decompile(IndentPrintStream s) {
