@@ -43,21 +43,11 @@ public class DeclMethod extends AbstractDeclMethod{
     }
 
     @Override
-    protected void verifyMembers(DecacCompiler compiler, ClassDefinition superClass, ClassDefinition currentClass) throws ContextualError {
+    protected void verifyMembers(DecacCompiler compiler, Environment env, ClassDefinition currentClass) throws ContextualError {
         //throw new UnsupportedOperationException("Not yet implemented");
         Type type = this.type.verifyMethodType(compiler);
         Signature sig = this.param.verifyParameters(compiler);
-        int toVerify = 0;
-        if (superClass != null){
-            Definition superClassDef = superClass.getMembers().get(this.name.getName());
-            if(superClassDef == null){
-                toVerify = currentClass.getNumberOfMethods();
-            }else {
-                MethodDefinition superMethode = superClassDef.asMethodDefinition("Tentative de lecture de l'arbre", this.getLocation());
-                toVerify = superMethode.getIndex();
-            }
-
-        }
+        int toVerify = currentClass.getNumberOfMethods();
         MethodDefinition newDef= new MethodDefinition(type, this.getLocation(), sig, toVerify);
         newDef.setLabel(compiler.getLabelManager().newLabel(name.getName().getName()));
         try{

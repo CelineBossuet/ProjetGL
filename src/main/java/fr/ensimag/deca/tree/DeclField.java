@@ -52,14 +52,14 @@ public class DeclField extends AbstractDeclField{
     }
 
     @Override
-    protected void verifyMembers(DecacCompiler compiler, ClassDefinition superClass, ClassDefinition currentClass) throws ContextualError {
+    protected void verifyMembers(DecacCompiler compiler, Environment env, ClassDefinition currentClass) throws ContextualError {
         FieldDefinition field = new FieldDefinition(this.type.verifyType(compiler), this.getLocation(), this.visibility, currentClass, currentClass.getNumberOfFields() + 1); // +1 car nouvelle déclaration
-        System.out.println(field.getIndex());
         try{
             currentClass.getMembers().declare(this.fieldName.getName(), field);
         } catch (Environment.DoubleDefException e) {
             throw new ContextualError("La variable a déjà été déclaré", this.getLocation());
         }
+        this.fieldName.verifyExpr(compiler, env, currentClass);
         fieldName.setDefinition(field);
     }
 

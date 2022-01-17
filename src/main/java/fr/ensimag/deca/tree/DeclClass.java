@@ -2,17 +2,16 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.codegen.VTable;
-import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable;
+import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.LEA;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.RTS;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
 import org.apache.log4j.Logger;
-import sun.jvm.hotspot.debugger.cdbg.Sym;
 
 import java.io.PrintStream;
 import java.util.HashSet;
@@ -51,17 +50,15 @@ public class DeclClass extends AbstractDeclClass {
     }
 
     @Override
-    protected void verifyClass(DecacCompiler compiler) throws ContextualError { // A FAIRE
-        if (superClass.getDefinition()==null){
-            this.superClass.setDefinition(compiler.OBJECT);
-        }else{
-            superClass.verifyTypeClass(compiler);
-        }
-        System.out.println(this.superClass.getClassDefinition());
-        ClassType newClass = new ClassType(this.name.getName(), this.getLocation(), this.superClass.getClassDefinition());
+    protected void verifyClass(DecacCompiler compiler) throws ContextualError { // A FAIR
+        superClass.verifyTypeClass(compiler);
+        ClassDefinition superc = compiler.getEnvironmentType().getClass(superClass.getName());
+        ClassType newClass = new ClassType(this.name.getName(), this.getLocation(), superc);
+        this.name.setType(newClass);
         ClassDefinition definition = newClass.getDefinition();
+        this.name.setDefinition(definition);
         try {
-            compiler.getEnvironmentType().declareClass(this.name.getName(), definition);
+            compiler.getEnvironmentType().declareClass(this.name.getName(), this.name.getClassDefinition());
         }catch (Environment.DoubleDefException e) {
             if(alreadyUsed.contains(name.getName())) {
                 throw new ContextualError("Classe déjà déclaré", this.getLocation());
@@ -69,22 +66,24 @@ public class DeclClass extends AbstractDeclClass {
                 this.alreadyUsed.add(name.getName());
             }
         }
-        this.name.setDefinition(definition);
+        this.name.verifyTypeClass(compiler);
+        System.out.println("victoire");
     }
 
     @Override
     protected void verifyClassMembers(DecacCompiler compiler)
             throws ContextualError {
         //throw new UnsupportedOperationException("not yet implemented");
-        ClassDefinition currentDef = (ClassDefinition) this.name.getDefinition();
-        ClassDefinition superDef = (ClassDefinition) this.superClass.getDefinition();
-        currentDef.setNumberOfFields(superDef.getNumberOfFields());
-        currentDef.setNumberOfMethods(superDef.getNumberOfMethods());
+        System.out.println(this.name.getClassDefinition());
+        System.out.println(this.superClass);
+
+        (this.name.getClassDefinition()).setNumberOfFields(superClass.getClassDefinition().getNumberOfFields());
+        (this.name.getClassDefinition()).setNumberOfMethods(superClass.getClassDefinition().getNumberOfMethods());
         for(AbstractDeclField adf : this.field.getList()){
-            adf.verifyMembers(compiler, superDef, currentDef);
+            adf.verifyMembers(compiler, this.name.getClassDefinition().getMembers(), this.name.getClassDefinition());
         }
         for(AbstractDeclMethod adm : this.method.getList()){
-            adm.verifyMembers(compiler, superDef, currentDef);
+            adm.verifyMembers(compiler, this.name.getClassDefinition().getMembers(), this.name.getClassDefinition());
         }
     }
 

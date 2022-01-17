@@ -3,7 +3,6 @@ package fr.ensimag.deca.context;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 
 import java.util.HashMap;
-import java.util.Set;
 
 /**
  * Dictionary associating identifier's D to their names.
@@ -50,9 +49,13 @@ public class Environment<D extends Definition> {
      */
     public D get(Symbol key) {
         D result = environment.get(key); // first look in current block
-        if (result != null || parentEnvironment == null)
+        if (result != null) {
             return result;
-        return parentEnvironment.get(key);
+        }else if (parentEnvironment == null){
+            return null;
+        }else{
+            return parentEnvironment.get(key);
+        }
     }
 
     public ClassDefinition getClass(Symbol key){
@@ -92,8 +95,8 @@ public class Environment<D extends Definition> {
     }
 
     public void declareClass(Symbol name, D def) throws Environment.DoubleDefException {
-        D previousDef = this.environment.get(def);
-        if (previousDef != null) {
+        D previousDef = this.environment.get(name);
+        if (previousDef == null) {
             this.environment.put(name, def);
         } else {
             throw new DoubleDefException();

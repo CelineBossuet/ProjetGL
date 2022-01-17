@@ -198,8 +198,13 @@ public class Identifier extends AbstractIdentifier {
     }
 
     public Type verifyTypeClass(DecacCompiler compiler) throws ContextualError {
-        TypeDefinition defClass = compiler.getEnvironmentType().getClass(compiler.getSymbolTable().create(getName().getName()));
-        if (defClass == null) {
+        /*
+        System.out.println(this.name.getName());
+        System.out.println(compiler.getSymbolTable().create(name.getName()));
+        System.out.println(compiler.getEnvironmentType().get(compiler.getSymbolTable().create(name.getName())));
+         */
+        TypeDefinition defClass = compiler.getEnvironmentType().get(compiler.getSymbolTable().create(this.getName().getName()));
+        if (defClass == null){
             throw new ContextualError("class null", this.getLocation());
         }
         setDefinition(defClass);
@@ -219,7 +224,6 @@ public class Identifier extends AbstractIdentifier {
 
 
     public FieldDefinition verifyField(DecacCompiler compiler, ClassType type) throws ContextualError {
-        
         Definition fieldDefinition = type.getDefinition().getMembers().get(this.getName());
         if (fieldDefinition == null){
             throw new ContextualError("Le champ n'a pas été déclaré", this.getLocation());

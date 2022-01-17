@@ -68,7 +68,8 @@ public class DecacCompiler {
             compiler.getEnvironmentType().declare(compiler.getSymbolTable().create("null"),
                     new TypeDefinition(new NullType(compiler.getSymbolTable().create("null")), Location.BUILTIN));
             ObjectType objectType = new ObjectType(compiler.getSymbolTable().create("Object"), null, compiler.getProgram());
-            compiler.getEnvironmentType().declare(compiler.getSymbolTable().create("Object"), new  TypeDefinition(objectType, Location.BUILTIN));
+            ClassDefinition newt = new ClassDefinition(objectType, Location.BUILTIN, null);
+            compiler.getEnvironmentType().declareClass(compiler.getSymbolTable().create("Object"), newt );
             this.OBJECT = objectType.getDefinition();
         } catch (Environment.DoubleDefException e) {
             throw new DecacInternalError("Double built in type definition");
@@ -156,7 +157,7 @@ public class DecacCompiler {
      */
     private IMAProgram currentBlock = program;
     private final SymbolTable symbolTable = new SymbolTable();
-    private Environment<TypeDefinition> environmentType = new Environment<TypeDefinition>(null);
+    private Environment<TypeDefinition> environmentType = new Environment<TypeDefinition>(this.getEnvironmentType());
 
     public SymbolTable getSymbolTable() {
         return symbolTable;
