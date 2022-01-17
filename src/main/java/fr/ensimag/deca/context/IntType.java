@@ -1,6 +1,9 @@
 package fr.ensimag.deca.context;
 
 import fr.ensimag.deca.tools.SymbolTable;
+import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.ImmediateFloat;
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
 
 /**
  *
@@ -16,6 +19,11 @@ public class IntType extends Type {
     @Override
     public boolean isInt() {
         return true;
+    }
+
+    @Override
+    public DVal getDefaultValue() {
+        return new ImmediateInteger(0);
     }
 
     @Override

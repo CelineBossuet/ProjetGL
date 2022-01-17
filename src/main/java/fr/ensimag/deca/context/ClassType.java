@@ -2,6 +2,8 @@ package fr.ensimag.deca.context;
 
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.deca.tree.Location;
+import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.NullOperand;
 
 /**
  * Type defined by a class.
@@ -20,6 +22,11 @@ public class ClassType extends Type {
     @Override
     public ClassType asClassType(String errorMessage, Location l) {
         return this;
+    }
+
+    @Override
+    public DVal getDefaultValue() {
+        return new NullOperand();
     }
 
     @Override

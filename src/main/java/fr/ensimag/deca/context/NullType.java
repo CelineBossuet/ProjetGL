@@ -1,6 +1,8 @@
 package fr.ensimag.deca.context;
 
+import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.SymbolTable;
+import fr.ensimag.ima.pseudocode.DVal;
 
 /**
  *
@@ -27,6 +29,11 @@ public class NullType extends Type {
     @Override
     public boolean isClassOrNull() {
         return true;
+    }
+
+    @Override
+    public DVal getDefaultValue() {
+        throw new DecacInternalError("pas de valeur par défaut pour le type null car on peut rien déclarer");
     }
 
 }

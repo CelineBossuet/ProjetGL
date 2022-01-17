@@ -1,6 +1,8 @@
 package fr.ensimag.deca.context;
 
 import fr.ensimag.deca.tools.SymbolTable;
+import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
 
 /**
  *
@@ -16,6 +18,11 @@ public class BooleanType extends Type {
     @Override
     public boolean isBoolean() {
         return true;
+    }
+
+    @Override
+    public DVal getDefaultValue() {
+        return new ImmediateInteger(0);
     }
 
     @Override
