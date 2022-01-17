@@ -50,7 +50,8 @@ public class DeclField extends AbstractDeclField{
 
     @Override
     protected void verifyMembers(DecacCompiler compiler, Environment<ExpDefinition> env, ClassDefinition currentClass) throws ContextualError {
-        FieldDefinition field = new FieldDefinition(this.type.verifyType(compiler), this.getLocation(), this.visibility, currentClass, currentClass.getNumberOfFields() + 1); // +1 car nouvelle déclaration
+        currentClass.incNumberOfFields();
+        FieldDefinition field = new FieldDefinition(this.type.verifyType(compiler), this.getLocation(), this.visibility, currentClass, currentClass.getNumberOfFields() ); // +1 car nouvelle déclaration
         try{
             currentClass.getMembers().declare(this.fieldName.getName(), field);
         } catch (Environment.DoubleDefException e) {
