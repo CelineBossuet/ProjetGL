@@ -43,7 +43,7 @@ public class DeclMethod extends AbstractDeclMethod{
     }
 
     @Override
-    protected void verifyMembers(DecacCompiler compiler, Environment env, ClassDefinition currentClass) throws ContextualError {
+    protected void verifyMembers(DecacCompiler compiler, Environment<ExpDefinition> env, ClassDefinition currentClass) throws ContextualError {
         //throw new UnsupportedOperationException("Not yet implemented");
         Type type = this.type.verifyMethodType(compiler);
         Signature sig = this.param.verifyParameters(compiler);
