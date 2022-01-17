@@ -44,8 +44,11 @@ public class While extends AbstractInst {
         compiler.addLabel(condwhile);
         this.condition.codeGenCond(compiler, debutwhile, true);
         getLOG().info("création et fixation du Label de début du while");
+    }
 
-        // throw new UnsupportedOperationException("not yet implemented");
+    @Override
+    protected void codeGenInstJasmin(DecacCompiler compiler, Label returnLabel, Label local) {
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 
     @Override

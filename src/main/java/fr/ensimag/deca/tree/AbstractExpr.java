@@ -11,7 +11,6 @@ import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
-import fr.ensimag.bytecode.pseudocode.instructions.iload;
 
 import java.io.PrintStream;
 
@@ -154,11 +153,6 @@ public abstract class AbstractExpr extends AbstractInst {
         }
     }
 
-
-    // TODO codeGen for bytecode
-    
-
-
     /**
      * Generate code to print the expression
      *
@@ -188,10 +182,6 @@ public abstract class AbstractExpr extends AbstractInst {
         // peut être ajouter des labels en paramètre...
         // throw new UnsupportedOperationException("not yet implemented");
     }
-
-    //TODO codeGen for Jasmin
-
-
 
     @Override
     protected void decompileInst(IndentPrintStream s) {
@@ -281,6 +271,31 @@ public abstract class AbstractExpr extends AbstractInst {
     protected void codeGenExprIgnored(DecacCompiler compiler) {
         compiler.addComment("value in " + codeGenReg(compiler) + " ignored");
         LOG.info("Génère code pour l'expression avec codeGenExprIgnored");
+    }
+
+    ///////////////// Jasmin
+    @Override
+    protected void codeGenInstJasmin(DecacCompiler compiler, Label returnLabel, Label local) {
+        throw new UnsupportedOperationException("Not yet implemented"); // TODO A FAIRE implémenter dans les sous
+                                                                        // classes
+    }
+
+    /**
+     * Generate jasmin code to print the expression
+     *
+     * @param compiler
+     */
+    protected void codeGenPrintJasmin(DecacCompiler compiler) {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    /**
+     * Generate jasmin code to print the expression
+     *
+     * @param compiler
+     */
+    protected void codeGenPrintHexaJasmin(DecacCompiler compiler) {
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 
 }

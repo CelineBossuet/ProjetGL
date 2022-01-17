@@ -3,7 +3,6 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.WNL;
-import fr.ensimag.bytecode.pseudocode.instructions.invokevirtual;
 
 /**
  * @author gl13
@@ -29,9 +28,10 @@ public class Println extends AbstractPrint {
 
     @Override
     protected void codeGenInstJasmin(DecacCompiler compiler, Label returnLabel, Label local) {
-        getLOG().trace("Println codeGenInst");
+        getLOG().trace("Println codeGenInstJasmin");
         super.codeGenInstJasmin(compiler, returnLabel, local);
-        compiler.addInstruction(new invokevirtual());
+        // compiler.addInstruction(new invokevirtual());
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 
     @Override

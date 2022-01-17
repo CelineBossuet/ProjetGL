@@ -85,7 +85,11 @@ public class IfThenElse extends AbstractInst {
             getLOG().debug("on ajoute le Label de la fin du if à la fin des instructions");
             compiler.addLabel(endIf);
         }
-        // throw new UnsupportedOperationException("not yet implemented");
+    }
+
+    @Override
+    protected void codeGenInstJasmin(DecacCompiler compiler, Label returnLabel, Label local) {
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 
     @Override

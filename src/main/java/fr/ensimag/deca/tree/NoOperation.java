@@ -30,13 +30,13 @@ public class NoOperation extends AbstractInst {
         compiler.addComment("Aucune instruction donnée");
     }
 
-    // TODO A FAIRE
-    // @Override
-    // protected void codeGenInstBytecode(DecacCompiler compiler, Label returnLabel,
-    // Label local) {
-    // //throw new UnsupportedOperationException("not yet implemented");
-    // compiler.addComment("Aucune instruction donnée");
-    // }
+    @Override
+    protected void codeGenInstJasmin(DecacCompiler compiler, Label returnLabel,
+            Label local) {
+        // compiler.addJasminComment("Aucune instruction donnée");
+        throw new UnsupportedOperationException("Not yet implemented"); // TODO A FAIRE créer les classes pour écrire
+                                                                        // des commentaires
+    }
 
     @Override
     public void decompile(IndentPrintStream s) {
