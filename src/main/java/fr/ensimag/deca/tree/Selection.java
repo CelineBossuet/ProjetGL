@@ -22,6 +22,7 @@ public class Selection extends AbstractLValue{
         //throw new UnsupportedOperationException("Not yet implemented");
         Type t = this.object.verifyExpr(compiler, localEnv, currentClass);
         ClassType type;
+        System.out.println(this.field.getDefinition());
         try{
             type = t.asClassType("Doit être une classe avant séparateur", this.getLocation());
         }catch (ContextualError c){

@@ -3,6 +3,7 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.context.Environment;
 import fr.ensimag.deca.context.FieldDefinition;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
@@ -45,8 +46,13 @@ public class DeclField extends AbstractDeclField{
 
     @Override
     protected void verifyMembers(DecacCompiler compiler, ClassDefinition superClass, ClassDefinition currentClass) throws ContextualError {
-        FieldDefinition field = new FieldDefinition(this.type.verifyType(compiler), this.getLocation(), this.visibility, currentClass, currentClass.getNumberOfFields());
-        currentClass.incNumberOfFields();
+        FieldDefinition field = new FieldDefinition(this.type.verifyType(compiler), this.getLocation(), this.visibility, currentClass, currentClass.getNumberOfFields() + 1); // +1 car nouvelle déclaration
+        System.out.println(field.getIndex());
+        try{
+            currentClass.getMembers().declare(this.fieldName.getName(), field);
+        } catch (Environment.DoubleDefException e) {
+            throw new ContextualError("La variable a déjà été déclaré", this.getLocation());
+        }
         fieldName.setDefinition(field);
     }
 
