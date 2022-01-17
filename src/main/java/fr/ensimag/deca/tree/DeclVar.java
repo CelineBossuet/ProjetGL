@@ -11,8 +11,6 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
 import fr.ensimag.ima.pseudocode.DAddr;
-import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.RegisterOffset;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -47,7 +45,7 @@ public class DeclVar extends AbstractDeclVar {
             varName.setDefinition(new VariableDefinition(type.getType(), getLocation()));
             localEnv.declare(varName.getName(), varName.getExpDefinition());
         } catch (DoubleDefException e) {
-            throw new ContextualError("Double definition of this identifier.", getLocation());
+            throw new ContextualError("Double definition of this identifier", getLocation());
         }
 
         // A FAIRE TODO verifier initialisation
@@ -65,7 +63,6 @@ public class DeclVar extends AbstractDeclVar {
         DAddr o = compiler.getMemoryManager().allocGB(1);
         d.setOperand(o);
         initialization.codeGeneInit(compiler, d.getOperand());
-        // System.out.println("DeclVar codeGenVar FIN");
         return 1;
     }
 
@@ -87,6 +84,7 @@ public class DeclVar extends AbstractDeclVar {
         s.print(" ");
         varName.decompile(s);
         initialization.decompile(s);
+        s.print(";");
     }
 
     @Override

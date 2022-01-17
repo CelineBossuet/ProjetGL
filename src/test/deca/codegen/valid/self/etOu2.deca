@@ -1,0 +1,17 @@
+{
+    boolean b = true;
+    boolean a= false;
+    boolean d = true;
+    boolean c;
+    boolean e;
+    boolean f;
+    f = !(b || d);
+    e = !(b && d);
+
+    c = b || (a && b);
+if(c){
+    println("Bravo ");
+}else {
+    println("mauvaise pioche");
+}
+}

@@ -22,13 +22,11 @@ public class NoOperation extends AbstractInst {
     protected void verifyInst(DecacCompiler compiler, Environment<ExpDefinition> localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
-        // throw new UnsupportedOperationException("not yet implemented");
-        // Pas d'opération donc pas de propagation
+        // nothing
     }
 
     @Override
     protected void codeGenInst(DecacCompiler compiler, Label returnLabel, Label local) {
-        // throw new UnsupportedOperationException("not yet implemented");
         compiler.addComment("Aucune instruction donnée");
     }
 

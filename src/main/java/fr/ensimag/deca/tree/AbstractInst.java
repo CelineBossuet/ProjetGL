@@ -8,6 +8,7 @@ import fr.ensimag.deca.context.Environment;
 import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
+import org.apache.log4j.Logger;
 
 /**
  * Instruction
@@ -16,6 +17,12 @@ import fr.ensimag.ima.pseudocode.Label;
  * @date 01/01/2022
  */
 public abstract class AbstractInst extends Tree {
+
+    private static final Logger LOG = Logger.getLogger(AbstractInst.class);
+
+    public static Logger getLOG() {
+        return LOG;
+    }
 
     /**
      * Implements non-terminal "inst" of [SyntaxeContextuelle] in pass 3

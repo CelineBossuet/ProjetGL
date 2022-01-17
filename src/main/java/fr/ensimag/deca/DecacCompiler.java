@@ -209,6 +209,12 @@ public class DecacCompiler {
     private boolean doCompile(String sourceName, String destName,
             PrintStream out, PrintStream err)
             throws DecacFatalError, LocationException {
+
+        // set registers limit
+        getRegisterManager().setMax(
+                compilerOptions.getRegisters() == -1 ? getRegisterManager().getMax() : compilerOptions.getRegisters()); // registers
+                                                                                                                        // limit
+
         AbstractProgram prog = doLexingAndParsing(sourceName, err);
 
         if (prog == null) {
@@ -229,18 +235,24 @@ public class DecacCompiler {
         if (compilerOptions.getVerif()) // Stop compiling if -v option
             return false;
 
+        LOG.info("Starting generation");
         addComment("start main program");
         prog.codeGenProgram(this);
         addComment("end main program");
 
         // Génération des Label d'erreurs
         this.addLabel(this.getLabelManager().getIErrorLabel());
-        this.addInstruction(new WSTR("Input Error"));
+        this.addInstruction(new WSTR("Error: Input/Output Error"));
         this.addInstruction(new WNL());
         this.addInstruction(new ERROR());
 
         this.addLabel(this.labelManager.getOverFlowLabel());
-        this.addInstruction(new WSTR("OverFlow Error"));
+        this.addInstruction(new WSTR("Error: Overflow during arithmetic operation"));
+        this.addInstruction(new WNL());
+        this.addInstruction(new ERROR());
+
+        this.addLabel(this.labelManager.getStack_overflowLabel());
+        this.addInstruction(new WSTR("Error: Stack Overflow"));
         this.addInstruction(new WNL());
         this.addInstruction(new ERROR());
 

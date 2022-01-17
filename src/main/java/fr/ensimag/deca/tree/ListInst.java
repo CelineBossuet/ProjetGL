@@ -50,7 +50,6 @@ public class ListInst extends TreeList<AbstractInst> {
                 i.codeGenInst(compiler, returnLabel, local);
             }
         }
-        // System.out.println("ListInst codeGenListInst FIN");
     }
 
     // TODO A FAIRE codeGenListInst for bytecode
@@ -71,8 +70,8 @@ public class ListInst extends TreeList<AbstractInst> {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        for (AbstractInst i : getList()) {
-            i.decompileInst(s);
+        for (AbstractInst inst : getList()) {
+            inst.decompileInst(s);
             s.println();
         }
     }

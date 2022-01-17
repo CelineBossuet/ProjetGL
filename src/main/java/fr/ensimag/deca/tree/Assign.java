@@ -34,6 +34,7 @@ public class Assign extends AbstractBinaryExpr {
         Type left = this.getLeftOperand().verifyExpr(compiler, localEnv,currentClass);
         AbstractExpr right = this.getRightOperand().verifyRValue(compiler, localEnv, currentClass, left);
         setRightOperand(right);
+
         return left;
         //throw new UnsupportedOperationException("not yet implemented");
     }
@@ -50,10 +51,9 @@ public class Assign extends AbstractBinaryExpr {
 
     @Override
     protected GPRegister codeGenReg(DecacCompiler compiler){
-        //System.out.println("Assign codeGenReg");
+        getLOG().trace("Assign codeGenReg");
         AbstractLValue left = getLeftOperand();
         AbstractExpr right =getRightOperand();
-
         GPRegister reg = compiler.getRegisterManager().getCurrent();
         GPRegister rightReg;
         DAddr val = left.codeGenAddr(compiler);

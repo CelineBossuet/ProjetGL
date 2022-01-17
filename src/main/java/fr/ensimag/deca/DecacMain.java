@@ -1,6 +1,13 @@
 package fr.ensimag.deca;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
 import org.apache.log4j.Logger;
 
 /**
@@ -15,6 +22,7 @@ public class DecacMain {
     public static void main(String[] args) {
         LOG.info("Decac compiler started");
         final CompilerOptions options = new CompilerOptions();
+        boolean error = false;
         try {
             options.parseArgs(args);
         } catch (CLIException e) {
@@ -32,30 +40,45 @@ public class DecacMain {
         }
         if (options.getParser()) {
             LOG.debug("Decac compiler will stop after parsing");
-            for (File source : options.getSourceFiles()) {
-                DecacCompiler compiler = new DecacCompiler(options, source);
-                System.exit(compiler.compile() ? 1 : 0); // if no errors, tree displayed by compile function
-            }
         }
         if (options.getVerif()) {
             LOG.debug("Decac compiler will stop after verification");
-            for (File source : options.getSourceFiles()) {
-                DecacCompiler compiler = new DecacCompiler(options, source);
-                System.exit(compiler.compile() ? 1 : 0); // no display if no errors
-            }
         }
         if (options.getParallel()) {
-            // A FAIRE : instancier DecacCompiler pour chaque fichier à
-            // compiler, et lancer l'exécution des méthodes compile() de chaque
-            // instance en parallèle. Il est conseillé d'utiliser
-            // java.util.concurrent de la bibliothèque standard Java.
-            throw new UnsupportedOperationException("Parallel build not yet implemented");
+
+            int cpuThreads = Runtime.getRuntime().availableProcessors();
+            ExecutorService eS = Executors.newFixedThreadPool(cpuThreads);
+            ArrayList<Future<Boolean>> results = new ArrayList<Future<Boolean>>();
+            for (File source : options.getSourceFiles()) {
+                Callable<Boolean> compilerLauncher = () -> {
+                    DecacCompiler compiler = new DecacCompiler(options, source);
+                    return compiler.compile();
+                };
+                results.add(eS.submit(compilerLauncher)); // submit Callable task
+            }
+            for (Future<Boolean> result : results) {
+                try {
+                    if (result.get()) // finish execution and get results
+                        error = true;
+                } catch (InterruptedException | ExecutionException e) {
+                    e.printStackTrace();
+                    error = true;
+                }
+            }
+
         } else { // Normal execution
-            LOG.debug("Decac compiler will fully compile");
             for (File source : options.getSourceFiles()) {
                 DecacCompiler compiler = new DecacCompiler(options, source);
-                System.exit(compiler.compile() ? 1 : 0);
+                try {
+                    if (compiler.compile())
+                        error = true;
+                } catch (Exception e) { // finish other files
+                    e.printStackTrace();
+                    error = true;
+                }
             }
         }
+
+        System.exit(error ? 1 : 0);
     }
 }

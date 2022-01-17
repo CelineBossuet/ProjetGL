@@ -20,11 +20,6 @@ public class MemoryManager {
 
     public int getCurrentLB() {return currentLB;}
 
-    public void setCurrentGB(int currentGB) {this.currentGB = currentGB;}
-
-    public void setCurrentLB(int currentLB) {this.currentLB = currentLB;}
-
-    public void setMaxLB(int maxLB) {this.maxLB = maxLB;}
 
     public void initLGB(){
         currentGB=0;

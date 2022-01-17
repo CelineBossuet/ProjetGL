@@ -30,12 +30,12 @@ public class Modulo extends AbstractOpArith {
         Type right = getRightOperand().verifyExpr(compiler, localEnv, currentClass);
 
         if (!left.isInt()) {
-            throw new UnsupportedOperationException(
-                    "Modulo que entre des int, l'opérande de gauche est de type " + left);
+            throw new ContextualError(
+                    "Modulo que entre des int, l'opérande de gauche est de type " + left, getLocation());
         }
         if (!right.isInt()) {
-            throw new UnsupportedOperationException(
-                    "Modulo que entre des int, l'opérande de droite est de type " + right);
+            throw new ContextualError(
+                    "Modulo que entre des int, l'opérande de droite est de type " + right, getLocation());
         }
         setType(new IntType(compiler.getSymbolTable().create("int")));
 
