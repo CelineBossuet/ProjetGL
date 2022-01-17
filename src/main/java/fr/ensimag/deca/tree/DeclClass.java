@@ -28,7 +28,7 @@ public class DeclClass extends AbstractDeclClass {
     private AbstractIdentifier superClass;
     private ListDeclField field;
     private ListDeclMethod method;
-    private static VTable ObjectTable=new VTable(1, null);
+    private static VTable ObjectTable=new VTable(0, null);
     private HashSet<SymbolTable.Symbol> alreadyUsed= new HashSet<>();
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DeclClass.class);
 

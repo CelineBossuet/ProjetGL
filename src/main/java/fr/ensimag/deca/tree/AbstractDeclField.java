@@ -4,6 +4,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.Environment;
+import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.ima.pseudocode.GPRegister;
 
 public abstract class AbstractDeclField extends Tree{
@@ -15,7 +16,7 @@ public abstract class AbstractDeclField extends Tree{
      * @param currentClass
      * @throws ContextualError
      */
-    protected abstract void verifyMembers(DecacCompiler compiler, Environment env, ClassDefinition currentClass) throws ContextualError;
+    protected abstract void verifyMembers(DecacCompiler compiler, Environment<ExpDefinition> env, ClassDefinition currentClass) throws ContextualError;
 
     /**
      * Vérifie la passe 3

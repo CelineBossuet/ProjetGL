@@ -1,10 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.Environment;
-import fr.ensimag.deca.context.FieldDefinition;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DAddr;
 import fr.ensimag.ima.pseudocode.GPRegister;
@@ -52,7 +49,7 @@ public class DeclField extends AbstractDeclField{
     }
 
     @Override
-    protected void verifyMembers(DecacCompiler compiler, Environment env, ClassDefinition currentClass) throws ContextualError {
+    protected void verifyMembers(DecacCompiler compiler, Environment<ExpDefinition> env, ClassDefinition currentClass) throws ContextualError {
         FieldDefinition field = new FieldDefinition(this.type.verifyType(compiler), this.getLocation(), this.visibility, currentClass, currentClass.getNumberOfFields() + 1); // +1 car nouvelle déclaration
         try{
             currentClass.getMembers().declare(this.fieldName.getName(), field);
