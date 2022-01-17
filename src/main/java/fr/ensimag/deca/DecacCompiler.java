@@ -331,7 +331,7 @@ public class DecacCompiler {
 
         // TODO compile si -j
 
-        if (compilerOptions.getJava()) {
+
 
             addComment("start bytecode main program");
             prog.codeGenProgramBytecode(this);
@@ -363,8 +363,7 @@ public class DecacCompiler {
             program.display(new PrintStream(fstream));
             LOG.info("Compilation of " + sourceName + " successful.");
             return false;
-        }
-        return false;
+
     }
 
 

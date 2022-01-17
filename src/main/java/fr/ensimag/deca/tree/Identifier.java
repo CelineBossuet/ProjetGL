@@ -236,6 +236,8 @@ public class Identifier extends AbstractIdentifier {
         return ope;
     }
 
+
+
     @Override
     protected GPRegister codeGenReg(DecacCompiler compiler){
         if(getDefinition().isField()){

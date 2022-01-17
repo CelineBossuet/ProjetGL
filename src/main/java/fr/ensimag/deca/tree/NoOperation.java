@@ -33,6 +33,12 @@ public class NoOperation extends AbstractInst {
     }
 
     @Override
+    protected void codeGenInstBytecode(DecacCompiler compiler, Label returnLabel, Label local) {
+        //throw new UnsupportedOperationException("not yet implemented");
+        compiler.addComment("Aucune instruction donnée");
+    }
+
+    @Override
     public void decompile(IndentPrintStream s) {
         s.print(";");
     }
