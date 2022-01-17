@@ -8,6 +8,8 @@ import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
 
 import java.io.PrintStream;
 
@@ -33,7 +35,7 @@ public class This extends AbstractExpr {
 
     @Override
     protected DVal codeGenNoReg(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("Not yet implemented"); // TODO
+        return new RegisterOffset(-2, Register.LB);
     }
 
     @Override
