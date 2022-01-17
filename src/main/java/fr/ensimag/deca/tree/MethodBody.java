@@ -29,7 +29,9 @@ public class MethodBody extends AbstractMethodBody{
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        variablesLocales.iter(f);
+        instructions.iter(f);
+        //throw new UnsupportedOperationException("Not yet implemented");
     }
 
     @Override

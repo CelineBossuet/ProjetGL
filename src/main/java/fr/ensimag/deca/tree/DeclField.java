@@ -45,7 +45,10 @@ public class DeclField extends AbstractDeclField{
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        type.iter(f);
+        fieldName.iter(f);
+        init.iter(f);
+        //throw new UnsupportedOperationException("Not implemented yet");
     }
 
     @Override
