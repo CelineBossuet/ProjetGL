@@ -5,6 +5,8 @@ import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.context.Environment.DoubleDefException;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DAddr;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
 import org.apache.commons.lang.Validate;
 
 import java.io.PrintStream;
@@ -52,12 +54,18 @@ public class DeclVar extends AbstractDeclVar {
     }
 
     @Override
-    protected int codeGenVar(DecacCompiler compiler) {
+    protected int codeGenVar(DecacCompiler compiler, boolean local, int offsetLocal) {
         //TODO
         //System.out.println("DeclVar codeGenVar");
+        DAddr o;
         VariableDefinition d = varName.getVariableDefinition();
-
-        DAddr o = compiler.getMemoryManager().allocGB(1);
+        if(local){
+            //les varaibles sont déclarées localements dans une méthode donc on créé un RegisterOffset
+            o = new RegisterOffset(offsetLocal, Register.LB);
+        }else{
+            //les variables sont globales
+            o = compiler.getMemoryManager().allocGB(1);
+        }
         d.setOperand(o);
         initialization.codeGeneInit(compiler, d.getOperand());
         return 1;

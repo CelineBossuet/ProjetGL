@@ -6,6 +6,7 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.Environment;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.Label;
 
 import java.io.PrintStream;
 
@@ -38,5 +39,17 @@ public class MethodBody extends AbstractMethodBody{
     public void verifyBody(DecacCompiler compiler, Environment localEnv, ClassDefinition current, Type t) throws ContextualError {
         this.variablesLocales.verifyListDeclVariable(compiler, localEnv, current);
         this.instructions.verifyListInst(compiler, localEnv, current, t);
+    }
+
+    @Override
+    public int codeGenBody(DecacCompiler compiler, boolean error, Label labelReturn) {
+        int size = variablesLocales.codeGenListVar(compiler, true);
+        if (error){
+            instructions.codeGenListInst(compiler, labelReturn, null);
+        }else{
+            instructions.codeGenListInst(compiler, labelReturn, labelReturn);
+        }
+
+        return size;
     }
 }

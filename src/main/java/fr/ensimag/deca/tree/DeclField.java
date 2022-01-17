@@ -75,7 +75,11 @@ public class DeclField extends AbstractDeclField{
     }
 
     @Override
-    protected boolean codeGenFieldBody(DecacCompiler compiler, GPRegister reg) {
-        throw new UnsupportedOperationException("Not yet implemented");
+    protected void codeGenFieldBody(DecacCompiler compiler, GPRegister reg) {
+        FieldDefinition def =fieldName.getFieldDefinition();
+        DAddr field = new RegisterOffset(def.getIndex()+1, reg);
+        init.codeGeneInit(compiler, field);
+
+        //throw new UnsupportedOperationException("Not yet implemented");
     }
 }

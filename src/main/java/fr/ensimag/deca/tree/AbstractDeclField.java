@@ -28,5 +28,5 @@ public abstract class AbstractDeclField extends Tree{
 
     protected abstract boolean codeFieldNeedsInit(DecacCompiler compiler, GPRegister reg);
 
-    protected abstract boolean codeGenFieldBody(DecacCompiler compiler, GPRegister reg);
+    protected abstract void codeGenFieldBody(DecacCompiler compiler, GPRegister reg);
 }

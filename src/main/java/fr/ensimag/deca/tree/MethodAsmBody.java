@@ -6,6 +6,8 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.Environment;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.InlinePortion;
+import fr.ensimag.ima.pseudocode.Label;
 
 import java.io.PrintStream;
 
@@ -35,5 +37,11 @@ public class MethodAsmBody extends AbstractMethodBody{
     @Override
     public void verifyBody(DecacCompiler compiler, Environment localEnv, ClassDefinition current, Type t) throws ContextualError {
 
+    }
+
+    @Override
+    public int codeGenBody(DecacCompiler compiler, boolean error, Label labelReturn) {
+        compiler.add(new InlinePortion(asmCode.getValue())); //on ajoute tout le code
+        return 0; //pas de variable donc 0
     }
 }
