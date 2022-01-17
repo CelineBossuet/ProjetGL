@@ -1,10 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.Environment;
-import fr.ensimag.deca.context.ParamDefinition;
-import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
@@ -32,7 +29,7 @@ public class DeclParam extends AbstractDeclParam{
     }
 
     @Override
-    protected void verifBody(DecacCompiler compiler, Environment localENv) throws ContextualError {
+    protected void verifBody(DecacCompiler compiler, Environment<ExpDefinition> localENv) throws ContextualError {
         Type t = this.type.verifyType(compiler);
         ParamDefinition definition = new ParamDefinition(t, this.getLocation());
         this.name.setDefinition(definition);
@@ -66,6 +63,8 @@ public class DeclParam extends AbstractDeclParam{
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        type.iter(f);
+        name.iter(f);
+        //throw new UnsupportedOperationException("Not yet implemented");
     }
 }

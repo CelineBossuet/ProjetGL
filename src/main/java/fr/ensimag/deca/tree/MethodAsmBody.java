@@ -1,10 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.Environment;
-import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.InlinePortion;
 import fr.ensimag.ima.pseudocode.Label;
@@ -35,7 +32,7 @@ public class MethodAsmBody extends AbstractMethodBody{
     }
 
     @Override
-    public void verifyBody(DecacCompiler compiler, Environment localEnv, ClassDefinition current, Type t) throws ContextualError {
+    public void verifyBody(DecacCompiler compiler, Environment<ExpDefinition> localEnv, ClassDefinition current, Type t) throws ContextualError {
 
     }
 

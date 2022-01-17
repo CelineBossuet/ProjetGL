@@ -60,6 +60,8 @@ public class Selection extends AbstractLValue{
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        object.iter(f);
+        field.iter(f);
+        //throw new UnsupportedOperationException("Not yet implemented");
     }
 }
