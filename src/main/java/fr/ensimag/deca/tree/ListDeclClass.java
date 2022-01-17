@@ -65,8 +65,13 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
      * @param compiler
      */
     public void codeGenListClass(DecacCompiler compiler){
+        int first=0;
         for (AbstractDeclClass c : getList()){
-            c.codeGenClass(compiler);
+            c.codeGenClass(compiler, first);
+            first++;
+            if(first ==1){
+                c.codeGenClass(compiler, first);
+            }
         }
     }
 

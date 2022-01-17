@@ -14,8 +14,8 @@ import org.apache.commons.lang.Validate;
 public class ClassDefinition extends TypeDefinition {
     private Label constructorLabel;
     private VTable vTable;
-    private int numberOfFields = 0;
-    private int numberOfMethods = 0;
+    private int numberOfFields ;
+    private int numberOfMethods;
     private final Environment<ExpDefinition> members;
     private final ClassDefinition superClass;
 
@@ -95,6 +95,8 @@ public class ClassDefinition extends TypeDefinition {
         }
         members = new Environment<ExpDefinition>(parent);
         this.superClass = superClass;
+
+
     }
 
 }

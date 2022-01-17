@@ -28,6 +28,7 @@ public class DeclClass extends AbstractDeclClass {
     private AbstractIdentifier superClass;
     private ListDeclField field;
     private ListDeclMethod method;
+    private static VTable ObjectTable=new VTable(1, null);
     private HashSet<SymbolTable.Symbol> alreadyUsed= new HashSet<>();
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DeclClass.class);
 
@@ -100,41 +101,63 @@ public class DeclClass extends AbstractDeclClass {
     }
 
     @Override
-    protected void codeGenClass(DecacCompiler compiler) {
+    protected void codeGenClass(DecacCompiler compiler, int first) {
+        System.out.println("------------------------");
         ClassDefinition currentDef = name.getClassDefinition();
-        ClassDefinition superDef =currentDef.getSuperClass();
+        ClassDefinition superDef = this.superClass.getClassDefinition();
+        System.out.println("SUperDef "+superDef);
+        System.out.println(superDef.getvTable());
+        if(first==0){
+            System.out.println("On soccupe d'Object");
+            //On s'occument aussi de la classe Object
+            currentDef = compiler.OBJECT;
+            superDef = currentDef.getSuperClass();
+        }
+
         currentDef.setConstructorLabel(compiler.getLabelManager().newLabel("init."+name.getName()));
         //on a créé le Label pour l'initialisation de la classe
-
         VTable vTable;
         VTable superVTable;
         if(superDef==null){
+            //pas de extends donc on considère Object comme superclass
             superVTable =null;
             compiler.getMemoryManager().createConstant(new NullOperand(), compiler.getCurrentBlock());
+
             //pas de VTable parent pour notre classe
         }
         else{
             LOG.info("on garde en mémoire le pointeur vers la VTable parent");
+            System.out.println(superDef);
+            System.out.println("super Table "+superDef.getvTable());
             superVTable=superDef.getvTable();
             DAddr tab = compiler.getMemoryManager().allocGB(1);
             DAddr AddrVTable = compiler.getMemoryManager().getCurrentGBOperand();
-            compiler.addInstruction(new LEA(superVTable.getOperand(), Register.getR(0)));
+            compiler.addInstruction(new LEA(this.ObjectTable.getOperand(), Register.getR(0)));
             compiler.addInstruction(new STORE(Register.getR(0), AddrVTable));
 
         }
+        System.out.println("nouvelle table de taille"+currentDef.getNumberOfMethods());
         vTable= new VTable(currentDef.getNumberOfMethods(), superVTable);
+        System.out.println(vTable.getOperand());
         //on peut donc créer notre VTable maintenant
-        currentDef.setvTable(vTable); //on l'ajoute dans notre definition
-        vTable.setOperand(compiler.getMemoryManager().getCurrentGBOperand());
 
+        vTable.setOperand(compiler.getMemoryManager().getCurrentGBOperand());
+        currentDef.setvTable(vTable); //on l'ajoute dans notre definition
+
+        System.out.println("ma table courante est "+currentDef.getvTable());
         for (Map.Entry<Symbol, ExpDefinition> e : currentDef.getMembers().getEnvironment().entrySet()){
             if(e.getValue().isMethod()){
                 MethodDefinition m=(MethodDefinition) e.getValue();
                 Symbol name = e.getKey();
+                System.out.println(m+" de nom "+name);
+                System.out.println(m.getIndex());
                 vTable.set(m.getIndex(), new LabelOperand(m.getLabel()));
             }
         }
         vTable.codeGen(compiler);
+        if(first==0){
+            this.ObjectTable=vTable;}
+        System.out.println("------------------------");
 
         //throw new UnsupportedOperationException("Not yet implemented");
     }

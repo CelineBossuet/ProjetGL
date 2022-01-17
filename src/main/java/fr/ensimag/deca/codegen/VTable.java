@@ -31,7 +31,10 @@ public class VTable {
     }
 
 
-    public void set(int i, LabelOperand l){ content[i]=l;}
+    public void set(int i, LabelOperand l){
+        System.out.println(taille);
+        System.out.println(content);
+        content[i]=l;}
 
     public void codeGen(DecacCompiler compiler){
         for(int i=0; i<taille; i++){
