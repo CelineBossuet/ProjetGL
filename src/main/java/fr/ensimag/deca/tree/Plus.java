@@ -7,6 +7,7 @@ import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.ADD;
+import fr.ensimag.bytecode.pseudocode.instructions.*;
 
 /**
  * @author gl13
@@ -28,6 +29,7 @@ public class Plus extends AbstractOpArith {
         //Génération de l'instruction pour une addition dans le registre reg
         return new ADD(val, reg);
     }
+
 
     @Override
     protected void codeGenInstBytecode(DecacCompiler compiler, Label returnLabel, Label local) {
