@@ -1,12 +1,9 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.BinaryInstruction;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.ADD;
-import fr.ensimag.bytecode.pseudocode.instructions.*;
 
 /**
  * @author gl13

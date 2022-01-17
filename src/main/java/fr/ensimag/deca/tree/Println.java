@@ -27,14 +27,6 @@ public class Println extends AbstractPrint {
     }
 
     @Override
-    protected void codeGenInstJasmin(DecacCompiler compiler, Label returnLabel, Label local) {
-        getLOG().trace("Println codeGenInstJasmin");
-        super.codeGenInstJasmin(compiler, returnLabel, local);
-        // compiler.addInstruction(new invokevirtual());
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
-
-    @Override
     String getSuffix() {
         return "ln";
     }

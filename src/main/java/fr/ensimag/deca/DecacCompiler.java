@@ -332,8 +332,10 @@ public class DecacCompiler {
         // genérer le jasmin .j
         //
 
-        // TODO A FAIRE conversion en .class
         throw new DecacFatalError("Not yet implemented !");
+
+        // TODO A FAIRE conversion en .class
+
         // return false;
     }
 

@@ -1,11 +1,13 @@
 package fr.ensimag.ima.pseudocode.instructions.jasmin;
 
-import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.UnaryInstructionToReg;
+import fr.ensimag.ima.pseudocode.UnaryInstruction;
+import fr.ensimag.ima.pseudocode.jasmin.PrintInvoked;
 
-public class invokevirtual extends UnaryInstructionToReg {
+// TODO A FAIRE généraliser cette classe pas que pour les print
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+public class invokevirtual extends UnaryInstruction {
 
-    public invokevirtual(GPRegister op) {
+    public invokevirtual(PrintInvoked op) { // todo Prendre pas que des printinvoked
         super(op);
     }
 

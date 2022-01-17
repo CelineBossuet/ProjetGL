@@ -72,10 +72,10 @@ public abstract class AbstractPrint extends AbstractInst {
         for (AbstractExpr a : getArguments().getList()) {
             if (this.getPrintHex())
                 // print en hexa
-                a.codeGenPrintHexaJasmin(compiler);
+                a.codeGenPrintHexaJasmin(compiler, getSuffix());
             else
                 // print normal
-                a.codeGenPrintJasmin(compiler);
+                a.codeGenPrintJasmin(compiler, getSuffix());
         }
     }
 

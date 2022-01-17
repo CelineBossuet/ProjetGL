@@ -9,6 +9,9 @@ import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.*;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.invokevirtual;
+import fr.ensimag.ima.pseudocode.jasmin.PrintInvoked;
+
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
@@ -285,7 +288,7 @@ public abstract class AbstractExpr extends AbstractInst {
      *
      * @param compiler
      */
-    protected void codeGenPrintJasmin(DecacCompiler compiler) {
+    protected void codeGenPrintJasmin(DecacCompiler compiler, String suffix) {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
@@ -294,8 +297,20 @@ public abstract class AbstractExpr extends AbstractInst {
      *
      * @param compiler
      */
-    protected void codeGenPrintHexaJasmin(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("Not yet implemented");
+    protected void codeGenPrintHexaJasmin(DecacCompiler compiler, String suffix) {
+        if (getType().isInt()) {
+            throw new UnsupportedOperationException("Not yet implemented");
+        } else if (getType().isFloat()) {
+            throw new UnsupportedOperationException("Not yet implemented");
+        } else if (getType().isString()) {
+            // TODO A FAIRE instruction ldc et getstatic !
+            // cette instruction est en 3 instructions
+            // (todo .limit stack ????????????????)
+            compiler.addInstruction(new invokevirtual(new PrintInvoked(getType(), suffix)));
+        } else {
+            throw new DecacInternalError("Printx pas supporté pour le type" + getType());
+        }
+
     }
 
 }
