@@ -38,4 +38,6 @@ public abstract class AbstractInitialization extends Tree {
      */
     protected abstract void codeGeneInit(DecacCompiler compiler, DAddr target);
 
+    protected abstract boolean hasInit();
+
 }

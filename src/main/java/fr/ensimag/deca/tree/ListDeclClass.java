@@ -58,4 +58,28 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
         //throw new UnsupportedOperationException("not yet implemented");
     }
 
+    /**
+     * Programme qui correspond à la première passe pour la génération de code.
+     * Donc elle parcourt les classes du programme en s’intéressant à leurs méthodes,
+     * de façon à générer du code pour construire la table des méthodes ie VTable
+     * @param compiler
+     */
+    public void codeGenListClass(DecacCompiler compiler){
+        for (AbstractDeclClass c : getList()){
+            c.codeGenClass(compiler);
+        }
+    }
+
+    /**
+     * Programme qui correspond à la 2eme passe pour la génération de code.
+     * ie s'occupe de l'initialisation de chaque classe, le codage des différentes méthodes
+     * et du programme principal
+     * @param compiler
+     */
+    public void codeGenListClassBody(DecacCompiler compiler){
+        for (AbstractDeclClass c : getList()){
+            c.codeGenClassBody(compiler);
+        }
+    }
+
 }

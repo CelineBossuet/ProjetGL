@@ -3,6 +3,7 @@ package fr.ensimag.deca.context;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 
 import java.util.HashMap;
+import java.util.Set;
 
 /**
  * Dictionary associating identifier's D to their names.
@@ -27,6 +28,8 @@ public class Environment<D extends Definition> {
     private HashMap<Symbol, D> environment;
 
     Environment<D> parentEnvironment;
+
+    public HashMap<Symbol, D> getEnvironment(){return environment;}
 
     public Environment(Environment parentEnvironment) {
         this.parentEnvironment = parentEnvironment;

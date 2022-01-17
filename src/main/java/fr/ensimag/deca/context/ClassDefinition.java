@@ -14,13 +14,25 @@ import org.apache.commons.lang.Validate;
 public class ClassDefinition extends TypeDefinition {
     private Label constructorLabel;
     private VTable vTable;
+    private int numberOfFields = 0;
+    private int numberOfMethods = 0;
+    private final Environment<ExpDefinition> members;
+    private final ClassDefinition superClass;
 
     public VTable getvTable() {
         return vTable;
     }
 
+    public void setvTable(VTable vTable) {
+        this.vTable = vTable;
+    }
+
     public Label getConstructorLabel() {
         return constructorLabel;
+    }
+
+    public void setConstructorLabel(Label l){
+        this.constructorLabel=l;
     }
 
     public void setNumberOfFields(int numberOfFields) {
@@ -49,8 +61,7 @@ public class ClassDefinition extends TypeDefinition {
         return numberOfMethods;
     }
 
-    private int numberOfFields = 0;
-    private int numberOfMethods = 0;
+
 
     @Override
     public boolean isClass() {
@@ -68,8 +79,7 @@ public class ClassDefinition extends TypeDefinition {
         return superClass;
     }
 
-    private final Environment<ExpDefinition> members;
-    private final ClassDefinition superClass;
+
 
     public Environment<ExpDefinition> getMembers() {
         return members;

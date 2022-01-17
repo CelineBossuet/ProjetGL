@@ -266,6 +266,11 @@ public class Identifier extends AbstractIdentifier {
     }
 
     @Override
+    public GPRegister initDefaultValue(DecacCompiler compiler, GPRegister reg){
+        throw new UnsupportedOperationException("Not yet implmented");
+    }
+
+    @Override
     protected DAddr codeGenNoReg(DecacCompiler compiler) {
 
         DAddr ope = this.getExpDefinition().getOperand();

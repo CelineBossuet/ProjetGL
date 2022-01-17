@@ -64,6 +64,10 @@ public class Initialization extends AbstractInitialization {
     }
 
     @Override
+    protected boolean hasInit() {return true;
+    }
+
+    @Override
     protected void iterChildren(TreeFunction f) {
         expression.iter(f);
     }

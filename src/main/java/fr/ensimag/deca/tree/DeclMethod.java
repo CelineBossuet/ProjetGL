@@ -70,4 +70,9 @@ public class DeclMethod extends AbstractDeclMethod{
         this.param.verifyBody(compiler, localEnv);
         this.body.verifyBody(compiler, localEnv, currentDef, this.type.getType());
     }
+
+    @Override
+    protected void codeGenMethodBody(DecacCompiler compiler) {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
 }
