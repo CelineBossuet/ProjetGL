@@ -1,0 +1,14 @@
+// Description:
+//    Programme vérifiant le bon fonctionnement d'un calcul
+//
+// Resultats:
+//    12
+//
+// Historique:
+//    cree le 06/01/2022
+
+{
+    int x = 10;
+    x = x + 12;
+    println(x);
+}
