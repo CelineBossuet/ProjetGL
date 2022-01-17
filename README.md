@@ -151,4 +151,22 @@ Pour relancer en mode sans échec, vous pouvez aussi lancer
 mvn verify -Dmaven.test.failure.ignore
 ``
 
+### Running Jasmin
 
+The jasmin.jar file is an executable JAR file that runs Jasmin. For example:
+
+    java -jar jasmin.jar myfile.j
+or
+java Jasmin myfile.j
+(if jasmin.jar is already in your classpath)
+Jasmin looks at the .class directive contained in the myfile.j file to decide where to place the output class file. So if myfile.j starts with:
+
+    .class mypackage/MyClass
+then Jasmin will place the output class file "MyClass.class" in the subdirectory "mypackage" of the current directory. It will create the mypackage directory if it doesn't exist.
+
+You can use the "-d" option to tell jasmin to place the output in an alternative directory. For example,
+
+    java -jar jasmin.jar -d /tmp myfile.j 
+will place the output in /tmp/mypackage/MyClass.class.
+
+Finally, you can use the "-g" option to tell Jasmin to include line number information (used by debuggers) in the resulting .class file. Jasmin will number the lines in the Jasmin source file that JVM instructions appear on. Then, if an error occurs, you can see what instruction in the Jasmin source caused the error. Note that specifying "-g" causes any .line directives within the Jasmin file to be ignored.

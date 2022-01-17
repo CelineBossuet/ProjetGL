@@ -152,18 +152,7 @@ public abstract class AbstractExpr extends AbstractInst {
 
 
     // TODO codeGen for bytecode
-    protected void codeGenPrintBytecode(DecacCompiler compiler) {
-        if (getType().isInt()) {
-            compiler.addInstruction(new iload(this.codeGenReg(compiler), Register.getR(1)));
-            compiler.addInstruction(new WINT());
-        } else if (getType().isFloat()) {
-            compiler.addInstruction(new LOAD(this.codeGenReg(compiler), Register.getR(1)));
 
-            compiler.addInstruction(new WFLOAT());
-        } else {
-            throw new DecacInternalError("Print pas supporté pour le type " + getType());
-        }
-    }
 
 
     /**
