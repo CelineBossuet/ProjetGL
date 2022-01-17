@@ -268,10 +268,17 @@ public class Identifier extends AbstractIdentifier {
             s.println();
         }
     }
-
+    private GPRegister defaultValue=null;
     @Override
     public GPRegister initDefaultValue(DecacCompiler compiler, GPRegister reg){
-        throw new UnsupportedOperationException("Not yet implmented");
+        if(defaultValue!=null){
+            return defaultValue;
+        }
+        defaultValue = Register.getR(0);
+        compiler.addInstruction(new LOAD(this.getType().getDefaultValue(), defaultValue));
+        //a changer pour initialisation var de type int x,y,z
+        return defaultValue;
+        //throw new UnsupportedOperationException("Not yet implmented");
     }
 
     @Override
