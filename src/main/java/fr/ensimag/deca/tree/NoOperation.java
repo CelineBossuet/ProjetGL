@@ -33,9 +33,7 @@ public class NoOperation extends AbstractInst {
     @Override
     protected void codeGenInstJasmin(DecacCompiler compiler, Label returnLabel,
             Label local) {
-        // compiler.addJasminComment("Aucune instruction donnée");
-        throw new UnsupportedOperationException("Not yet implemented"); // TODO A FAIRE créer les classes pour écrire
-                                                                        // des commentaires
+        compiler.addComment("Aucune instruction donnée");
     }
 
     @Override
