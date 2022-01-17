@@ -196,8 +196,9 @@ public class DecacCompiler {
             addLabel(returnLabel);
         }
 
+        int nbReg=0;
         if(saveReg){
-            for(int i=2; i<getRegisterManager().getLastUsed(); i++){
+            for (int i=2; i<=getRegisterManager().getLastUsed(); i++){
                 currentBlock.addFirst(new PUSH(Register.getR(i)));
                 currentBlock.addInstruction(new POP(Register.getR(i)));
             }
@@ -205,6 +206,13 @@ public class DecacCompiler {
         if(size!=0){
             currentBlock.addFirst(new ADDSP(size));
         }
+
+        if(getMemoryManager().getMaxLB()+size+nbReg !=0){
+            currentBlock.addFirst(new BOV(getLabelManager().getStack_overflowLabel()));
+            currentBlock.addFirst(new TSTO(getMemoryManager().getMaxLB()+size+nbReg));
+        }
+
+
         if(returnLabel!=null){
             addInstruction(new RTS());
         }
