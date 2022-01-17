@@ -10,4 +10,6 @@ public abstract class AbstractDeclParam extends Tree{
     protected abstract Type verifParam(DecacCompiler compiler) throws ContextualError;
 
     protected abstract void verifBody(DecacCompiler compiler, Environment localEnv) throws ContextualError;
+
+    protected abstract void codeGenParam(DecacCompiler compiler, int i);
 }

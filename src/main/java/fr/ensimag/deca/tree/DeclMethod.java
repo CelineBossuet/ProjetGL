@@ -3,6 +3,7 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.Label;
 
 import java.io.PrintStream;
 
@@ -73,6 +74,15 @@ public class DeclMethod extends AbstractDeclMethod{
 
     @Override
     protected void codeGenMethodBody(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        param.codeGenParam(compiler);
+        compiler.addLabel(name.getMethodDefinition().getLabel());
+        compiler.startBlock();
+        Label returnLabel =compiler.getLabelManager().newLabel("endMethod");
+        boolean noReturn = name.getDefinition().getType().isVoid();
+        int size = body.codeGenBody(compiler,!noReturn , returnLabel);
+        compiler.endBlock(!noReturn, true, size, returnLabel);
+
+
+        //throw new UnsupportedOperationException("Not yet implemented");
     }
 }

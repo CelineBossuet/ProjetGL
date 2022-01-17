@@ -6,6 +6,8 @@ import fr.ensimag.deca.context.Environment;
 import fr.ensimag.deca.context.ParamDefinition;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
 
 import java.io.PrintStream;
 import java.util.HashSet;
@@ -43,6 +45,11 @@ public class DeclParam extends AbstractDeclParam{
                 declared.add(this.name.getName().getName());
             }
         }
+    }
+
+    @Override
+    protected void codeGenParam(DecacCompiler compiler, int i) {
+        name.getExpDefinition().setOperand(new RegisterOffset(-3-i, Register.LB));
     }
 
 
