@@ -331,7 +331,7 @@ public class DecacCompiler {
         this.addInstruction(new WNL());
         this.addInstruction(new ERROR());
 
-        LOG.debug("Generated assembly code:" + nl + program.display());
+        LOG.debug("Generated assembly code:" + nl + currentBlock.display());
         LOG.info("Output file assembly file is: " + destName);
 
         FileOutputStream fstream = null;
@@ -345,7 +345,7 @@ public class DecacCompiler {
 
         getCurrentBlock().display(new PrintStream(fstream));
 
-        program.display(new PrintStream(fstream));
+        //program.display(new PrintStream(fstream));
         LOG.info("Compilation of " + sourceName + " successful.");
         return false;
     }
