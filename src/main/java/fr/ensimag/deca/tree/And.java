@@ -31,6 +31,7 @@ public class And extends AbstractOpBool {
         }
     }
 
+
     @Override
     protected String getOperatorName() {
         return "&&";

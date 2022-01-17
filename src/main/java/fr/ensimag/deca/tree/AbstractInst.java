@@ -46,8 +46,7 @@ public abstract class AbstractInst extends Tree {
      */
     protected abstract void codeGenInst(DecacCompiler compiler, Label returnLabel, Label local);
 
-    // protected abstract void codeGenInstBytecode(DecacCompiler compiler, Label
-    // returnLabel, Label local);
+    protected abstract void codeGenInstJasmin(DecacCompiler compiler, Label returnLabel, Label local);
     // TODO A FAIRE
 
     /**

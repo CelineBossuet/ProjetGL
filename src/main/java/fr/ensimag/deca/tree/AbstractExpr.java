@@ -11,6 +11,7 @@ import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
+import fr.ensimag.bytecode.pseudocode.instructions.iload;
 
 import java.io.PrintStream;
 
@@ -155,7 +156,7 @@ public abstract class AbstractExpr extends AbstractInst {
 
 
     // TODO codeGen for bytecode
-
+    
 
 
     /**
@@ -187,6 +188,10 @@ public abstract class AbstractExpr extends AbstractInst {
         // peut être ajouter des labels en paramètre...
         // throw new UnsupportedOperationException("not yet implemented");
     }
+
+    //TODO codeGen for Jasmin
+
+
 
     @Override
     protected void decompileInst(IndentPrintStream s) {

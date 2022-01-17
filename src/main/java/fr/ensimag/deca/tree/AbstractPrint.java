@@ -66,6 +66,15 @@ public abstract class AbstractPrint extends AbstractInst {
         }
     }
 
+    // TODO codegen for Jasmin
+    @Override
+    protected void codeGenInstJasmin(DecacCompiler compiler, Label returnLabel, Label local) {
+        getLOG().trace("AbsPrint codeGenInstJasmin");
+        for (AbstractExpr a : getArguments().getList()) {
+                a.codeGenPrintJasmin(compiler);
+        }
+    }
+
     private boolean getPrintHex() {
         return printHex;
     }
