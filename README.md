@@ -164,5 +164,11 @@ Après utilisation de decac :
 
 Ce qui générera un .class
 
-Instructions jasmin : [jasmin.sourceforge.net/instructions.html](http://jasmin.sourceforge.net/instructions.html)
+[\\]: <> (Instructions jasmin : [jasmin.sourceforge.net/instructions.html](http://jasmin.sourceforge.net/instructions.html)
 
+Avec le .class générée via Jasmin, vous pouvez utiliser la JVM (Java Virtual Machine) pour exécuter les classes.
+
+On peut donc simplement taper :
+``
+    java myfile
+``
