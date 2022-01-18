@@ -161,8 +161,8 @@ inst returns[AbstractInst tree]
         } //TOBETESTED
     | RETURN expr SEMI { //si c'est un return
             assert($expr.tree != null);
-            $tree=$expr.tree;
-            setLocation($tree, $expr.start);
+            $tree= new Return($expr.tree);
+            setLocation($tree, $RETURN);
         }
     ;
 

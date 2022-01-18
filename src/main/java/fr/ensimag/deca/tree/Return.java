@@ -4,6 +4,9 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.BRA;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
 
 import java.io.PrintStream;
 
@@ -26,12 +29,16 @@ public class Return extends AbstractInst{
 
     @Override
     protected void codeGenInst(DecacCompiler compiler, Label returnLabel, Label local) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        compiler.addInstruction(new LOAD(returnValue.codeGenReg(compiler), Register.getR(0)));
+        compiler.addInstruction(new BRA(returnLabel));
+        //throw new UnsupportedOperationException("Not yet implemented");
     }
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        s.print("return ");
+        returnValue.decompile(s);
+        s.print(";");
     }
 
     @Override
@@ -41,6 +48,7 @@ public class Return extends AbstractInst{
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        returnValue.iter(f);
+
     }
 }

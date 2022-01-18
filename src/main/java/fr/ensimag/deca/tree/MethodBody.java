@@ -18,6 +18,8 @@ public class MethodBody extends AbstractMethodBody{
 
     @Override
     public void decompile(IndentPrintStream s) {
+        variablesLocales.decompile(s);
+        instructions.decompile(s);
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
