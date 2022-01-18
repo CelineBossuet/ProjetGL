@@ -8,6 +8,8 @@ import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.ima.pseudocode.instructions.ADDSP;
+import fr.ensimag.ima.pseudocode.instructions.BSR;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
 import org.apache.commons.lang.Validate;
 import org.graalvm.compiler.nodes.gc.G1PostWriteBarrier;
@@ -39,18 +41,34 @@ public class MethodCall extends AbstractExpr{
     protected GPRegister codeGenReg(DecacCompiler compiler){
         GPRegister reg = compiler.getRegisterManager().getCurrent();
         GPRegister thisReg = implicitParam.codeGenReg(compiler);
-        int size = param.size()+1;
         if(param.size()+1!=0){
             compiler.getMemoryManager().allocLB(param.size()+1);
             compiler.addInstruction(new ADDSP(param.size()+1));
         }
-        compiler.addInstruction(new STORE(thisReg, new RegisterOffset(0, Register.SP)));
+        int offset=0;
+        for(AbstractExpr p : param.getList()) {
+            GPRegister paramReg=p.codeGenReg(compiler);
+            if(offset==0){
+                compiler.addInstruction(new STORE(thisReg, new RegisterOffset(offset, Register.SP)));
+                offset--;
+            }
+            compiler.addInstruction((new STORE(paramReg, new RegisterOffset(offset, Register.SP))));
+            offset--;
+        }
 
+        compiler.addInstruction(new LOAD(new RegisterOffset(0, Register.SP), thisReg));
+        //ajout Label erreur si thisReg est de type null
+        compiler.addInstruction(new LOAD(new RegisterOffset(0, reg), reg));
 
+        compiler.getMemoryManager().allocBSR();
+        compiler.addInstruction(new BSR(new RegisterOffset(methodName.getMethodDefinition().getIndex()+1, reg)));
 
+        compiler.getMemoryManager().deallocLB(param.size()+1);
+        compiler.addInstruction(new ADDSP(param.size()+1));
 
+        compiler.addInstruction(new LOAD(Register.getR(0), reg));
+        return reg;
 
-        throw new UnsupportedOperationException("Not yet implemented");
     }
 
     @Override
