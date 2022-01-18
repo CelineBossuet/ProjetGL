@@ -26,13 +26,25 @@ public class MethodCall extends AbstractExpr{
     @Override
     public Type verifyExpr(DecacCompiler compiler, Environment<ExpDefinition> localEnv, ClassDefinition currentClass) throws ContextualError {
         //throw new UnsupportedOperationException("Not yet implemented");
-        this.implicitParam.verifyExpr(compiler, localEnv, currentClass);
-        Type t = this.methodName.verifyType(compiler);
+        Type tparami = this.implicitParam.verifyExpr(compiler, localEnv, currentClass);
+        ClassType methodType; // init obligatoire si false
+        try {
+            methodType = tparami.asClassType("Ceci n'est pas un objet", this.getLocation());
+        }catch (ContextualError e){
+            throw e;
+        }
+        MethodDefinition methodDefinition; //Pareil que précedemment
+        try {
+            methodDefinition = methodType.getDefinition().getMembers().get(this.methodName.getName()).asMethodDefinition("Ceci n'est pas une méthode", this.getLocation());
+        }catch (ContextualError e){
+            throw e;
+        }
         for (AbstractExpr p : this.param.getList()){
             p.verifyExpr(compiler, localEnv, currentClass);
         }
-        this.setType(t);
-        return t;
+        this.setType(methodDefinition.getType());
+        this.methodName.setDefinition(methodDefinition);
+        return this.getType();
     }
 
     @Override

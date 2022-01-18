@@ -75,8 +75,6 @@ public class DeclClass extends AbstractDeclClass {
     protected void verifyClassMembers(DecacCompiler compiler)
             throws ContextualError {
         //throw new UnsupportedOperationException("not yet implemented");
-        System.out.println(this.name.getClassDefinition());
-        System.out.println(this.superClass);
 
         (this.name.getClassDefinition()).setNumberOfFields(superClass.getClassDefinition().getNumberOfFields());
         (this.name.getClassDefinition()).setNumberOfMethods(superClass.getClassDefinition().getNumberOfMethods());

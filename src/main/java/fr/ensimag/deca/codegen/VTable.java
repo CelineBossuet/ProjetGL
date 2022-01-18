@@ -5,8 +5,6 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.DAddr;
 import fr.ensimag.ima.pseudocode.LabelOperand;
 
-import java.util.HashMap;
-
 /**
  * Virtual Method Table : Data Structure représentant la table des methodes
  */
@@ -32,7 +30,6 @@ public class VTable {
 
 
     public void set(int i, LabelOperand l){
-        System.out.println(taille);
         content[i]=l;}
 
     public void codeGen(DecacCompiler compiler){

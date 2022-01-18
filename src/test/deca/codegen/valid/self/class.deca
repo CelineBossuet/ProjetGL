@@ -4,11 +4,15 @@ class A {
     void setx(int x){
         this.x = x;
     }
+
+    int getx(){
+        return this.x;
+    }
 }
 
 {
     A obj = new A();
-    println(obj.x);
+    println(obj.getx());
     obj.setx(3);
     println(obj.x);
 }
