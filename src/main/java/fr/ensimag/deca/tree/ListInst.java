@@ -40,7 +40,6 @@ public class ListInst extends TreeList<AbstractInst> {
     }
 
     public void codeGenListInst(DecacCompiler compiler, Label returnLabel, Label local) {
-        // System.out.println("LinstInst codeGenListInst");
         int compteur = 1;
         for (AbstractInst i : getList()) {
             if (compteur != this.getList().size()) {
@@ -52,21 +51,17 @@ public class ListInst extends TreeList<AbstractInst> {
         }
     }
 
-    // TODO A FAIRE codeGenListInst for bytecode
-    // public void codeGenListInstBytecode(DecacCompiler compiler, Label
-    // returnLabel, Label local) {
-    // //System.out.println("LinstInst codeGenListInst");
-    // int compteur = 1;
-    // for (AbstractInst i : getList()) {
-    // if (compteur != this.getList().size()){
-    // i.codeGenInstBytecode(compiler, returnLabel, null);
-    // compteur += 1;
-    // }else{
-    // i.codeGenInstBytecode(compiler, returnLabel, local);
-    // }
-    // }
-    // //System.out.println("ListInst codeGenListInst FIN");
-    // }
+    public void codeGenListInstJasmin(DecacCompiler compiler, Label returnLabel, Label local) {
+        int compteur = 1;
+        for (AbstractInst i : getList()) {
+            if (compteur != this.getList().size()) {
+                i.codeGenInstJasmin(compiler, returnLabel, null);
+                compteur += 1;
+            } else {
+                i.codeGenInstJasmin(compiler, returnLabel, local);
+            }
+        }
+    }
 
     @Override
     public void decompile(IndentPrintStream s) {

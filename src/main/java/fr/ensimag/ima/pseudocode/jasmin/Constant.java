@@ -2,21 +2,21 @@ package fr.ensimag.ima.pseudocode.jasmin;
 
 import fr.ensimag.ima.pseudocode.Operand;
 
-public class StringConstant extends Operand {
+public class Constant extends Operand {
 
-    private final String constant;
+    private final Object constant;
 
-    public StringConstant(String constant) {
+    public Constant(Object constant) {
         this.constant = constant;
     }
 
-    public String getConstant() {
+    public Object getConstant() {
         return constant;
     }
 
     @Override
     public String toString() {
-        return "\"" + constant + "\"";
+        return constant.toString();
     }
 
 }

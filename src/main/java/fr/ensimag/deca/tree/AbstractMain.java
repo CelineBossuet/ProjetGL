@@ -18,6 +18,5 @@ public abstract class AbstractMain extends Tree {
      */
     protected abstract void verifyMain(DecacCompiler compiler) throws ContextualError;
 
-    // TODO A FAIRE codeGen for bytecode
-    // protected abstract void codeGenMainBytecode(DecacCompiler compiler);
+    protected abstract void codeGenMainJasmin(DecacCompiler compiler);
 }

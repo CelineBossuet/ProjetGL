@@ -326,17 +326,28 @@ public class DecacCompiler {
     private boolean doGenerateBytecode(AbstractProgram prog, String sourceName, String destName,
             PrintStream out, PrintStream err)
             throws DecacFatalError, LocationException {
-        //
-        // TODO A FAIRE
-        //
-        // genérer le jasmin .j
-        //
+        addComment("start main program");
+        prog.codeGenProgramJasmin(this);
+        addComment("end main program");
 
-        throw new DecacFatalError("Not yet implemented !");
+        LOG.debug("Generated jasmin assembly code:" + nl + program.display());
+        LOG.info("Output file assembly file is: " + destName);
+
+        FileOutputStream fstream = null;
+        try {
+            fstream = new FileOutputStream(destName);
+        } catch (FileNotFoundException e) {
+            throw new DecacFatalError("Failed to open output file: " + e.getLocalizedMessage());
+        }
+
+        LOG.info("Writing jasmin assembler file ...");
+
+        program.display(new PrintStream(fstream));
+        LOG.info("Compilation of " + sourceName + " successful.");
+
+        return false;
 
         // TODO A FAIRE conversion en .class
-
-        // return false;
     }
 
     // A FAIRE methods addPUSH, addADDSP, addSUBSP, ...

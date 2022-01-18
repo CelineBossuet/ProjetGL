@@ -14,7 +14,7 @@ import fr.ensimag.ima.pseudocode.instructions.jasmin.invokevirtual;
 import fr.ensimag.ima.pseudocode.instructions.jasmin.ldc;
 import fr.ensimag.ima.pseudocode.jasmin.PrintInvoked;
 import fr.ensimag.ima.pseudocode.jasmin.PrintStreamOp;
-import fr.ensimag.ima.pseudocode.jasmin.StringConstant;
+import fr.ensimag.ima.pseudocode.jasmin.Constant;
 import fr.ensimag.ima.pseudocode.jasmin.SystemOut;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
@@ -293,7 +293,18 @@ public abstract class AbstractExpr extends AbstractInst {
      * @param compiler
      */
     protected void codeGenPrintJasmin(DecacCompiler compiler, String suffix) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        if (getType().isInt()) {
+            throw new UnsupportedOperationException("Not yet implemented");
+        } else if (getType().isFloat()) {
+            throw new UnsupportedOperationException("Not yet implemented");
+        } else if (getType().isString()) {
+            // (todo .limit stack ????????????????)
+            compiler.addInstruction(new getstatic(new SystemOut(), new PrintStreamOp()));
+            compiler.addInstruction(new ldc(new Constant(this.decompile())));
+            compiler.addInstruction(new invokevirtual(new PrintInvoked(getType(), suffix)));
+        } else {
+            throw new DecacInternalError("Print pas supporté pour le type" + getType());
+        }
     }
 
     /**
@@ -308,8 +319,8 @@ public abstract class AbstractExpr extends AbstractInst {
             throw new UnsupportedOperationException("Not yet implemented");
         } else if (getType().isString()) {
             // (todo .limit stack ????????????????)
-            compiler.addInstruction(new ldc(new StringConstant(this.decompile())));
             compiler.addInstruction(new getstatic(new SystemOut(), new PrintStreamOp()));
+            compiler.addInstruction(new ldc(new Constant(this.decompile())));
             compiler.addInstruction(new invokevirtual(new PrintInvoked(getType(), suffix)));
         } else {
             throw new DecacInternalError("Printx pas supporté pour le type" + getType());

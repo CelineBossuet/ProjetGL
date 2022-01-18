@@ -19,15 +19,13 @@ public class EmptyMain extends AbstractMain {
         // Il n'y a rien a vérifier car il n'y a pas de main
     }
 
-    // TODO A FAIRE codeGen bytecode
-    // @Override
-    // protected void codeGenMainBytecode(DecacCompiler compiler) {
-    // compiler.addComment("Empty Main");
-    // }
-
     @Override
     protected void codeGenMain(DecacCompiler compiler) {
-        // throw new UnsupportedOperationException("not yet implemented");
+        compiler.addComment("Empty Main");
+    }
+
+    @Override
+    protected void codeGenMainJasmin(DecacCompiler compiler) {
         compiler.addComment("Empty Main");
     }
 

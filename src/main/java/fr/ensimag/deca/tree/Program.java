@@ -79,20 +79,16 @@ public class Program extends AbstractProgram {
 
     @Override
     public void codeGenProgram(DecacCompiler compiler) {
-        // A FAIRE: compléter ce squelette très rudimentaire de code
         compiler.addComment("Main program");
         main.codeGenMain(compiler);
         compiler.addInstruction(new HALT());
     }
 
-    // TODO A FAIRE codeGenProgram for bytecode
-
-    // @Override
-    // public void codeGenProgramBytecode(DecacCompiler compiler) {
-    // compiler.addComment("Main program");
-    // main.codeGenMainBytecode(compiler);
-    // // TODO find a solution for return
-    // }
+    @Override
+    public void codeGenProgramJasmin(DecacCompiler compiler) {
+        compiler.addComment("Main program");
+        main.codeGenMainJasmin(compiler);
+    }
 
     @Override
     public void decompile(IndentPrintStream s) {
