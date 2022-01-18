@@ -4,7 +4,13 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.instructions.ADDSP;
+import fr.ensimag.ima.pseudocode.instructions.STORE;
 import org.apache.commons.lang.Validate;
+import org.graalvm.compiler.nodes.gc.G1PostWriteBarrier;
 
 import java.io.PrintStream;
 
@@ -26,6 +32,24 @@ public class MethodCall extends AbstractExpr{
 
     @Override
     protected DVal codeGenNoReg(DecacCompiler compiler) {
+        throw new UnsupportedOperationException("Pas possible pour MethodCall");
+    }
+
+    @Override
+    protected GPRegister codeGenReg(DecacCompiler compiler){
+        GPRegister reg = compiler.getRegisterManager().getCurrent();
+        GPRegister thisReg = implicitParam.codeGenReg(compiler);
+        int size = param.size()+1;
+        if(param.size()+1!=0){
+            compiler.getMemoryManager().allocLB(param.size()+1);
+            compiler.addInstruction(new ADDSP(param.size()+1));
+        }
+        compiler.addInstruction(new STORE(thisReg, new RegisterOffset(0, Register.SP)));
+
+
+
+
+
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
@@ -42,6 +66,8 @@ public class MethodCall extends AbstractExpr{
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        implicitParam.iter(f);
+        methodName.iter(f);
+        param.iter(f);
     }
 }
