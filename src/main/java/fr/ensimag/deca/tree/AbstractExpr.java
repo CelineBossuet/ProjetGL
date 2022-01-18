@@ -14,6 +14,7 @@ import fr.ensimag.ima.pseudocode.instructions.jasmin.invokevirtual;
 import fr.ensimag.ima.pseudocode.instructions.jasmin.ldc;
 import fr.ensimag.ima.pseudocode.jasmin.PrintInvoked;
 import fr.ensimag.ima.pseudocode.jasmin.PrintStreamOp;
+import fr.ensimag.ima.pseudocode.jasmin.StringConstant;
 import fr.ensimag.ima.pseudocode.jasmin.SystemOut;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
@@ -306,10 +307,8 @@ public abstract class AbstractExpr extends AbstractInst {
         } else if (getType().isFloat()) {
             throw new UnsupportedOperationException("Not yet implemented");
         } else if (getType().isString()) {
-            // TODO A FAIRE instruction ldc et getstatic !
-            // compiler.addInstruction(new ldc(this));
-            // cette instruction est en 3 instructions
             // (todo .limit stack ????????????????)
+            compiler.addInstruction(new ldc(new StringConstant(this.decompile())));
             compiler.addInstruction(new getstatic(new SystemOut(), new PrintStreamOp()));
             compiler.addInstruction(new invokevirtual(new PrintInvoked(getType(), suffix)));
         } else {

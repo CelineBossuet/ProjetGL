@@ -1,11 +1,11 @@
 package fr.ensimag.ima.pseudocode.instructions.jasmin;
 
-import fr.ensimag.ima.pseudocode.Operand;
 import fr.ensimag.ima.pseudocode.UnaryInstruction;
+import fr.ensimag.ima.pseudocode.jasmin.StringConstant;
 
 public class ldc extends UnaryInstruction {
 
-    protected ldc(Operand operand) {
+    public ldc(StringConstant operand) {
         super(operand);
     }
 }
