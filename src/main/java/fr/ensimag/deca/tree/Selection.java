@@ -50,7 +50,7 @@ public class Selection extends AbstractLValue{
         //CMP si on a une selection sur un objet de type null alors BEQ
         //ajout BEQ vers label d'erreur de null_deref
         compiler.addInstruction(new BEQ(compiler.getLabelManager().getStack_overflowLabel()));
-        return new RegisterOffset(field.getFieldDefinition().getIndex()+1, regObject);
+        return new RegisterOffset(field.getFieldDefinition().getIndex(), regObject);
     }
 
     @Override

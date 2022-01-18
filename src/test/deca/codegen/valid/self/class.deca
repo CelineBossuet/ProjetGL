@@ -1,5 +1,5 @@
 class A {
-    protected int x=1;
+    int x=1;
 
     void setx(int x){
         this.x = x;
@@ -12,7 +12,6 @@ class A {
 
 {
     A obj = new A();
-    println(obj.getx());
     obj.setx(3);
     println(obj.x);
 }

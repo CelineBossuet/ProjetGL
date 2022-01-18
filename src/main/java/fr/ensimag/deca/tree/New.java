@@ -47,7 +47,7 @@ public class New extends AbstractExpr{
 
 
 
-        return null;
+        return reg;
     }
 
     @Override

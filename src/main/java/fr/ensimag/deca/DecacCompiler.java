@@ -36,6 +36,7 @@ public class DecacCompiler {
     private static final Logger LOG = Logger.getLogger(DecacCompiler.class);
 
     public ClassDefinition OBJECT;
+    public EqualsDefinition EQUALS;
 
     public static Logger getLOG() {
         return LOG;
@@ -71,9 +72,19 @@ public class DecacCompiler {
             ObjectType objectType = new ObjectType(compiler.getSymbolTable().create("Object"), null, newProg);
             newProg.addInstruction(new RTS());
             ClassDefinition newt = new ClassDefinition(objectType, Location.BUILTIN, null);
-            compiler.getEnvironmentType().declareClass(compiler.getSymbolTable().create("Object"), newt );
 
             this.OBJECT = objectType.getDefinition();
+
+            Signature signaEquals = new Signature();
+            ClassType classType=new ClassType(getSymbolTable().create("Object"), Location.BUILTIN, null);
+            signaEquals.add(classType);
+            MethodDefinition methEquals= new MethodDefinition(new BooleanType(getSymbolTable().create("boolean")), Location.BUILTIN, signaEquals, 0);
+            methEquals.setLabel(new Label("object.equals", 0));
+            classType.getDefinition().getMembers().declare(getSymbolTable().create("equals"), methEquals);
+            classType.getDefinition().incNumberOfMethods();
+
+            compiler.getEnvironmentType().declareClass(compiler.getSymbolTable().create("Object"), newt );
+
         } catch (Environment.DoubleDefException e) {
             throw new DecacInternalError("Double built in type definition");
         }
@@ -198,12 +209,13 @@ public class DecacCompiler {
         if (returnLabel!=null){
             addLabel(returnLabel);
         }
-
+        System.out.println(currentBlock);
         int nbReg=0;
         if(saveReg){
-            for (int i=2; i<=getRegisterManager().getLastUsed(); i++){
-                currentBlock.addFirst(new PUSH(Register.getR(i)));
-                currentBlock.addInstruction(new POP(Register.getR(i)));
+            for (int i=2; i<=getRegisterManager().getLastUsed(); ++i){
+                currentBlock.addFirst(new PUSH(Register.getR(i)), "je push");
+                //currentBlock.addInstruction(new POP(Register.getR(i)));
+                nbReg++;
             }
         }
         if(size!=0){
@@ -333,6 +345,13 @@ public class DecacCompiler {
         this.addInstruction(new WSTR("Error: Pas de Return dans la méthode"));
         this.addInstruction(new WNL());
         this.addInstruction(new ERROR());
+
+
+        this.addLabel(this.labelManager.newLabel("object.equals"));
+        this.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), Register.getR(0)));
+        this.addInstruction(new CMP(new RegisterOffset(-3, Register.LB), Register.getR(0)));
+        this.addInstruction(new SEQ(Register.getR(0)));
+        this.addInstruction(new RTS());
 
         LOG.debug("Generated assembly code:" + nl + currentBlock.display());
         LOG.info("Output file assembly file is: " + destName);

@@ -7,10 +7,7 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.ima.pseudocode.*;
-import fr.ensimag.ima.pseudocode.instructions.LEA;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
-import fr.ensimag.ima.pseudocode.instructions.RTS;
-import fr.ensimag.ima.pseudocode.instructions.STORE;
+import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.log4j.Logger;
 
 import java.io.PrintStream;
@@ -145,10 +142,10 @@ public class DeclClass extends AbstractDeclClass {
         System.out.println("ma table courante est "+currentDef.getvTable());
         for (Map.Entry<Symbol, ExpDefinition> e : currentDef.getMembers().getEnvironment().entrySet()){
             if(e.getValue().isMethod()){
+
                 MethodDefinition m=(MethodDefinition) e.getValue();
                 Symbol name = e.getKey();
                 System.out.println(m+" de nom "+name);
-                System.out.println(m.getIndex()-1);
                 vTable.set(m.getIndex()-1, new LabelOperand(m.getLabel()));
             }
         }
@@ -177,6 +174,13 @@ public class DeclClass extends AbstractDeclClass {
             }else{
             needsInit = f.codeFieldNeedsInit(compiler, thisReg);}
         }
+        compiler.getMemoryManager().allocLB(1);
+        compiler.addInstruction(new PUSH(thisReg));
+
+        //compiler.getMemoryManager().allocBSR();
+        //compiler.addInstruction(new BSR(currentdef.getSuperClass().getConstructorLabel()));
+
+        compiler.addInstruction(new SUBSP(1));
 
         if(needsInit){
             thisReg = compiler.allocate();
