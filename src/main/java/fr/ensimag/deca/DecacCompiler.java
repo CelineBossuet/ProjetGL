@@ -84,7 +84,7 @@ public class DecacCompiler {
             Signature sig = new Signature();
             sig.add(objectType);
             EqualsDefinition equals = new EqualsDefinition(compiler.environmentType.get(getSymbolTable().create("boolean")).getType(), Location.BUILTIN, sig, 0, equalsProgram);
-            equals.setLabel(compiler.getLabelManager().newLabel("equals"));
+            equals.setLabel(compiler.getLabelManager().getEqualsLabel());
             OBJECT.getMembers().declare(compiler.getSymbolTable().create("equals"), equals);
             OBJECT.incNumberOfMethods();
             compiler.getEnvironmentType().declareClass(compiler.getSymbolTable().create("Object"), newt );
@@ -352,7 +352,7 @@ public class DecacCompiler {
         this.addInstruction(new ERROR());
 
 
-        this.addLabel(this.labelManager.newLabel("equals"));
+        this.addLabel(this.labelManager.getEqualsLabel());
         this.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), Register.getR(0)));
         this.addInstruction(new CMP(new RegisterOffset(-3, Register.LB), Register.getR(0)));
         this.addInstruction(new SEQ(Register.getR(0)));

@@ -13,12 +13,19 @@ public class LabelManager {
     private Label stack_overflowLabel;
     private Label pilePleineLabel; //utilisée pour le NEW()
     private Label noReturnLabel; //erreur pas de return dans une méthode non void
+    private Label equalsLabel;
     private int counter=0; //compteur pour générer des Labels numérotés
 
 
     public Label newLabel(String name){
         this.counter++;
         return new Label(name, this.counter);
+    }
+    public Label getEqualsLabel(){
+        if(this.equalsLabel==null){
+            this.equalsLabel=new Label("equals", 0);
+        }
+        return equalsLabel;
     }
 
     public Label getNoReturnLabel(){

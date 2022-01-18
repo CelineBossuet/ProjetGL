@@ -12,6 +12,7 @@ class A {
 
 {
     A obj = new A();
+    println(obj.getx());
     obj.setx(3);
     println(obj.x);
 }
