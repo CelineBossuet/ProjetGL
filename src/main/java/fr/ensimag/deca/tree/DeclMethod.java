@@ -47,7 +47,7 @@ public class DeclMethod extends AbstractDeclMethod{
         //throw new UnsupportedOperationException("Not yet implemented");
         Type type = this.type.verifyMethodType(compiler);
         Signature sig = this.param.verifyParameters(compiler);
-        int toVerify = currentClass.incNumberOfMethods();
+        int toVerify = currentClass.incNumberOfMethods() - 1 ;
         ExpDefinition parent = currentClass.getSuperClass().getMembers().get(this.name.getName());
         if (parent != null){
             toVerify = parent.asMethodDefinition("Méthode déclaré dans la classe mère", this.getLocation()).getIndex();

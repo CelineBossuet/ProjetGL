@@ -146,7 +146,7 @@ public class DeclClass extends AbstractDeclClass {
                 MethodDefinition m=(MethodDefinition) e.getValue();
                 Symbol name = e.getKey();
                 System.out.println(m+" de nom "+name);
-                vTable.set(m.getIndex()-1, new LabelOperand(m.getLabel()));
+                vTable.set(m.getIndex(), new LabelOperand(m.getLabel()));
             }
         }
         vTable.codeGen(compiler);

@@ -72,18 +72,23 @@ public class DecacCompiler {
             ObjectType objectType = new ObjectType(compiler.getSymbolTable().create("Object"), null, newProg);
             newProg.addInstruction(new RTS());
             ClassDefinition newt = new ClassDefinition(objectType, Location.BUILTIN, null);
-
             this.OBJECT = objectType.getDefinition();
 
-            Signature signaEquals = new Signature();
-            ClassType classType=new ClassType(getSymbolTable().create("Object"), Location.BUILTIN, null);
-            signaEquals.add(classType);
-            MethodDefinition methEquals= new MethodDefinition(new BooleanType(getSymbolTable().create("boolean")), Location.BUILTIN, signaEquals, 0);
-            methEquals.setLabel(new Label("object.equals", 0));
-            classType.getDefinition().getMembers().declare(getSymbolTable().create("equals"), methEquals);
-            classType.getDefinition().incNumberOfMethods();
+            IMAProgram equalsProgram = new IMAProgram();
+            // gérer la comparaison de registre TODO
+            equalsProgram.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), Register.R0));
+            equalsProgram.addInstruction(new CMP(new RegisterOffset(-3, Register.LB), Register.R0));
+            equalsProgram.addInstruction(new SEQ(Register.R0));
+            equalsProgram.addInstruction(new RTS());
 
+            Signature sig = new Signature();
+            sig.add(objectType);
+            EqualsDefinition equals = new EqualsDefinition(compiler.environmentType.get(getSymbolTable().create("boolean")).getType(), Location.BUILTIN, sig, 0, equalsProgram);
+            equals.setLabel(compiler.getLabelManager().newLabel("equals"));
+            OBJECT.getMembers().declare(compiler.getSymbolTable().create("equals"), equals);
+            OBJECT.incNumberOfMethods();
             compiler.getEnvironmentType().declareClass(compiler.getSymbolTable().create("Object"), newt );
+
 
         } catch (Environment.DoubleDefException e) {
             throw new DecacInternalError("Double built in type definition");
@@ -347,7 +352,7 @@ public class DecacCompiler {
         this.addInstruction(new ERROR());
 
 
-        this.addLabel(this.labelManager.newLabel("object.equals"));
+        this.addLabel(this.labelManager.newLabel("equals"));
         this.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), Register.getR(0)));
         this.addInstruction(new CMP(new RegisterOffset(-3, Register.LB), Register.getR(0)));
         this.addInstruction(new SEQ(Register.getR(0)));
