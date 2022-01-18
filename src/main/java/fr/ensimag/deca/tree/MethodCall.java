@@ -9,8 +9,6 @@ import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.ima.pseudocode.instructions.ADDSP;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
-import org.apache.commons.lang.Validate;
-import org.graalvm.compiler.nodes.gc.G1PostWriteBarrier;
 
 import java.io.PrintStream;
 
@@ -27,7 +25,14 @@ public class MethodCall extends AbstractExpr{
 
     @Override
     public Type verifyExpr(DecacCompiler compiler, Environment<ExpDefinition> localEnv, ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("Not yet implemented");
+        //throw new UnsupportedOperationException("Not yet implemented");
+        this.implicitParam.verifyExpr(compiler, localEnv, currentClass);
+        Type t = this.methodName.verifyType(compiler);
+        for (AbstractExpr p : this.param.getList()){
+            p.verifyExpr(compiler, localEnv, currentClass);
+        }
+        this.setType(t);
+        return t;
     }
 
     @Override

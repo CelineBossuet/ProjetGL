@@ -67,9 +67,12 @@ public class DecacCompiler {
                     new TypeDefinition(new StringType(compiler.getSymbolTable().create("string")), Location.BUILTIN));
             compiler.getEnvironmentType().declare(compiler.getSymbolTable().create("null"),
                     new TypeDefinition(new NullType(compiler.getSymbolTable().create("null")), Location.BUILTIN));
-            ObjectType objectType = new ObjectType(compiler.getSymbolTable().create("Object"), null, compiler.getProgram());
+            IMAProgram newProg = new IMAProgram();
+            ObjectType objectType = new ObjectType(compiler.getSymbolTable().create("Object"), null, newProg);
+            newProg.addInstruction(new RTS());
             ClassDefinition newt = new ClassDefinition(objectType, Location.BUILTIN, null);
             compiler.getEnvironmentType().declareClass(compiler.getSymbolTable().create("Object"), newt );
+
             this.OBJECT = objectType.getDefinition();
         } catch (Environment.DoubleDefException e) {
             throw new DecacInternalError("Double built in type definition");

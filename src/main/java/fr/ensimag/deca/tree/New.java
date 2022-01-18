@@ -16,7 +16,10 @@ public class New extends AbstractExpr{
     }
     @Override
     public Type verifyExpr(DecacCompiler compiler, Environment<ExpDefinition> localEnv, ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("Not yet implemented");
+        //throw new UnsupportedOperationException("Not yet implemented");
+        Type t = this.name.verifyTypeClass(compiler);
+        setType(t);
+        return t;
     }
 
     @Override
