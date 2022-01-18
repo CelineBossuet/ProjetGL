@@ -73,7 +73,14 @@ public class MethodCall extends AbstractExpr{
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        if(!implicitParam.isImplicit()){
+            implicitParam.decompile(s);
+            s.print(".");
+        }
+        methodName.decompile(s);
+        s.print("(");
+        param.decompile(s);
+        s.print(")");
     }
 
     @Override
