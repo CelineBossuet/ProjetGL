@@ -15,7 +15,13 @@ public class Return extends AbstractInst{
     }
     @Override
     protected void verifyInst(DecacCompiler compiler, Environment<ExpDefinition> localEnv, ClassDefinition currentClass, Type returnType) throws ContextualError {
-        throw new UnsupportedOperationException("Not yet implemented");
+        //throw new UnsupportedOperationException("Not yet implemented");
+        Type t = this.returnValue.verifyExpr(compiler, localEnv, currentClass);
+        if (t.isInt() && returnType.isFloat()){
+            //nothing to do
+        }else if(!t.sameType(returnType)){
+            throw new ContextualError("Mauvais type de retour", this.getLocation());
+        }
     }
 
     @Override
