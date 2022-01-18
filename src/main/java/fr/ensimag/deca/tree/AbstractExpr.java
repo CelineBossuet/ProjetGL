@@ -9,9 +9,12 @@ import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.*;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.gestatic;
 import fr.ensimag.ima.pseudocode.instructions.jasmin.invokevirtual;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.ldc;
 import fr.ensimag.ima.pseudocode.jasmin.PrintInvoked;
 
+import fr.ensimag.ima.pseudocode.jasmin.PrintgetStatic;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
@@ -304,8 +307,11 @@ public abstract class AbstractExpr extends AbstractInst {
             throw new UnsupportedOperationException("Not yet implemented");
         } else if (getType().isString()) {
             // TODO A FAIRE instruction ldc et getstatic !
+            //compiler.addInstruction(new ldc(this));
             // cette instruction est en 3 instructions
             // (todo .limit stack ????????????????)
+            // TODO getstatic
+            compiler.addInstruction(new gestatic(new PrintgetStatic(getType())));
             compiler.addInstruction(new invokevirtual(new PrintInvoked(getType(), suffix)));
         } else {
             throw new DecacInternalError("Printx pas supporté pour le type" + getType());
