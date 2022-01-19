@@ -44,7 +44,20 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        s.print("class { ... A FAIRE ... }");
+        s.print("class ");
+        s.print(this.name.getName().getName()+ " ");
+        if (this.superClass != null && this.superClass.getName().getName() != "Object"){
+            s.print(" extends ");
+
+            s.print(this.superClass.getName().getName());
+        }
+        s.println(" { ");
+        s.indent();
+        this.field.decompile(s);
+        s.println();
+        this.method.decompile(s);
+        s.unindent();
+        s.println("}");
     }
 
     @Override

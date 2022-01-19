@@ -54,7 +54,7 @@ public class New extends AbstractExpr{
         s.print("new ");
         name.decompile(s);
         s.print("()");
-        throw new UnsupportedOperationException("Not yet implemented");
+        //throw new UnsupportedOperationException("Not yet implemented");
     }
 
     @Override

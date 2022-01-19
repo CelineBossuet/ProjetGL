@@ -25,7 +25,16 @@ public class DeclField extends AbstractDeclField{
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        //throw new UnsupportedOperationException("Not yet implemented");
+        s.print(this.visibility.name());
+        s.print(" ");
+        this.type.decompile(s);
+        s.print(" ");
+        this.fieldName.decompile(s);
+        s.print(" ");
+        if (init.hasInit()){
+            init.decompile(s);
+        }
     }
 
     @Override

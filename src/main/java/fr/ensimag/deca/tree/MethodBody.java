@@ -20,7 +20,7 @@ public class MethodBody extends AbstractMethodBody{
     public void decompile(IndentPrintStream s) {
         variablesLocales.decompile(s);
         instructions.decompile(s);
-        throw new UnsupportedOperationException("Not yet implemented");
+        //throw new UnsupportedOperationException("Not yet implemented");
     }
 
     @Override

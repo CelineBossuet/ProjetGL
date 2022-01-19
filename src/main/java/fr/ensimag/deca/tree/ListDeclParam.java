@@ -7,7 +7,14 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 public class ListDeclParam extends TreeList<AbstractDeclParam>{
     @Override
     public void decompile(IndentPrintStream s) {
-
+        int compteur = 1;
+        for (AbstractDeclParam p : this.getList()){
+            p.decompile(s);
+            if (compteur != this.size()){
+                s.print(", ");
+                compteur+=1;
+            }
+        }
     }
 
     public Signature verifyParameters(DecacCompiler compiler) throws ContextualError {

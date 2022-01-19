@@ -38,7 +38,6 @@ public class Return extends AbstractInst{
     public void decompile(IndentPrintStream s) {
         s.print("return ");
         returnValue.decompile(s);
-        s.print(";");
     }
 
     @Override

@@ -22,7 +22,16 @@ public class DeclMethod extends AbstractDeclMethod{
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        //throw new UnsupportedOperationException("Not yet implemented");
+        s.print(this.type.getName().getName() + " ");
+        s.print(this.name.getName().getName());
+        s.print("(");
+        this.param.decompile(s);
+        s.println(") {");
+        s.indent();
+        this.body.decompile(s);
+        s.unindent();
+        s.println("}");
     }
 
     @Override
