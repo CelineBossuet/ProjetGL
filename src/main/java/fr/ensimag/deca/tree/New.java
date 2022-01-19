@@ -7,6 +7,7 @@ import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
 import java.io.PrintStream;
+import java.util.Objects;
 
 public class New extends AbstractExpr{
     private AbstractIdentifier name;
@@ -34,14 +35,20 @@ public class New extends AbstractExpr{
         int size=classdef.getNumberOfFields() +1; //taille de mot à allouer dans le tas
         compiler.addInstruction(new NEW(size, reg));
         compiler.addInstruction(new BOV(compiler.getLabelManager().getPilePleineLabel()));
-        compiler.addInstruction(new LEA(classdef.getvTable().getOperand(), Register.getR(0)));
+
+        if(!(Objects.equals(classdef.getType().getName().getName(), "Object"))){
+            compiler.addInstruction(new LEA(classdef.getvTable().getOperand(), Register.getR(0)));
+        }
         //LEA : Load Effective Address
         compiler.addInstruction(new STORE(Register.getR(0), new RegisterOffset(0, reg)));
         //set vtable for the new object
         compiler.addInstruction(new PUSH(reg));
-        Label label = classdef.getConstructorLabel();
-        compiler.getMemoryManager().allocBSR();
-        compiler.addInstruction(new BSR(new LabelOperand(label)));
+        if(!(Objects.equals(classdef.getType().getName().getName(), "Object"))){
+            Label label = classdef.getConstructorLabel();
+            compiler.getMemoryManager().allocBSR();
+            compiler.addInstruction(new BSR(new LabelOperand(label)));
+        }
+
         compiler.addInstruction(new POP(reg));
 
 
