@@ -19,11 +19,12 @@ class B extends A{
 
 {
     B b = new B();
-    println(b.getX());
-    println(b.y);
+    println("Nous avons créé une classe B qui extends A reprenant donc son attribut x et sa méthode double()");
+    println("x= ",b.getX());
+    println("y= ",b.y);
     b.double();
-    println(b.getX());
+    println("on double x cela donne : ",b.getX());
     b.add();
-    println(b.y);
+    println("et on ajoute cela à y : ",b.y);
 
 }

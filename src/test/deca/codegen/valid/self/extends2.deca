@@ -1,0 +1,29 @@
+class A{
+    protected int x;
+    protected int y;
+
+    int getx(){return this.x;}
+    int gety(){return this.y;}
+
+    void setx(int x){
+        this.x=x;}
+
+
+    void sety(int a){this.y=a;}
+
+    int ajoute(int a, int b){
+
+        int res = this.x+a+this.y+b;
+        return res;
+    }
+}
+
+
+
+{
+    A obj = new A();
+    obj.setx(2);
+    obj.sety(3);
+    println(obj.getx(), ", ", obj.gety());
+    println(obj.ajoute(4,5));
+}
