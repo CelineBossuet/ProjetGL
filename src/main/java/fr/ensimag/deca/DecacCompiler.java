@@ -341,8 +341,10 @@ public class DecacCompiler {
         }
 
         LOG.info("Writing jasmin assembler file ...");
-
-        program.display(new PrintStream(fstream));
+        PrintStream pS = new PrintStream(fstream);
+        writeJasminStart(pS);
+        program.display(pS);
+        writeJasminEnd(pS);
         LOG.info("Compilation of " + sourceName + " successful.");
 
         return false;
@@ -351,5 +353,21 @@ public class DecacCompiler {
     }
 
     // A FAIRE methods addPUSH, addADDSP, addSUBSP, ...
+    private static void writeJasminStart(PrintStream pS) { // fonction temporaire
+        pS.println(".class public HelloWorld"); // TODO A FAIRE
+        pS.println(".super java/lang/Object");
+        pS.println(".method public <init>()V");
+        pS.println("aload_0");
+        pS.println("invokenonvirtual java/lang/Object/<init>()V");
+        pS.println("return");
+        pS.println(".end method");
+        pS.println(".method public static main([Ljava/lang/String;)V");
+        pS.println(".limit stack 2"); // TODO A FAIRE
+    }
+
+    private static void writeJasminEnd(PrintStream pS) {
+        pS.println("return");
+        pS.println(".end method");
+    }
 
 }
