@@ -97,11 +97,8 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     protected void codeGenClass(DecacCompiler compiler, int first) {
-        System.out.println("------------------------");
         ClassDefinition currentDef = name.getClassDefinition();
         ClassDefinition superDef = this.superClass.getClassDefinition();
-        System.out.println("SUperDef "+superDef);
-        System.out.println(superDef.getvTable());
         if(first==0){
             System.out.println("On soccupe d'Object");
             //On s'occument aussi de la classe Object
@@ -122,8 +119,6 @@ public class DeclClass extends AbstractDeclClass {
         }
         else{
             LOG.info("on garde en mémoire le pointeur vers la VTable parent");
-            System.out.println(superDef);
-            System.out.println("super Table "+superDef.getvTable());
             superVTable=superDef.getvTable();
             DAddr tab = compiler.getMemoryManager().allocGB(1);
             DAddr AddrVTable = compiler.getMemoryManager().getCurrentGBOperand();
@@ -131,15 +126,12 @@ public class DeclClass extends AbstractDeclClass {
             compiler.addInstruction(new STORE(Register.getR(0), AddrVTable));
 
         }
-        System.out.println("nouvelle table de taille"+currentDef.getNumberOfMethods());
         vTable= new VTable(currentDef.getNumberOfMethods(), superVTable);
-        System.out.println(vTable.getOperand());
         //on peut donc créer notre VTable maintenant
 
         vTable.setOperand(compiler.getMemoryManager().getCurrentGBOperand());
         currentDef.setvTable(vTable); //on l'ajoute dans notre definition
 
-        System.out.println("ma table courante est "+currentDef.getvTable());
         for (Map.Entry<Symbol, ExpDefinition> e : currentDef.getMembers().getEnvironment().entrySet()){
             if(e.getValue().isMethod()){
 
@@ -152,7 +144,6 @@ public class DeclClass extends AbstractDeclClass {
         vTable.codeGen(compiler);
         if(first==0){
             this.ObjectTable=vTable;}
-        System.out.println("------------------------");
 
         //throw new UnsupportedOperationException("Not yet implemented");
     }
@@ -176,9 +167,13 @@ public class DeclClass extends AbstractDeclClass {
         }
         compiler.getMemoryManager().allocLB(1);
         compiler.addInstruction(new PUSH(thisReg));
-
-        //compiler.getMemoryManager().allocBSR();
-        //compiler.addInstruction(new BSR(currentdef.getSuperClass().getConstructorLabel()));
+        System.out.println("nom "+currentdef);
+        System.out.println(currentdef.getSuperClass().getConstructorLabel());
+        if(currentdef.getSuperClass().getConstructorLabel()!=null){
+            compiler.getMemoryManager().allocBSR();
+            compiler.addInstruction(new BSR(currentdef.getSuperClass().getConstructorLabel()),
+                "chaine de constructeurs");
+        }
 
         compiler.addInstruction(new SUBSP(1));
 
