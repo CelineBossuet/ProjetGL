@@ -19,7 +19,6 @@ public class New extends AbstractExpr{
         //throw new UnsupportedOperationException("Not yet implemented");
         Type t = this.name.verifyTypeClass(compiler);
         setType(t);
-        System.out.println(t);
         return t;
     }
 

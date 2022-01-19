@@ -214,7 +214,6 @@ public class DecacCompiler {
         if (returnLabel!=null){
             addLabel(returnLabel);
         }
-        System.out.println(currentBlock);
         int nbReg=0;
         if(saveReg){
             for (int i=2; i<=getRegisterManager().getLastUsed(); ++i){

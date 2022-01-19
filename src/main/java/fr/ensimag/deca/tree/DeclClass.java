@@ -65,7 +65,6 @@ public class DeclClass extends AbstractDeclClass {
             }
         }
         this.name.verifyTypeClass(compiler);
-        System.out.println("victoire");
     }
 
     @Override
@@ -100,7 +99,6 @@ public class DeclClass extends AbstractDeclClass {
         ClassDefinition currentDef = name.getClassDefinition();
         ClassDefinition superDef = this.superClass.getClassDefinition();
         if(first==0){
-            System.out.println("On soccupe d'Object");
             //On s'occument aussi de la classe Object
             currentDef = compiler.OBJECT;
             superDef = currentDef.getSuperClass();
@@ -137,7 +135,6 @@ public class DeclClass extends AbstractDeclClass {
 
                 MethodDefinition m=(MethodDefinition) e.getValue();
                 Symbol name = e.getKey();
-                System.out.println(m+" de nom "+name);
                 vTable.set(m.getIndex(), new LabelOperand(m.getLabel()));
             }
         }
@@ -167,8 +164,6 @@ public class DeclClass extends AbstractDeclClass {
         }
         compiler.getMemoryManager().allocLB(1);
         compiler.addInstruction(new PUSH(thisReg));
-        System.out.println("nom "+currentdef);
-        System.out.println(currentdef.getSuperClass().getConstructorLabel());
         if(currentdef.getSuperClass().getConstructorLabel()!=null){
             compiler.getMemoryManager().allocBSR();
             compiler.addInstruction(new BSR(currentdef.getSuperClass().getConstructorLabel()),
