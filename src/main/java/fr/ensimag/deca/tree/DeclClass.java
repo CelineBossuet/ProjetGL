@@ -153,7 +153,8 @@ public class DeclClass extends AbstractDeclClass {
         }
         vTable.codeGen(compiler);
         if(first==0){
-            this.ObjectTable=vTable;}
+            this.ObjectTable=vTable;
+        }
 
         //throw new UnsupportedOperationException("Not yet implemented");
     }

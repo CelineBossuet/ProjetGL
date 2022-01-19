@@ -3,6 +3,7 @@ package fr.ensimag.deca.codegen;
 import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
+import org.apache.commons.lang.Validate;
 
 
 /**
@@ -55,7 +56,7 @@ public class MemoryManager {
     }
 
     public RegisterOffset createConstant(DVal value, IMAProgram program){
-        assert(value!=null);
+        Validate.notNull(value!=null);
         DAddr add = allocGB(1);
         program.addInstruction(new LOAD(value, Register.getR(0)));
         program.addInstruction(new STORE(Register.getR(0), add));

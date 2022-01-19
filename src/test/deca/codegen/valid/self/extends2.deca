@@ -18,8 +18,7 @@ class B extends A {
 }
 
 {
-   A a ;
-   a = new B() ;
+   B a= new B() ;
    a.setX(2) ;
    println("a.getX() = ", a.getX()) ;
 }
