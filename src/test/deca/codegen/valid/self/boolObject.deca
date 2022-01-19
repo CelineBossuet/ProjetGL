@@ -1,0 +1,20 @@
+class A{
+
+    void valBool(boolean b){
+        if(b){
+            println("b est true");
+        }else{
+            println("b est false");
+        }
+    }
+
+}
+
+{
+    boolean b=true;
+    A a = new A();
+    a.valBool(true);
+    a.valBool(false);
+    a.valBool(b);
+    a.valBool(!b);
+}

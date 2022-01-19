@@ -94,5 +94,6 @@ public abstract class AbstractIdentifier extends AbstractLValue {
 
     public abstract FieldDefinition verifyField(DecacCompiler compiler, ClassType type)throws ContextualError;
 
+
     public abstract GPRegister initDefaultValue(DecacCompiler compiler, GPRegister reg);
 }

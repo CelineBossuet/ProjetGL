@@ -249,6 +249,11 @@ public class Identifier extends AbstractIdentifier {
     }
 
     @Override
+    public boolean NeedsRegister(){
+        return getDefinition().isField();
+    }
+
+    @Override
     public void decompile(IndentPrintStream s) {
         s.print(name.toString());
     }
@@ -310,7 +315,7 @@ public class Identifier extends AbstractIdentifier {
             getLOG().info("cas particulier pour les fields, génération par plusieurs opérandes");
             GPRegister current = compiler.getRegisterManager().getCurrent();
             RegisterOffset offset = new RegisterOffset(-2, Register.LB);
-            RegisterOffset field = new RegisterOffset(getFieldDefinition().getIndex() +1, current);
+            RegisterOffset field = new RegisterOffset(getFieldDefinition().getIndex() , current);
             compiler.addInstruction(new LOAD(offset, current));
             return field;
         }

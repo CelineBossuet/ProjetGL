@@ -1,29 +1,26 @@
-class A{
-    protected int x;
-    protected int y;
-
-    int getx(){return this.x;}
-    int gety(){return this.y;}
-
-    void setx(int x){
-        this.x=x;}
-
-
-    void sety(int a){this.y=a;}
-
-    int ajoute(int a, int b){
-
-        int res = this.x+a+this.y+b;
-        return res;
-    }
+class A {
+   int x ;
+   void setX(int a) {
+        println("j'utilise le setX de A");
+        this.x = a ;
+   }
+   int getX() {
+      return this.x;
+   }
 }
 
+class B extends A {
 
+    void setX(int a) {
+        println("j'utilise le setX de B");
+        this.x = a;
+   }
+}
 
 {
-    A obj = new A();
-    obj.setx(2);
-    obj.sety(3);
-    println(obj.getx(), ", ", obj.gety());
-    println(obj.ajoute(4,5));
+   A a ;
+   a = new B() ;
+   a.setX(2) ;
+   println("a.getX() = ", a.getX()) ;
 }
+

@@ -216,9 +216,9 @@ public class DecacCompiler {
         }
         int nbReg=0;
         if(saveReg){
-            for (int i=2; i<=getRegisterManager().getLastUsed(); ++i){
+            for (int i=2; i<=getRegisterManager().getLastUsed()+1; ++i){
                 currentBlock.addFirst(new PUSH(Register.getR(i)), "je push");
-                //currentBlock.addInstruction(new POP(Register.getR(i)));
+                currentBlock.addInstruction(new POP(Register.getR(i)));
                 nbReg++;
             }
         }

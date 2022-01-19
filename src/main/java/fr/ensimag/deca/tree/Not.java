@@ -7,9 +7,7 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.Environment;
 import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.tools.DecacInternalError;
-import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.Instruction;
-import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
 /**
@@ -51,8 +49,10 @@ public class Not extends AbstractUnaryExpr {
         Label elseLabel = compiler.getLabelManager().newLabel("elseC2R");
         Label end = compiler.getLabelManager().newLabel("endC2R");
         GPRegister r = compiler.getRegisterManager().getCurrent();
+        compiler.addInstruction(new LOAD(new RegisterOffset(
+                compiler.getMemoryManager().getCurrentGB() - 1, Register.GB),r), "LOAD pour not");
 
-        compiler.addInstruction(new CMP(0, r));
+        compiler.addInstruction(new CMP(0, r), "comparaison");
         compiler.addInstruction(new BEQ(elseLabel));
         compiler.addInstruction(new LOAD(0, r));
         compiler.addInstruction(new BRA(end));

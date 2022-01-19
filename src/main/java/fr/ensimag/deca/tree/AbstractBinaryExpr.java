@@ -117,12 +117,16 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         AbstractExpr left = getLeftOperand();
         GPRegister result;
         GPRegister leftValue = left.codeGenReg(compiler);
+        System.out.println(compiler.getRegisterManager().getMax() -compiler.getRegisterManager().getCurrentv() +1);
         if(!right.NeedsRegister()){
             getLOG().info("cas ou pas besoin de registre");
-            geneOneOrMoreInstru(compiler, right.codeGenNoReg(compiler), leftValue, useful);
+            DVal r =  right.codeGenNoReg(compiler);
+            geneOneOrMoreInstru(compiler,r, leftValue, useful);
+            System.out.println("rightvalue "+r);
             result =leftValue;
         }
         else if (compiler.getRegisterManager().getMax() -compiler.getRegisterManager().getCurrentv() +1 > 1) {
+
             getLOG().info("cas ou il y a des registres libres qu'on peut allouer");
             GPRegister r = compiler.allocate(); //on alloue un registre
             DVal rightValue = right.codeGenReg(compiler);
