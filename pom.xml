@@ -69,7 +69,14 @@
             <classifier>runtime</classifier>
             <version>0.8.7</version>
             <scope>test</scope>
-        </dependency>        
+        </dependency>
+        <dependency>
+            <groupId>jasmin</groupId>
+            <artifactId>jasmin</artifactId>
+            <version>2.4</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/jasmin.jar</systemPath>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
