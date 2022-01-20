@@ -49,7 +49,6 @@ public class Not extends AbstractUnaryExpr {
         Label elseLabel = compiler.getLabelManager().newLabel("elseC2R");
         Label end = compiler.getLabelManager().newLabel("endC2R");
         GPRegister r = compiler.getRegisterManager().getCurrent();
-        System.out.println(this.getOperand());
 
 
         compiler.addInstruction(new LOAD(new RegisterOffset(

@@ -4,6 +4,8 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.instructions.FLOAT;
 
 import java.io.PrintStream;
 
@@ -23,12 +25,28 @@ public class Cast extends AbstractExpr{
 
     @Override
     protected DVal codeGenNoReg(DecacCompiler compiler) {
-        return null;
+        throw new UnsupportedOperationException("Methode pas possible pour un Cast");
+    }
+
+    @Override
+    protected GPRegister codeGenReg(DecacCompiler compiler){
+        Type typeToCast = typeToCheck.getDefinition().getType();
+        GPRegister reg = expr.codeGenReg(compiler);
+        if( typeToCast.isFloat() && expr.getType().isInt()){
+            compiler.addInstruction(new FLOAT(reg, reg));
+        }
+        return reg;
+        //TODO cas (int) aillant un float ou cas type est une class
+        //throw new UnsupportedOperationException("Not yet implemented");
     }
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        s.print("(");
+        typeToCheck.decompile(s);
+        s.print(") (");
+        expr.decompile(s);
+        s.print(")");
     }
 
     @Override
@@ -39,6 +57,7 @@ public class Cast extends AbstractExpr{
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        typeToCheck.iter(f);
+        expr.iter(f);
     }
 }

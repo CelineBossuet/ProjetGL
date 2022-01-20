@@ -28,8 +28,8 @@ public class MethodAsmBody extends AbstractMethodBody{
 
     @Override
     protected void iterChildren(TreeFunction f) {
-
-        throw new UnsupportedOperationException("Not yet implemented");
+        asmCode.iter(f);
+        //throw new UnsupportedOperationException("Not yet implemented");
     }
 
     @Override
