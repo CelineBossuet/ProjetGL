@@ -52,7 +52,7 @@ public abstract class AbstractReadExpr extends AbstractExpr {
         Label label = compiler.getLabelManager().getIErrorLabel();
         //
         //
-        compiler.addInstruction(new BOV(label));
+        compiler.addInstruction(new BOV(label, compiler.getCompilerOptions().getNoCheck()));
 
         // on LOAD dans le registre courrant la valeur de R1
         GPRegister reg = compiler.getRegisterManager().getCurrent();

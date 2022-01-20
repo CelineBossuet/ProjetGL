@@ -1,12 +1,12 @@
 package fr.ensimag.deca;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
 
 /**
  * User-specified options influencing the compilation.
@@ -44,12 +44,15 @@ public class CompilerOptions {
         return verif;
     }
 
+    public boolean getNoCheck(){return noCheck;}
+
     private int debug = 0;
     private boolean parallel = false;
     private boolean printBanner = false;
     private List<File> sourceFiles = new ArrayList<File>();
     private boolean parser = false;
     private boolean verif = false;
+    private boolean noCheck = false;
 
     public void parseArgs(String[] args) throws CLIException {
         for (String arg : args) {
@@ -68,7 +71,7 @@ public class CompilerOptions {
                     verif = true;
                     break;
                 case "-n":
-                    // A FAIRE
+                    noCheck=true;
                     break;
                 case "-r": // A FAIRE
                     break;

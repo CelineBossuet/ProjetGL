@@ -14,7 +14,14 @@ public abstract class Instruction {
     }
     abstract void displayOperands(PrintStream s);
     void display(PrintStream s) {
-        s.print(getName());
-        displayOperands(s);
+        if (active){
+            s.print(getName());
+            displayOperands(s);
+        }
+    }
+    private boolean active=true;
+
+    protected void disable(){
+        active = false;
     }
 }

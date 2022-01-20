@@ -34,7 +34,7 @@ public class New extends AbstractExpr{
         ClassDefinition classdef = name.getClassDefinition();
         int size=classdef.getNumberOfFields() +1; //taille de mot à allouer dans le tas
         compiler.addInstruction(new NEW(size, reg));
-        compiler.addInstruction(new BOV(compiler.getLabelManager().getPilePleineLabel()));
+        compiler.addInstruction(new BOV(compiler.getLabelManager().getPilePleineLabel(), compiler.getCompilerOptions().getNoCheck()));
 
         if(!(Objects.equals(classdef.getType().getName().getName(), "Object"))){
             compiler.addInstruction(new LEA(classdef.getvTable().getOperand(), Register.getR(0)));

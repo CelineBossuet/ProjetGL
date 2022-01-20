@@ -227,7 +227,7 @@ public class DecacCompiler {
         }
 
         if(getMemoryManager().getMaxLB()+size+nbReg !=0){
-            currentBlock.addFirst(new BOV(getLabelManager().getStack_overflowLabel()));
+            currentBlock.addFirst(new BOV(getLabelManager().getStack_overflowLabel(), getCompilerOptions().getNoCheck()));
             currentBlock.addFirst(new TSTO(getMemoryManager().getMaxLB()+size+nbReg));
         }
 
