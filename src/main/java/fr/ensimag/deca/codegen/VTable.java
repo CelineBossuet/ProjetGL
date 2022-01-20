@@ -24,7 +24,6 @@ public class VTable {
         content  = new LabelOperand[nbMethods];
         if(parent !=null){
             System.arraycopy(parent.content, 0, content, 0, parent.taille);
-
         }
     }
 

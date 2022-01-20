@@ -56,7 +56,7 @@ public class MemoryManager {
     }
 
     public RegisterOffset createConstant(DVal value, IMAProgram program){
-        Validate.notNull(value!=null);
+        Validate.notNull(value);
         DAddr add = allocGB(1);
         program.addInstruction(new LOAD(value, Register.getR(0)));
         program.addInstruction(new STORE(Register.getR(0), add));

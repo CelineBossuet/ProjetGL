@@ -61,6 +61,11 @@ public class ClassDefinition extends TypeDefinition {
         return numberOfMethods;
     }
 
+    public int decNumberOfMethods(){
+        numberOfMethods--;
+        return numberOfMethods;
+    }
+
 
 
     @Override
