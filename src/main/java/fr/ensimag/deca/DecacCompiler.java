@@ -351,8 +351,13 @@ public class DecacCompiler {
 
         // .j conversion
         Main.main(new String[] { destName });
-        // TODO A FAIRE supprimer .j intermédiaire et afficher jasmin dans le debug
         LOG.info("Conversion in class file successful.");
+
+        File file = new File(destName);
+        if (file.delete())
+            LOG.info(".j file deleted successfully");
+        else
+            LOG.info("Failed to delete the .j file");
 
         return false;
     }
