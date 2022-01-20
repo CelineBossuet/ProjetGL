@@ -26,6 +26,8 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.apache.log4j.Logger;
 
+import jasmin.Main;
+
 /**
  * Decac compiler instance.
  *
@@ -347,9 +349,12 @@ public class DecacCompiler {
         writeJasminEnd(pS);
         LOG.info("Compilation of " + sourceName + " successful.");
 
-        return false;
+        // .j conversion
+        Main.main(new String[] { destName });
+        // TODO A FAIRE supprimer .j intermédiaire et afficher jasmin dans le debug
+        LOG.info("Conversion in class file successful.");
 
-        // TODO A FAIRE conversion en .class
+        return false;
     }
 
     // A FAIRE methods addPUSH, addADDSP, addSUBSP, ...
