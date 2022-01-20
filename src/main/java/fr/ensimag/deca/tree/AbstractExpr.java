@@ -180,7 +180,6 @@ public abstract class AbstractExpr extends AbstractInst {
     protected void codeGenInst(DecacCompiler compiler, Label returnLabel, Label local) {
         getLOG().trace("AbsExpr codeGenInst");
         codeGenExprIgnored(compiler);
-        // peut être ajouter des labels en paramètre...
         // throw new UnsupportedOperationException("not yet implemented");
     }
 
@@ -227,11 +226,16 @@ public abstract class AbstractExpr extends AbstractInst {
      */
     protected GPRegister codeGenReg(DecacCompiler compiler) {
         getLOG().trace("AbsExpr codeGenReg");
+        System.out.println("AbsExpr");
         GPRegister reg = compiler.getRegisterManager().getCurrent();
-        compiler.addInstruction(new LOAD(codeGenNoReg(compiler), reg));
+        compiler.addInstruction(new LOAD(codeGenNoReg(compiler), reg), "argggg");
         // cette instruction permet de charger une valeur dans un registre ici le
         // Registre Current
         return reg;
+    }
+
+    protected boolean getBool(){
+        return false;
     }
 
     /**
@@ -245,7 +249,7 @@ public abstract class AbstractExpr extends AbstractInst {
      */
     protected void codeGenCond(DecacCompiler compiler, Label l, boolean saut) {
         getLOG().trace("AbsExpr codeGenCond");
-        compiler.addInstruction(new CMP(0, codeGenReg(compiler)));
+        compiler.addInstruction(new CMP(0, codeGenReg(compiler)), "oupsi");
         // Cette instruction permet d'effectuer une comparaison comme si une
         // soustraction avait été effectuée.
         LOG.info("Vérification du résultat de l'évaluation avec codeGenCond()");

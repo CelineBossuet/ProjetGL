@@ -7,10 +7,7 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.Environment;
 import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.tools.DecacInternalError;
-import fr.ensimag.ima.pseudocode.BinaryInstruction;
-import fr.ensimag.ima.pseudocode.DVal;
-import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.BNE;
 import fr.ensimag.ima.pseudocode.instructions.BRA;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
@@ -61,7 +58,8 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
         Label endBranch = compiler.getLabelManager().newLabel("endC2R");
         GPRegister r = compiler.getRegisterManager().getCurrent();
 
-        compiler.addInstruction(new CMP(0, r));
+        compiler.addInstruction(new LOAD(new RegisterOffset(1, Register.GB), r));
+        compiler.addInstruction(new CMP(0, r), "ah");
         // Cette instruction permet d'effectuer une comparaison, val indique l'opérande
         // à comparer
 

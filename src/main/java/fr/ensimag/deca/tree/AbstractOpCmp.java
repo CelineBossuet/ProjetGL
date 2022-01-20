@@ -5,6 +5,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import org.apache.log4j.Logger;
 
 /**
@@ -72,7 +73,7 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
     @Override
     protected void geneOneOrMoreInstru(DecacCompiler compiler, DVal val, GPRegister reg, boolean usefull){
         getLOG().trace("AbsOpCmp geneOneOrMoreInstru");
-        compiler.addInstruction(new CMP(val, reg));
+        compiler.addInstruction(new CMP(val, reg), "comparaison de OpComp");
         if(usefull){
             compiler.addInstruction(genSccInstruction(reg));
         }
