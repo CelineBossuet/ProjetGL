@@ -138,6 +138,7 @@ public class DeclClass extends AbstractDeclClass {
 
         }
         vTable= new VTable(currentDef.getNumberOfMethods(), superVTable);
+
         //on peut donc créer notre VTable maintenant
 
         vTable.setOperand(compiler.getMemoryManager().getCurrentGBOperand());

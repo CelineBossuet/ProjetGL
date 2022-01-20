@@ -31,7 +31,7 @@ do
     status=1
   else
     decac "$i" > "${i%.deca}".ass 2>&1
-    if ima "${i%.deca}".ass 2>&1 | grep -q -e "$fichier" -e 'Error'
+    if ima "${i%.deca}".ass 2>&1 | grep -q -e "$fichier" -e 'Error' -e '** IMA'
     then
       ima "${i%.deca}".ass > "${i%.deca}".res 2>&1 &
       echo -e "$fichier ${rouge} FAILED ${blanc}"
@@ -60,7 +60,7 @@ do
       status=1
     else
       decac "$i" > "${i%.deca}".ass 2>&1
-      if ima "${i%.deca}".ass 2>&1 | grep -q -e "$fichier" -e 'Error'
+      if ima "${i%.deca}".ass 2>&1 | grep -q -e "$fichier" -e 'Error' -e '** IMA'
       then
         ima "${i%.deca}".ass > "${i%.deca}".res 2>&1 &
         echo -e "$fichier ${rouge} FAILED ${blanc}"
@@ -87,7 +87,7 @@ do
     status=1
   else
     decac "$i" > "${i%.deca}".ass 2>&1
-    if ima "${i%.deca}".ass 2>&1 | grep -q -e "$fichier" -e 'Error'
+    if ima "${i%.deca}".ass 2>&1 | grep -q -e "$fichier" -e 'Error' -e '** IMA'
     then
       ima "${i%.deca}".ass > "${i%.deca}".res 2>&1 &
       echo -e "$fichier ${rouge} FAILED ${blanc}"
@@ -112,7 +112,7 @@ do
     status=1
   else
     decac "$i" > "${i%.deca}".ass 2>&1
-    if ima "${i%.deca}".ass 2>&1 | grep -q -e "$fichier" -e 'Error'
+    if ima "${i%.deca}".ass 2>&1 | grep -q -e "$fichier" -e 'Error' -e '** IMA'
     then
       ima "${i%.deca}".ass > "${i%.deca}".res 2>&1 &
       echo -e "$fichier ${rouge} FAILED ${blanc}"

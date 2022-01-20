@@ -60,6 +60,7 @@ public class DeclMethod extends AbstractDeclMethod{
         ExpDefinition parent = currentClass.getSuperClass().getMembers().get(this.name.getName());
         if (parent != null){
             toVerify = parent.asMethodDefinition("Méthode déclaré dans la classe mère", this.getLocation()).getIndex();
+            currentClass.decNumberOfMethods();
         }
         MethodDefinition newDef= new MethodDefinition(type, this.getLocation(), sig, toVerify);
         newDef.setLabel(compiler.getLabelManager().newLabel(name.getName().getName()));
