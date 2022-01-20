@@ -226,7 +226,6 @@ public abstract class AbstractExpr extends AbstractInst {
      */
     protected GPRegister codeGenReg(DecacCompiler compiler) {
         getLOG().trace("AbsExpr codeGenReg");
-        System.out.println("AbsExpr");
         GPRegister reg = compiler.getRegisterManager().getCurrent();
         compiler.addInstruction(new LOAD(codeGenNoReg(compiler), reg), "argggg");
         // cette instruction permet de charger une valeur dans un registre ici le

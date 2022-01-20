@@ -71,7 +71,6 @@ public class BooleanLiteral extends AbstractExpr {
 
     @Override
     protected DVal codeGenNoReg(DecacCompiler compiler) {
-        System.out.println("BooleanLiteral");
         if (value) {
             return new ImmediateInteger(1);
         } else {
