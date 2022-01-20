@@ -82,14 +82,15 @@ public class DeclMethod extends AbstractDeclMethod{
 
     @Override
     protected void codeGenMethodBody(DecacCompiler compiler) {
-        param.codeGenParam(compiler);
+        param.codeGenParam(compiler); //on récupère les paramètres
         compiler.addLabel(name.getMethodDefinition().getLabel());
+        //on ajoute le label du début de la méthode puis on commence donc un nouveau block
         compiler.startBlock();
         Label returnLabel =compiler.getLabelManager().newLabel("endMethod");
         boolean noReturn = name.getDefinition().getType().isVoid();
-        int size = body.codeGenBody(compiler,!noReturn , returnLabel);
+        int size = body.codeGenBody(compiler,!noReturn , returnLabel); //taille pour le TSTO et ADDDSP
         compiler.endBlock(!noReturn, true, size, returnLabel);
-
+        //si la fonction n'est pas void on doit avoir une erreur de non return donc on met !noReturn
 
         //throw new UnsupportedOperationException("Not yet implemented");
     }

@@ -46,7 +46,6 @@ public class DeclVar extends AbstractDeclVar {
             throw new ContextualError("Double definition of this identifier", getLocation());
         }
 
-        // A FAIRE TODO verifier initialisation
         // Initialization
         initialization.verifyInitialization(compiler, this.type.getType(), localEnv, currentClass);
 
@@ -56,16 +55,16 @@ public class DeclVar extends AbstractDeclVar {
     protected int codeGenVar(DecacCompiler compiler, boolean local, int offsetLocal) {
         //TODO
         //System.out.println("DeclVar codeGenVar");
-        DAddr o;
+        RegisterOffset adr;
         VariableDefinition d = varName.getVariableDefinition();
         if(local){
-            //les varaibles sont déclarées localements dans une méthode donc on créé un RegisterOffset
-            o = new RegisterOffset(offsetLocal, Register.LB);
+            //les variables sont déclarées localements dans une méthode donc on créé un RegisterOffset
+            adr = new RegisterOffset(offsetLocal, Register.LB);
         }else{
             //les variables sont globales
-            o = compiler.getMemoryManager().allocGB(1);
+            adr = compiler.getMemoryManager().allocGB(1);
         }
-        d.setOperand(o);
+        d.setOperand(adr);
         initialization.codeGeneInit(compiler, d.getOperand());
         return 1;
     }

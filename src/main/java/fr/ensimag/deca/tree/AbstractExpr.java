@@ -4,10 +4,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.DVal;
-import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.Label;
-import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
@@ -248,9 +245,10 @@ public abstract class AbstractExpr extends AbstractInst {
      */
     protected void codeGenCond(DecacCompiler compiler, Label l, boolean saut) {
         getLOG().trace("AbsExpr codeGenCond");
-        compiler.addInstruction(new CMP(0, codeGenReg(compiler)), "oupsi");
-        // Cette instruction permet d'effectuer une comparaison comme si une
-        // soustraction avait été effectuée.
+        System.out.println(l + " et saut "+saut);
+        GPRegister reg =codeGenReg(compiler);
+        compiler.addInstruction(new CMP(0, reg), "oupsi");
+        // Cette instruction permet d'effectuer une comparaison
         LOG.info("Vérification du résultat de l'évaluation avec codeGenCond()");
         if (saut) {
             // Cette instruction permet de faire un saut à l'emplacement spécifié si le
@@ -274,6 +272,26 @@ public abstract class AbstractExpr extends AbstractInst {
     protected void codeGenExprIgnored(DecacCompiler compiler) {
         compiler.addComment("value in " + codeGenReg(compiler) + " ignored");
         LOG.info("Génère code pour l'expression avec codeGenExprIgnored");
+    }
+
+    protected GPRegister codeGenCondToReg(DecacCompiler compiler){
+        Label elseLabel = compiler.getLabelManager().newLabel("elseC2R");
+        Label end = compiler.getLabelManager().newLabel("endC2R");
+        GPRegister r = compiler.getRegisterManager().getCurrent();
+
+        codeGenCond(compiler, elseLabel, true);
+
+
+        compiler.addInstruction(new BRA(end));
+        compiler.addLabel(elseLabel);
+
+        compiler.addInstruction(new LOAD(1, r));
+        compiler.addInstruction(new BRA(end));
+
+
+        compiler.addLabel(end);
+
+        return r;
     }
 
 }

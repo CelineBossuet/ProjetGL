@@ -46,30 +46,14 @@ public class Not extends AbstractUnaryExpr {
 
     @Override
     protected GPRegister codeGenReg(DecacCompiler compiler) {
-        Label elseLabel = compiler.getLabelManager().newLabel("elseC2R");
-        Label end = compiler.getLabelManager().newLabel("endC2R");
-        GPRegister r = compiler.getRegisterManager().getCurrent();
 
-
-        compiler.addInstruction(new LOAD(new RegisterOffset(
-                1, Register.GB),r), "LOAD pour not");
-
-        compiler.addInstruction(new CMP(0, r), "comparaison");
-        compiler.addInstruction(new BEQ(elseLabel));
-        compiler.addInstruction(new LOAD(0, r));
-        compiler.addInstruction(new BRA(end));
-        compiler.addLabel(elseLabel);
-
-        compiler.addInstruction(new LOAD(1, r));
-        compiler.addInstruction(new BRA(end));
-
-        compiler.addLabel(end);
-        return r;
+        return codeGenCondToReg(compiler);
     }
 
     @Override
     protected void codeGenCond(DecacCompiler compiler, Label l, boolean saut){
         getLOG().info("le Not inverse la logique dans codeGenCond");
+
         getOperand().codeGenCond(compiler, l, !saut);
     }
 }

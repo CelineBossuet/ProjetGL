@@ -55,7 +55,7 @@ public class MethodCall extends AbstractExpr{
     protected GPRegister codeGenReg(DecacCompiler compiler){
         GPRegister reg = compiler.getRegisterManager().getCurrent();
         GPRegister thisReg = implicitParam.codeGenReg(compiler);
-        if(param.size()+1!=0){
+        if(param.size()+1!=0){ //taille des variables différente de zero
             compiler.getMemoryManager().allocLB(param.size()+1);
             compiler.addInstruction(new ADDSP(param.size()+1));
         }
@@ -68,13 +68,13 @@ public class MethodCall extends AbstractExpr{
             offset--;
         }
 
-        compiler.addInstruction(new LOAD(new RegisterOffset(0, Register.SP), thisReg));
-        //ajout Label erreur si thisReg est de type null
+        compiler.addInstruction(new LOAD(new RegisterOffset(0, Register.SP), thisReg)); //Re load si jamais le registre a été utilise entre temps
+        //TODO ajout Label erreur si thisReg est de type null
         compiler.addInstruction(new LOAD(new RegisterOffset(0, reg), reg));
 
         compiler.getMemoryManager().allocBSR();
         compiler.addInstruction(new BSR(new RegisterOffset(methodName.getMethodDefinition().getIndex()+1, reg)));
-
+        //l'appel de la méthode
         compiler.getMemoryManager().deallocLB(param.size()+1);
         compiler.addInstruction(new SUBSP(param.size()+1));
 

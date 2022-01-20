@@ -202,22 +202,22 @@ public class DecacCompiler {
 
     public void startBlock(){
         assert(currentBlock==program);
-        currentBlock=new IMAProgram();
-        getMemoryManager().initLGB();
+        currentBlock=new IMAProgram(); //on créé un nouveau block
+        getMemoryManager().initLGB(); //et on reinitialise tout
         getRegisterManager().initRegister();
     }
 
     public void endBlock(boolean error, boolean saveReg, int size, Label returnLabel){
-        if (error){
+        if (error){ //correspond a un oubli de return dans une fonction non void
             addInstruction(new BRA(getLabelManager().getNoReturnLabel()));
         }
         if (returnLabel!=null){
             addLabel(returnLabel);
         }
-        int nbReg=0;
+        int nbReg=0; //on compte le nombre de registres utilisés pour TSTO
         if(saveReg){
             for (int i=2; i<=getRegisterManager().getLastUsed()+1; ++i){
-                currentBlock.addFirst(new PUSH(Register.getR(i)), "je push");
+                currentBlock.addFirst(new PUSH(Register.getR(i)), "je push le registre");
                 currentBlock.addInstruction(new POP(Register.getR(i)));
                 nbReg++;
             }
@@ -228,14 +228,14 @@ public class DecacCompiler {
 
         if(getMemoryManager().getMaxLB()+size+nbReg !=0){
             currentBlock.addFirst(new BOV(getLabelManager().getStack_overflowLabel(), getCompilerOptions().getNoCheck()));
-            currentBlock.addFirst(new TSTO(getMemoryManager().getMaxLB()+size+nbReg));
+            currentBlock.addFirst(new TSTO(getMemoryManager().getMaxLB()+size+nbReg+1));
         }
 
 
         if(returnLabel!=null){
             addInstruction(new RTS());
         }
-        program.append(currentBlock);
+        program.append(currentBlock); //on ajout notre block au reste des blocks
         currentBlock = program;
     }
 

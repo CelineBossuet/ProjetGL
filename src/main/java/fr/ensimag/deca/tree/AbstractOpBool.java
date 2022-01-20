@@ -53,28 +53,7 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
 
     @Override
     protected GPRegister codeGenReg(DecacCompiler compiler) {
-        getLOG().trace("AbsOpBool codeGenReg");
-        Label elseBranch = compiler.getLabelManager().newLabel("elseC2R");
-        Label endBranch = compiler.getLabelManager().newLabel("endC2R");
-        GPRegister r = compiler.getRegisterManager().getCurrent();
-
-        compiler.addInstruction(new LOAD(new RegisterOffset(1, Register.GB), r));
-        compiler.addInstruction(new CMP(0, r), "ah");
-        // Cette instruction permet d'effectuer une comparaison, val indique l'opérande
-        // à comparer
-
-        compiler.addInstruction(new BNE(elseBranch));
-        // Cette instruction permet de faire un saut à l'emplacement spécifié si le
-        // drapeau d'égalité vaut 0.
-
-        compiler.addInstruction(new BRA(endBranch));
-        // cette instruction permet de faire un saut à l'emplacement, saut relatif à la
-        // position courrante
-        compiler.addLabel(elseBranch);
-
-        compiler.addInstruction(new LOAD(1, r));
-        compiler.addLabel(endBranch);
-        return r;
+        return codeGenCondToReg(compiler);
     }
 
     /**
