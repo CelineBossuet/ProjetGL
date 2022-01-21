@@ -333,8 +333,11 @@ public class DecacCompiler {
         addComment("end main program");
 
         LOG.debug("Generated jasmin assembly code:" + nl + program.display());
-        LOG.info("Output file assembly file is: " + destName);
 
+        String className = getClassName(sourceName);
+        destName = destName.substring(0, destName.lastIndexOf('/') + 1) + className + ".j";
+
+        LOG.info("Output file assembly file is: " + destName);
         FileOutputStream fstream = null;
         try {
             fstream = new FileOutputStream(destName);
@@ -344,7 +347,7 @@ public class DecacCompiler {
 
         LOG.info("Writing jasmin assembler file ...");
         PrintStream pS = new PrintStream(fstream);
-        writeJasminStart(pS, sourceName);
+        writeJasminStart(pS, className);
         program.display(pS);
         writeJasminEnd(pS);
         LOG.info("Compilation of " + sourceName + " successful.");
@@ -362,9 +365,16 @@ public class DecacCompiler {
         return false;
     }
 
+    private static String getClassName(String sourceFile) {
+        String className = sourceFile.substring(sourceFile.lastIndexOf('/') + 1, sourceFile.lastIndexOf('.'));
+        className = className.substring(0, 1).toUpperCase() + className.substring(1);
+        className = className.replaceAll("[^a-zA-Z]", "");
+        return className;
+    }
+
     // A FAIRE methods addPUSH, addADDSP, addSUBSP, ...
-    private static void writeJasminStart(PrintStream pS, String sourcename) { // fonction temporaire
-        pS.println(".class public " + sourcename); // TODO A FAIRE
+    private static void writeJasminStart(PrintStream pS, String className) {
+        pS.println(".class public " + className);
         pS.println(".super java/lang/Object");
         pS.println(".method public <init>()V");
         pS.println("aload_0");
