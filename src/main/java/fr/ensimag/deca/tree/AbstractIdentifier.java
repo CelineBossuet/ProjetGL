@@ -5,6 +5,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -87,6 +88,8 @@ public abstract class AbstractIdentifier extends AbstractLValue {
      *         (corresponds to the "type" attribute)
      */
     public abstract Type verifyType(DecacCompiler compiler) throws ContextualError;
+
+    private static final Logger LOG = Logger.getLogger(AbstractIdentifier.class);
 
     public abstract Type verifyTypeClass(DecacCompiler compiler) throws ContextualError;
 

@@ -37,6 +37,7 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
         Type left = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
         Type right = getRightOperand().verifyExpr(compiler, localEnv, currentClass);
         if (left.isBoolean() && right.isBoolean()){
+            LOG.info("les 2 expression sont bien des booleans");
             this.setType(left);
             return left;
         }else{

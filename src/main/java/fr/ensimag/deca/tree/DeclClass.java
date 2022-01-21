@@ -61,7 +61,8 @@ public class DeclClass extends AbstractDeclClass {
     }
 
     @Override
-    protected void verifyClass(DecacCompiler compiler) throws ContextualError { // A FAIR
+    protected void verifyClass(DecacCompiler compiler) throws ContextualError {
+        LOG.info("Debut vérification de la classe");
         superClass.verifyTypeClass(compiler);
         ClassDefinition superc = compiler.getEnvironmentType().getClass(superClass.getName());
         ClassType newClass = new ClassType(this.name.getName(), this.getLocation(), superc);
@@ -97,12 +98,13 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     protected void verifyClassBody(DecacCompiler compiler) throws ContextualError {
-        //throw new UnsupportedOperationException("not yet implemented");
         ClassDefinition currentDef = (ClassDefinition) this.name.getDefinition();
         for(AbstractDeclField adf : this.field.getList()){
+            LOG.info("On verifie le Field "+adf);
             adf.verifyBody(compiler, currentDef);
         }
         for(AbstractDeclMethod adm : this.method.getList()){
+            LOG.info("On verifie la methode "+adm);
             adm.verifyBody(compiler, currentDef);
         }
     }
@@ -190,6 +192,7 @@ public class DeclClass extends AbstractDeclClass {
         if(needsInit){
             thisReg = compiler.allocate();
             compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), thisReg));
+            LOG.info("On initie les fields de la classe");
             for(AbstractDeclField f : field.getList()){
                 f.codeGenFieldBody(compiler, thisReg);
             }

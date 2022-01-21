@@ -11,14 +11,14 @@ import fr.ensimag.ima.pseudocode.DVal;
  */
 public class NullType extends Type {
 
-    public NullType(SymbolTable.Symbol name) {
-        super(name);
-    }
-
     @Override
     public boolean sameType(Type otherType) {
         return otherType.isNull();
         //throw new UnsupportedOperationException("not yet implemented");
+    }
+
+    public NullType(SymbolTable.Symbol name) {
+        super(name);
     }
 
     @Override
@@ -27,13 +27,13 @@ public class NullType extends Type {
     }
 
     @Override
-    public boolean isClassOrNull() {
-        return true;
+    public DVal getDefaultValue() {
+        throw new DecacInternalError("pas de valeur par défaut pour le type null car on peut rien déclarer");
     }
 
     @Override
-    public DVal getDefaultValue() {
-        throw new DecacInternalError("pas de valeur par défaut pour le type null car on peut rien déclarer");
+    public boolean isClassOrNull() {
+        return true;
     }
 
 }

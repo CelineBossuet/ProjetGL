@@ -1,6 +1,8 @@
 package fr.ensimag.deca.context;
 
+import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
+import org.apache.log4j.Logger;
 
 import java.util.HashMap;
 
@@ -27,6 +29,7 @@ public class Environment<D extends Definition> {
     private HashMap<Symbol, D> environment;
 
     Environment<D> parentEnvironment;
+    private static final Logger LOG = Logger.getLogger(Environment.class);
 
     public HashMap<Symbol, D> getEnvironment(){return environment;}
 
@@ -50,21 +53,26 @@ public class Environment<D extends Definition> {
     public D get(Symbol key) {
         D result = environment.get(key); // first look in current block
         if (result != null) {
+            LOG.info("le Symbol est déjà dans la table");
             return result;
         }else if (parentEnvironment == null){
+            LOG.info("Il y a pas de parent");
             return null;
         }else{
+            LOG.info("On ajoute le symbol dans la table");
             return parentEnvironment.get(key);
         }
     }
 
     public ClassDefinition getClass(Symbol key){
         D def = environment.get(key);
-        if (def != null && def instanceof ClassDefinition){
+        if (def instanceof ClassDefinition){
+            LOG.info("c'est une classe");
             return (ClassDefinition) def;
         }else if (parentEnvironment == null){
             return null;
         }else{
+            LOG.info("on retourne la classe parent");
             return parentEnvironment.getClass(key);
         }
     }

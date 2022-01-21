@@ -4,6 +4,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
+import org.apache.log4j.Logger;
 
 import java.io.PrintStream;
 
@@ -79,11 +80,15 @@ public class DeclMethod extends AbstractDeclMethod{
         this.param.verifyBody(compiler, localEnv);
         this.body.verifyBody(compiler, localEnv, currentDef, this.type.getType());
     }
+    private static final Logger LOG = Logger.getLogger(DeclMethod.class);
 
     @Override
     protected void codeGenMethodBody(DecacCompiler compiler) {
+
+        LOG.info("On recupère tous les paramètres de la méthode");
         param.codeGenParam(compiler); //on récupère les paramètres
         compiler.addLabel(name.getMethodDefinition().getLabel());
+
         //on ajoute le label du début de la méthode puis on commence donc un nouveau block
         compiler.startBlock();
         Label returnLabel =compiler.getLabelManager().newLabel("endMethod");
@@ -92,6 +97,5 @@ public class DeclMethod extends AbstractDeclMethod{
         compiler.endBlock(!noReturn, true, size, returnLabel);
         //si la fonction n'est pas void on doit avoir une erreur de non return donc on met !noReturn
 
-        //throw new UnsupportedOperationException("Not yet implemented");
     }
 }

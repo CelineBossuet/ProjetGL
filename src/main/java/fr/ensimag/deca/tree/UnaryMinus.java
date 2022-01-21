@@ -10,6 +10,7 @@ import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Instruction;
 import fr.ensimag.ima.pseudocode.instructions.OPP;
+import org.apache.log4j.Logger;
 
 /**
  * @author gl13
@@ -45,16 +46,19 @@ public class UnaryMinus extends AbstractUnaryExpr {
         // notre registre reg
         return new OPP(reg, reg);
     }
+    private static final Logger LOG = Logger.getLogger(UnaryMinus.class);
 
     @Override
     protected GPRegister codeGenReg(DecacCompiler compiler) {
         // TODO verifier type int ou float
         GPRegister reg;
         if (!getOperand().NeedsRegister()) {
+            LOG.info("l'opération a besoin de registres");
             reg = compiler.getRegisterManager().getCurrent();
             DVal val = getOperand().codeGenNoReg(compiler);
             compiler.addInstruction(new OPP(val, reg));
         } else {
+            LOG.info("l'opération n'a pas besoin de registres");
             reg = getOperand().codeGenReg(compiler);
             compiler.addInstruction(new OPP(reg, reg));
         }

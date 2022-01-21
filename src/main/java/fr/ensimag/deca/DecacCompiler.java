@@ -161,8 +161,7 @@ public class DecacCompiler {
 
     private final CompilerOptions compilerOptions;
     private final File source;
-    private final RegisterManager registerManager = new RegisterManager();
-    private final MemoryManager memoryManager = new MemoryManager();
+
     private final LabelManager labelManager = new LabelManager();
     /**
      * The main program. Every instruction generated will eventually end up here.
@@ -183,6 +182,9 @@ public class DecacCompiler {
     }
 
     public IMAProgram getCurrentBlock(){return currentBlock;}
+
+    private final RegisterManager registerManager = new RegisterManager();
+    private final MemoryManager memoryManager = new MemoryManager();
 
     public RegisterManager getRegisterManager() {
         return registerManager;

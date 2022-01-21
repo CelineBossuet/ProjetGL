@@ -1,9 +1,11 @@
 package fr.ensimag.deca.codegen;
 
+import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
 import org.apache.commons.lang.Validate;
+import org.apache.log4j.Logger;
 
 
 /**
@@ -12,6 +14,7 @@ import org.apache.commons.lang.Validate;
  * @date 09/01/2022
  * */
 public class MemoryManager {
+    private static final Logger LOG = Logger.getLogger(MemoryManager.class);
     private int currentLB=0; //local base current register
     private int currentGB=0;
     private int maxLB;

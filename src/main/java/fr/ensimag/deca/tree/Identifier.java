@@ -11,6 +11,7 @@ import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import org.apache.commons.lang.Validate;
+import org.apache.log4j.Logger;
 
 import java.io.PrintStream;
 
@@ -22,6 +23,7 @@ import java.io.PrintStream;
  */
 public class Identifier extends AbstractIdentifier {
 
+    private static final Logger LOG = Logger.getLogger(Identifier.class);
     @Override
     protected void checkDecoration() {
         if (getDefinition() == null) {
@@ -215,6 +217,7 @@ public class Identifier extends AbstractIdentifier {
     public Type verifyMethodType(DecacCompiler compiler) throws ContextualError{
         TypeDefinition typeMethode = compiler.getEnvironmentType().get(compiler.getSymbolTable().create(getName().getName()));
         if (typeMethode == null){
+            LOG.info("le type de la class est null");
             throw new ContextualError("class null", this.getLocation());
         }
         setDefinition(typeMethode);

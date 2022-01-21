@@ -8,6 +8,7 @@ import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.ima.pseudocode.instructions.*;
+import org.apache.log4j.Logger;
 
 import java.io.PrintStream;
 
@@ -15,6 +16,8 @@ public class MethodCall extends AbstractExpr{
     private  AbstractExpr implicitParam;
     private  AbstractIdentifier methodName;
     private  ListExpr param;
+
+    private static final Logger LOG = Logger.getLogger(MethodCall.class);
 
     public MethodCall(AbstractExpr implicitParameter, AbstractIdentifier methodName, ListExpr params) {
         this.implicitParam = implicitParameter;
@@ -68,7 +71,8 @@ public class MethodCall extends AbstractExpr{
             offset--;
         }
 
-        compiler.addInstruction(new LOAD(new RegisterOffset(0, Register.SP), thisReg)); //Re load si jamais le registre a été utilise entre temps
+        compiler.addInstruction(new LOAD(new RegisterOffset(0, Register.SP), thisReg));
+        LOG.info("Re-load si jamais le registre a été utilise entre temps");
         //TODO ajout Label erreur si thisReg est de type null
         compiler.addInstruction(new LOAD(new RegisterOffset(0, reg), reg));
 

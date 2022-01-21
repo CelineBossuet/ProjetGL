@@ -13,15 +13,17 @@ public abstract class Instruction {
         return this.getClass().getSimpleName();
     }
     abstract void displayOperands(PrintStream s);
+
+    private boolean active=true;
+
+    protected void disable(){
+        active = false;
+    }
+
     void display(PrintStream s) {
         if (active){
             s.print(getName());
             displayOperands(s);
         }
-    }
-    private boolean active=true;
-
-    protected void disable(){
-        active = false;
     }
 }

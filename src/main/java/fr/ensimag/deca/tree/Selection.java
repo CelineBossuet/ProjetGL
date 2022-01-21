@@ -7,6 +7,7 @@ import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.BEQ;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import org.apache.log4j.Logger;
 
 import java.io.PrintStream;
 
@@ -19,6 +20,7 @@ public class Selection extends AbstractLValue{
         this.object=object;
     }
 
+    private static final Logger LOG = Logger.getLogger(Selection.class);
     @Override
     public Type verifyExpr(DecacCompiler compiler, Environment<ExpDefinition> localEnv, ClassDefinition currentClass) throws ContextualError {
         //throw new UnsupportedOperationException("Not yet implemented");
@@ -55,6 +57,7 @@ public class Selection extends AbstractLValue{
 
     @Override
     public GPRegister codeGenReg(DecacCompiler compiler){
+        LOG.info("codeGenReg pour la Selection");
         DAddr addr=codeGenAddr(compiler);
         GPRegister reg = compiler.getRegisterManager().getCurrent();
         compiler.addInstruction(new LOAD(addr, reg));
