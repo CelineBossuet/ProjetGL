@@ -109,6 +109,8 @@ public abstract class AbstractExpr extends AbstractInst {
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
         this.type = this.verifyExpr(compiler, localEnv, currentClass);
+
+
     }
 
     /**
@@ -224,7 +226,7 @@ public abstract class AbstractExpr extends AbstractInst {
     protected GPRegister codeGenReg(DecacCompiler compiler) {
         getLOG().trace("AbsExpr codeGenReg");
         GPRegister reg = compiler.getRegisterManager().getCurrent();
-        compiler.addInstruction(new LOAD(codeGenNoReg(compiler), reg));
+        compiler.addInstruction(new LOAD(codeGenNoReg(compiler), reg), "AbsExpr");
         // cette instruction permet de charger une valeur dans un registre ici le
         // Registre Current
         return reg;
@@ -245,7 +247,6 @@ public abstract class AbstractExpr extends AbstractInst {
      */
     protected void codeGenCond(DecacCompiler compiler, Label l, boolean saut) {
         getLOG().trace("AbsExpr codeGenCond");
-        System.out.println(l + " et saut "+saut);
         GPRegister reg =codeGenReg(compiler);
         compiler.addInstruction(new CMP(0, reg), "oupsi");
         // Cette instruction permet d'effectuer une comparaison
@@ -281,7 +282,7 @@ public abstract class AbstractExpr extends AbstractInst {
 
         codeGenCond(compiler, elseLabel, true);
 
-
+        compiler.addInstruction(new LOAD(0, r));
         compiler.addInstruction(new BRA(end));
         compiler.addLabel(elseLabel);
 

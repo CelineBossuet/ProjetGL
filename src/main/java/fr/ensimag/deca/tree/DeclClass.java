@@ -192,7 +192,7 @@ public class DeclClass extends AbstractDeclClass {
         if(needsInit){
             thisReg = compiler.allocate();
             compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), thisReg));
-            LOG.info("On initie les fields de la classe");
+            getLOG().info("On initie les fields de la classe");
             for(AbstractDeclField f : field.getList()){
                 f.codeGenFieldBody(compiler, thisReg);
             }
