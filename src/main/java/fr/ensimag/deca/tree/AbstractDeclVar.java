@@ -35,6 +35,5 @@ public abstract class AbstractDeclVar extends Tree {
 
     protected abstract int codeGenVar(DecacCompiler compiler);
 
-    // TODO A FAIRE codeGen for Bytecode
-    // protected abstract int codeGenVarBytecode(DecacCompiler compiler);
+    protected abstract int codeGenVarJasmin(DecacCompiler compiler);
 }

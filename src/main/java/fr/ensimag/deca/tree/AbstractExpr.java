@@ -187,7 +187,6 @@ public abstract class AbstractExpr extends AbstractInst {
         getLOG().trace("AbsExpr codeGenInst");
         codeGenExprIgnored(compiler);
         // peut être ajouter des labels en paramètre...
-        // throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override

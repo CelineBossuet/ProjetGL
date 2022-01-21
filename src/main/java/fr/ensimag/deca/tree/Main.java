@@ -50,7 +50,7 @@ public class Main extends AbstractMain {
 
     @Override
     protected void codeGenMainJasmin(DecacCompiler compiler) {
-        // declVariables.codeGenListVarJasmin(compiler); // TODO A FAIRE
+        declVariables.codeGenListVarJasmin(compiler);
         compiler.addComment("Beginning of main instructions");
         insts.codeGenListInstJasmin(compiler, null, null);
     }

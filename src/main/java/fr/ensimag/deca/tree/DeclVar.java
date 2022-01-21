@@ -56,8 +56,6 @@ public class DeclVar extends AbstractDeclVar {
 
     @Override
     protected int codeGenVar(DecacCompiler compiler) {
-        // TODO
-        // System.out.println("DeclVar codeGenVar");
         VariableDefinition d = varName.getVariableDefinition();
 
         DAddr o = compiler.getMemoryManager().allocGB(1);
@@ -66,17 +64,16 @@ public class DeclVar extends AbstractDeclVar {
         return 1;
     }
 
-    // TODO A FAIRE codeGen for bytecode
-    // @Override
-    // protected int codeGenVarBytecode(DecacCompiler compiler) {
-    // VariableDefinition d = varName.getVariableDefinition();
+    @Override
+    protected int codeGenVarJasmin(DecacCompiler compiler) {
+        VariableDefinition d = varName.getVariableDefinition();
 
-    // DAddr o = compiler.getMemoryManager().allocGB(1);
-    // d.setOperand(o);
-    // initialization.codeGeneInitBytecode(compiler, d.getOperand());
-    // //System.out.println("DeclVar codeGenVar FIN");
-    // return 1;
-    // }
+        // DAddr o = compiler.getMemoryManager().allocGB(1); // TODO ?
+        // d.setOperand(o);
+        // initialization.codeGeneInitBytecode(compiler, d.getOperand());
+        throw new UnsupportedOperationException("not yet implemented");
+        // return 1;
+    }
 
     @Override
     public void decompile(IndentPrintStream s) {
