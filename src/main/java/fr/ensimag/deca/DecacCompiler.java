@@ -382,7 +382,8 @@ public class DecacCompiler {
         pS.println("return");
         pS.println(".end method");
         pS.println(".method public static main([Ljava/lang/String;)V");
-        pS.println(".limit stack 2"); // TODO A FAIRE
+        pS.println(".limit stack 256"); // feel the magic in the air
+        pS.println(".limit locals 256"); // allez allez allez allez
     }
 
     private static void writeJasminEnd(PrintStream pS) {

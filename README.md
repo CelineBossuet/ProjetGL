@@ -155,20 +155,12 @@ mvn verify -Dmaven.test.failure.ignore
 
 Notre compilateur permet de compiler des programmes decac en bytecode exécutable par la JVM avec l'option `-j`
 
-Il est nécessaire de [télécharger Jasmin](https://sourceforge.net/projects/jasmin/files/)
+### Problèmes fréquents
+En cas de Stack Overflow, il peut être nécessaire d'ajuster les limites du nombre de variables et de la taille de pile des méthodes :
 
-Après utilisation de decac :
-``
-    java -jar jasmin.jar myfile.j
-``
+Dans le fichier [DecacCompiler.java](src/main/java/fr/ensimag/deca/DecacCompiler.java) à la fin, aux lignes :
+```
+pS.println(".limit stack 256");
+pS.println(".limit locals 256");
+```
 
-Ce qui générera un .class
-
-[\\]: <> (Instructions jasmin : [jasmin.sourceforge.net/instructions.html](http://jasmin.sourceforge.net/instructions.html)
-
-Avec le .class générée via Jasmin, vous pouvez utiliser la JVM (Java Virtual Machine) pour exécuter les classes.
-
-On peut donc simplement taper :
-``
-    java myfile
-``
