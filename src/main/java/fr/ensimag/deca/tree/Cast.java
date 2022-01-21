@@ -20,7 +20,30 @@ public class Cast extends AbstractExpr{
 
     @Override
     public Type verifyExpr(DecacCompiler compiler, Environment<ExpDefinition> localEnv, ClassDefinition currentClass) throws ContextualError {
-        return null;
+        Type toCast = this.expr.verifyExpr(compiler, localEnv, currentClass);
+        Type t = this.typeToCheck.verifyType(compiler);
+        if (toCast.isInt() && t.isFloat()){
+            FloatType newFloat = new FloatType(compiler.getSymbolTable().create("float"));
+            System.out.println(newFloat);
+            this.expr.setType(newFloat);
+            System.out.println(this.expr.getType());
+            this.setType(t);
+            return t;
+        }else if(this.expr.getType().sameType(t)){
+            this.setType(toCast);
+            return this.expr.getType();
+        }else if(this.typeToCheck.getClassDefinition().isClass() && this.expr.getType().isClass()) {
+            ClassType tToCast = toCast.asClassType("Mauvais transtypage", this.getLocation());
+            ClassType tt = t.asClassType("Mauvais transtypage", this.getLocation());
+            if(tt.isSubClassOf(tToCast)){
+                this.setType(toCast);
+                return this.getType();
+            }else{
+                throw new ContextualError("Les deux classes ne sont pas compatibles", this.getLocation());
+            }
+        }else{
+            throw new ContextualError("Le cast n'est pas faisable", this.getLocation());
+        }
     }
 
     @Override

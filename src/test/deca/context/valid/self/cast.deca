@@ -1,0 +1,7 @@
+{
+    int x = 3;
+    float y = 3;
+    (float)(x);
+    println(x);
+    println(y);
+}
