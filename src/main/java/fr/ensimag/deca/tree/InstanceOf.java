@@ -27,7 +27,13 @@ public class InstanceOf extends AbstractExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, Environment<ExpDefinition> localEnv, ClassDefinition currentClass)
             throws ContextualError {
-        return null;
+        Type t = this.expr.verifyExpr(compiler, localEnv, currentClass);
+        if (t.sameType(type.verifyType(compiler))){
+            this.setType(t);
+            return t;
+        }else{
+            throw new ContextualError("Les deux expressions ne sont pas instanciables", this.getLocation());
+        }
     }
 
     @Override
