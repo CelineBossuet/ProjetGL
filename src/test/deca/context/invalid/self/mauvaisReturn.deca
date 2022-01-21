@@ -1,0 +1,5 @@
+class A {
+    int add(){
+        return 2.0;
+    }
+}

@@ -35,6 +35,11 @@ public class MethodCall extends AbstractExpr{
         }catch (ContextualError e){
             throw e;
         }
+        if (methodType.getDefinition().getMembers().get(methodName.getName()) == null) {
+            throw new ContextualError("La méthode " + methodName.getName()
+                    + " n'existe pas", getLocation());
+        }
+
         MethodDefinition methodDefinition; //Pareil que précedemment
         try {
             methodDefinition = methodType.getDefinition().getMembers().get(this.methodName.getName()).asMethodDefinition("Ceci n'est pas une méthode", this.getLocation());
