@@ -6,6 +6,7 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.instructions.FLOAT;
+import fr.ensimag.ima.pseudocode.instructions.INT;
 
 import java.io.PrintStream;
 
@@ -24,15 +25,21 @@ public class Cast extends AbstractExpr{
         Type t = this.typeToCheck.verifyType(compiler);
         if (toCast.isInt() && t.isFloat()){
             FloatType newFloat = new FloatType(compiler.getSymbolTable().create("float"));
-            System.out.println(newFloat);
             this.expr.setType(newFloat);
-            System.out.println(this.expr.getType());
             this.setType(t);
             return t;
-        }else if(this.expr.getType().sameType(t)){
+        }
+        else if(toCast.isFloat() && t.isInt()){
+            IntType newInt = new IntType(compiler.getSymbolTable().create("int"));
+            this.expr.setType(newInt);
+            this.setType(t);
+            return t;
+        }
+
+        else if(this.expr.getType().sameType(t)){
             this.setType(toCast);
             return this.expr.getType();
-        }else if(this.typeToCheck.getClassDefinition().isClass() && this.expr.getType().isClass()) {
+        }else if(this.typeToCheck.getDefinition().isClass() && this.expr.getType().isClass()) {
             ClassType tToCast = toCast.asClassType("Mauvais transtypage", this.getLocation());
             ClassType tt = t.asClassType("Mauvais transtypage", this.getLocation());
             if(tt.isSubClassOf(tToCast)){
@@ -56,10 +63,19 @@ public class Cast extends AbstractExpr{
         Type typeToCast = typeToCheck.getDefinition().getType();
         GPRegister reg = expr.codeGenReg(compiler);
         if( typeToCast.isFloat() && expr.getType().isInt()){
-            compiler.addInstruction(new FLOAT(reg, reg));
+            compiler.addInstruction(new FLOAT(reg, reg), "cast a int to float");
         }
+
+        else if(expr.getType().sameType(typeToCast)
+                && (typeToCast.isFloat() || typeToCast.isInt() || typeToCast.isBoolean())){
+            //nothing to do
+        }
+        else if(typeToCast.isInt() && expr.getType().isFloat()){
+            compiler.addInstruction(new INT(reg, reg), "cast a float to int");
+        }
+
         return reg;
-        //TODO cas (int) aillant un float ou cas type est une class
+        //TODO cas type est une class
         //throw new UnsupportedOperationException("Not yet implemented");
     }
 
