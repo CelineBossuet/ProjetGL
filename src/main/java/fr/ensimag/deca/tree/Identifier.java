@@ -188,7 +188,7 @@ public class Identifier extends AbstractIdentifier {
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
         Definition def = compiler.getEnvironmentType().defOfType(getName());
         if(def==null){
-            throw new ContextualError("Type n'existe pas", getLocation());
+            throw new ContextualError("Le Type donné n'existe pas", getLocation());
         }
         if(def.getType().isVoid()){
             throw new ContextualError("Variables ne peuvent pas être déclarées de type void", getLocation());

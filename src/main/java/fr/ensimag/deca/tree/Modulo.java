@@ -31,11 +31,11 @@ public class Modulo extends AbstractOpArith {
 
         if (!left.isInt()) {
             throw new ContextualError(
-                    "Modulo que entre des int, l'opérande de gauche est de type " + left, getLocation());
+                    "Modulo doit être entre des int, l'opérande de gauche est de type " + left, getLocation());
         }
         if (!right.isInt()) {
             throw new ContextualError(
-                    "Modulo que entre des int, l'opérande de droite est de type " + right, getLocation());
+                    "Modulo doit être entre des int, l'opérande de droite est de type " + right, getLocation());
         }
         setType(new IntType(compiler.getSymbolTable().create("int")));
 

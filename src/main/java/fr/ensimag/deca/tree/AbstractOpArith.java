@@ -31,6 +31,7 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
             ClassDefinition currentClass) throws ContextualError {
         Type left = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
         Type right = getRightOperand().verifyExpr(compiler, localEnv, currentClass);
+
         if(left.isFloat() && right.isInt()){
             ConvFloat conversion = new ConvFloat(getRightOperand());
             conversion.verifyExpr(compiler, localEnv, currentClass);
@@ -43,9 +44,13 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
             setLeftOperand(conversion);
             this.setType(right);
             return right;
-        }else{
+        }else if ((left.isInt() && right.isInt()) || (left.isFloat() && right.isFloat())){
             setType(right);
             return right;
+        }
+        else{
+            throw new ContextualError("Can't do aritmetical operation between types "+left+" and "+right
+                    , this.getLocation());
         }
         // throw new UnsupportedOperationException("not yet implemented");
     }
