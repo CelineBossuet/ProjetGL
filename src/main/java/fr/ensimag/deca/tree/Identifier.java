@@ -229,7 +229,7 @@ public class Identifier extends AbstractIdentifier {
     public FieldDefinition verifyField(DecacCompiler compiler, ClassType type) throws ContextualError {
         Definition fieldDefinition = type.getDefinition().getMembers().get(this.getName());
         if (fieldDefinition == null){
-            throw new ContextualError("This field is not declared yet", this.getLocation());
+            throw new ContextualError("The field "+this.getName().getName()+" is not declared yet", this.getLocation());
         }
         try{
             fieldDefinition = fieldDefinition.asFieldDefinition(fieldDefinition + "is not a field", this.getLocation());

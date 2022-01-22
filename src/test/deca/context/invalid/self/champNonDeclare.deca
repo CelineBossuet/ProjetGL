@@ -1,0 +1,6 @@
+class A{
+
+    int add(int x){
+        return this.y+x;
+    }
+}

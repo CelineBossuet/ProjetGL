@@ -97,7 +97,6 @@ public abstract class AbstractExpr extends AbstractInst {
                 ClassType classType = (ClassType)type;
                 ClassType expectedClassType = (ClassType) expectedType;
                 if(!(classType.isSubClassOf(expectedClassType))){
-                    System.out.println("b");
                     throw new ContextualError(type.getName().getName()+" isn't a subtype of "
                             +expectedType.getName().getName()+" so it cannot be assigned to it", this.getLocation());
                 }
