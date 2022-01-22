@@ -4,7 +4,6 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.context.Environment.DoubleDefException;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.DAddr;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
 import org.apache.commons.lang.Validate;
@@ -43,7 +42,7 @@ public class DeclVar extends AbstractDeclVar {
             varName.setDefinition(new VariableDefinition(type.getType(), getLocation()));
             localEnv.declare(varName.getName(), varName.getExpDefinition());
         } catch (DoubleDefException e) {
-            throw new ContextualError("Double definition of this identifier", getLocation());
+            throw new ContextualError("Double definition of this identifier: " + this.varName, getLocation());
         }
 
         // Initialization

@@ -32,7 +32,7 @@ public class InstanceOf extends AbstractExpr {
             this.setType(t);
             return t;
         }else{
-            throw new ContextualError("Les deux expressions ne sont pas instanciables", this.getLocation());
+            throw new ContextualError(this.expr.getType().getName().getName() + "can't be instance in " + this.type.getName().getName(), this.getLocation());
         }
     }
 

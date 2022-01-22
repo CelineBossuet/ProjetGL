@@ -73,7 +73,7 @@ public class DeclClass extends AbstractDeclClass {
             compiler.getEnvironmentType().declareClass(this.name.getName(), this.name.getClassDefinition());
         }catch (Environment.DoubleDefException e) {
             if(alreadyUsed.contains(name.getName())) {
-                throw new ContextualError("Classe déjà déclaré", this.getLocation());
+                throw new ContextualError(this.name.getName().getName() + " already declared", this.getLocation());
             }else{
                 this.alreadyUsed.add(name.getName());
             }

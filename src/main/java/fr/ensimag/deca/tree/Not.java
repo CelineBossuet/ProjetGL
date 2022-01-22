@@ -1,14 +1,11 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.Environment;
-import fr.ensimag.deca.context.ExpDefinition;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.DecacInternalError;
-import fr.ensimag.ima.pseudocode.*;
-import fr.ensimag.ima.pseudocode.instructions.*;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Instruction;
+import fr.ensimag.ima.pseudocode.Label;
 
 /**
  *
@@ -30,7 +27,7 @@ public class Not extends AbstractUnaryExpr {
             this.setType(ope);
             return ope;
         }else{
-            throw new ContextualError("Une négation peut être faite seulement sur un booléen", this.getLocation());
+            throw new ContextualError("Not is only for boolean but the operand is: " + ope, this.getLocation());
         }
     }
 
@@ -41,7 +38,7 @@ public class Not extends AbstractUnaryExpr {
 
     @Override
     protected Instruction geneInstru(GPRegister reg) {
-        throw new DecacInternalError("Pas de génération d'instruction pour Not");
+        throw new DecacInternalError("No instruction for Not");
     }
 
     @Override

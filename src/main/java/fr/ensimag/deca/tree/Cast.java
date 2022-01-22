@@ -46,10 +46,10 @@ public class Cast extends AbstractExpr{
                 this.setType(toCast);
                 return this.getType();
             }else{
-                throw new ContextualError("Les deux classes ne sont pas compatibles", this.getLocation());
+                throw new ContextualError(toCast + " and " + t + " are not compatible", this.getLocation());
             }
         }else{
-            throw new ContextualError("Le cast n'est pas faisable", this.getLocation());
+            throw new ContextualError("Cast is not possible between " + toCast + " and " + t, this.getLocation());
         }
     }
 

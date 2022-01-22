@@ -26,7 +26,7 @@ public class This extends AbstractExpr {
             throws ContextualError {
         //throw new UnsupportedOperationException("Not yet implemented");
         if (currentClass == null){
-            throw new ContextualError("L'objet est vide", this.getLocation());
+            throw new ContextualError("Object is null", this.getLocation());
         }
         Type t = currentClass.getType();
         this.setType(t);

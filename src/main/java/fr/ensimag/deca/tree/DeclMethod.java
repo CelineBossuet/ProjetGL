@@ -68,7 +68,7 @@ public class DeclMethod extends AbstractDeclMethod{
         try{
             currentClass.getMembers().declare(this.name.getName(), newDef);
         } catch (Environment.DoubleDefException e) {
-            throw new ContextualError("Méthode déjà créée", this.getLocation());
+            throw new ContextualError(this.name + " already declared ", this.getLocation());
         }
         this.name.setDefinition(newDef);
     }

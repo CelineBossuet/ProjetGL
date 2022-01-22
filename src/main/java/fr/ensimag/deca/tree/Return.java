@@ -23,7 +23,7 @@ public class Return extends AbstractInst{
         if (t.isInt() && returnType.isFloat()){
             //nothing to do
         }else if(!t.sameType(returnType)){
-            throw new ContextualError("Mauvais type de retour", this.getLocation());
+            throw new ContextualError("Bad return type", this.getLocation());
         }
     }
 

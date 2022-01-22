@@ -174,9 +174,8 @@ public class Identifier extends AbstractIdentifier {
         }
         else{
             throw new ContextualError(
-                    "La variable "+this.getName()+" n'a pas été déclarée", this.getLocation());
+                    "this variable: "+this.getName()+" is not declared yet ", this.getLocation());
         }
-        //throw new UnsupportedOperationException("not yet implemented");
     }
 
     /**
@@ -188,10 +187,10 @@ public class Identifier extends AbstractIdentifier {
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
         Definition def = compiler.getEnvironmentType().defOfType(getName());
         if(def==null){
-            throw new ContextualError("Le Type donné n'existe pas", getLocation());
+            throw new ContextualError("This type doesn't exist", getLocation());
         }
         if(def.getType().isVoid()){
-            throw new ContextualError("Variables ne peuvent pas être déclarées de type void", getLocation());
+            throw new ContextualError("Variables can't be void type", getLocation());
         }
         setType(def.getType());
         setDefinition(def);
@@ -229,10 +228,10 @@ public class Identifier extends AbstractIdentifier {
     public FieldDefinition verifyField(DecacCompiler compiler, ClassType type) throws ContextualError {
         Definition fieldDefinition = type.getDefinition().getMembers().get(this.getName());
         if (fieldDefinition == null){
-            throw new ContextualError("Le champ n'a pas été déclaré", this.getLocation());
+            throw new ContextualError("This field is not declared yet", this.getLocation());
         }
         try{
-            fieldDefinition = fieldDefinition.asFieldDefinition("Ceci n'est pas un champ", this.getLocation());
+            fieldDefinition = fieldDefinition.asFieldDefinition(fieldDefinition + "is not a field", this.getLocation());
         }catch (ContextualError c){
             throw c;
         }

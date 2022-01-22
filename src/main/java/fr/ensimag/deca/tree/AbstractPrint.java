@@ -46,7 +46,7 @@ public abstract class AbstractPrint extends AbstractInst {
             Type type=a.verifyExpr(compiler, localEnv, currentClass);
             if(!type.isInt() && !type.isFloat() && !type.isString()){
                 throw new ContextualError(
-                        "Type "+type+" non supporté pour print/println",
+                        "Type "+type+" is not supported by print or println",
                         getLocation());
             }
         }

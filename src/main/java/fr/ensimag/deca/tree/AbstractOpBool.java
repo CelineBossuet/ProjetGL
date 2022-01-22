@@ -1,17 +1,12 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.Environment;
-import fr.ensimag.deca.context.ExpDefinition;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.DecacInternalError;
-import fr.ensimag.ima.pseudocode.*;
-import fr.ensimag.ima.pseudocode.instructions.BNE;
-import fr.ensimag.ima.pseudocode.instructions.BRA;
-import fr.ensimag.ima.pseudocode.instructions.CMP;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.BinaryInstruction;
+import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Label;
 import org.apache.log4j.Logger;
 
 /**
@@ -42,7 +37,7 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
             return left;
         }else{
             throw new ContextualError(
-                    "L'opérande doit être un booléen pour les opérations And/Or", this.getLocation());
+                    "The two operands must be boolean", this.getLocation());
         }
         //throw new UnsupportedOperationException("not yet implemented");
     }

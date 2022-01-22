@@ -23,7 +23,7 @@ public class DeclParam extends AbstractDeclParam{
     protected Type verifParam(DecacCompiler compiler) throws ContextualError {
         Type type = this.type.verifyType(compiler);
         if(type.isVoid()){
-            throw new ContextualError("Paramètres ne peuvent pas être void", getLocation());
+            throw new ContextualError("Parameters can't be void", getLocation());
         }
         return type;
     }
@@ -37,7 +37,7 @@ public class DeclParam extends AbstractDeclParam{
             localENv.declare(this.name.getName(), definition);
         } catch (Environment.DoubleDefException e) {
             if (declared.contains(this.name.getName().getName())){
-                throw new ContextualError("Paramètre déjà présent", this.getLocation());
+                throw new ContextualError(name + " already in the parameters ", this.getLocation());
             }else{
                 declared.add(this.name.getName().getName());
             }

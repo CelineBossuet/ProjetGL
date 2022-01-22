@@ -64,7 +64,7 @@ public class DeclField extends AbstractDeclField{
         try{
             currentClass.getMembers().declare(this.fieldName.getName(), field);
         } catch (Environment.DoubleDefException e) {
-            throw new ContextualError("La variable a déjà été déclaré", this.getLocation());
+            throw new ContextualError( fieldName + "already declared", this.getLocation());
         }
         this.fieldName.verifyExpr(compiler, env, currentClass);
         fieldName.setDefinition(field);

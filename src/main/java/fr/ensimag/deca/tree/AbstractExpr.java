@@ -99,9 +99,8 @@ public abstract class AbstractExpr extends AbstractInst {
             abs.verifyExpr(compiler, localEnv, currentClass);
             return abs;
         } else {
-            throw new ContextualError("Type incompatible", this.getLocation());
+            throw new ContextualError(this.type.getName().getName() + " is not compatible with " + expectedType.getName().getName(), this.getLocation());
         }
-        // throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override
@@ -128,7 +127,7 @@ public abstract class AbstractExpr extends AbstractInst {
             ClassDefinition currentClass) throws ContextualError {
         Type type =this.verifyExpr(compiler, localEnv, currentClass);
         if(!type.isBoolean()){
-            throw new ContextualError("la condition doit être booléenne", getLocation());
+            throw new ContextualError(this.type.getName().getName() + " should have been boolean ", getLocation());
         }
     }
 
