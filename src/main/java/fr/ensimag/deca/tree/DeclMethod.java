@@ -60,11 +60,14 @@ public class DeclMethod extends AbstractDeclMethod{
         int toVerify = currentClass.incNumberOfMethods() - 1 ;
         ExpDefinition parent = currentClass.getSuperClass().getMembers().get(this.name.getName());
         if (parent != null){
-            toVerify = parent.asMethodDefinition("Méthode déclaré dans la classe mère", this.getLocation()).getIndex();
+            MethodDefinition superMethod = parent.asMethodDefinition("Méthode déclaré dans la classe mère", this.getLocation());
+            toVerify = superMethod.getIndex();
             currentClass.decNumberOfMethods();
             if(!type.sameType(parent.getType())){
                 throw new ContextualError("Can't modify the type of an override mehtode. Expected was " + parent.getType() +" but given was " + type, this.getLocation());
             }
+            superMethod.getSignature().verifySameSignature(sig, this.getLocation());
+
         }
         MethodDefinition newDef= new MethodDefinition(type, this.getLocation(), sig, toVerify);
         newDef.setLabel(compiler.getLabelManager().newLabel(name.getName().getName()));
