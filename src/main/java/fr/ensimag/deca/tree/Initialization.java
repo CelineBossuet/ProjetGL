@@ -11,6 +11,8 @@ import java.io.PrintStream;
 
 import fr.ensimag.ima.pseudocode.DAddr;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.istore;
+
 import org.apache.commons.lang.Validate;
 
 /**
@@ -45,7 +47,6 @@ public class Initialization extends AbstractInitialization {
                     t + " n'est pas un sous type de " + expr + " et ne peut donc pas lui être assigné", getLocation());
         }
         setExpression(expression.verifyRValue(compiler, localEnv, currentClass, t));
-        // throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override
@@ -55,6 +56,13 @@ public class Initialization extends AbstractInitialization {
 
         // la valeur du registre expression.codeGenReg() est stored dans l'adresse
         // target
+    }
+
+    @Override
+    protected void codeGeneInitJasmin(DecacCompiler compiler, DAddr target) {
+        // TODO manage types
+        // TODO A FAIRE compute expression !!
+        compiler.addInstruction(new istore(target));
     }
 
     @Override

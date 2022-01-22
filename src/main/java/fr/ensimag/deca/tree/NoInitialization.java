@@ -31,6 +31,11 @@ public class NoInitialization extends AbstractInitialization {
         // rien à faire
     }
 
+    @Override
+    protected void codeGeneInitJasmin(DecacCompiler compiler, DAddr target) {
+        // rien à faire
+    }
+
     /**
      * Node contains no real information, nothing to check.
      */

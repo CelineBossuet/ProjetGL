@@ -67,12 +67,10 @@ public class DeclVar extends AbstractDeclVar {
     @Override
     protected int codeGenVarJasmin(DecacCompiler compiler) {
         VariableDefinition d = varName.getVariableDefinition();
-
-        // DAddr o = compiler.getMemoryManager().allocGB(1); // TODO ?
-        // d.setOperand(o);
-        // initialization.codeGeneInitBytecode(compiler, d.getOperand());
-        throw new UnsupportedOperationException("not yet implemented");
-        // return 1;
+        DAddr o = compiler.getMemoryManager().allocJasmin();
+        d.setOperand(o);
+        initialization.codeGeneInitJasmin(compiler, d.getOperand());
+        return 1;
     }
 
     @Override
