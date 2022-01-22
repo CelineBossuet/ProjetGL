@@ -7,12 +7,10 @@ import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
 
 import java.io.PrintStream;
-import java.util.HashSet;
 
 public class DeclParam extends AbstractDeclParam{
     private AbstractIdentifier type;
     private AbstractIdentifier name;
-    private HashSet<String> declared = new HashSet<>();
 
     public DeclParam(AbstractIdentifier type, AbstractIdentifier name){
         this.type=type;
@@ -33,11 +31,7 @@ public class DeclParam extends AbstractDeclParam{
         try{
             localENv.declare(this.name.getName(), definition);
         } catch (Environment.DoubleDefException e) {
-            if (declared.contains(this.name.getName().getName())){
-                throw new ContextualError(name + " already in the parameters ", this.getLocation());
-            }else{
-                declared.add(this.name.getName().getName());
-            }
+            throw new ContextualError(name.getName().getName() + " already in the parameters ", this.getLocation());
         }
     }
 

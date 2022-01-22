@@ -171,7 +171,7 @@ public abstract class AbstractExpr extends AbstractInst {
 
             compiler.addInstruction(new WFLOAT());
         } else {
-            throw new DecacInternalError("Print pas supporté pour le type " + getType());
+            throw new DecacInternalError("Print not supported for type: " + getType());
         }
     }
 
