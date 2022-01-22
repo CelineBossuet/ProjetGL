@@ -167,7 +167,11 @@ public class Identifier extends AbstractIdentifier {
     public Type verifyExpr(DecacCompiler compiler, Environment<ExpDefinition> localEnv,
             ClassDefinition currentClass) throws ContextualError {
         if(localEnv.get(this.getName())!=null){
-            Definition def =localEnv.get(getName()); //TODO
+            Definition def =localEnv.get(getName());
+            if(!def.isExpression()){
+                throw new ContextualError("Identifier "+getName()+
+                        " cannot be used as an expression because it is of kind "+def.getNature(), getLocation());
+            }
             this.setDefinition(def);
             this.setType(def.getType());
             return getType();
