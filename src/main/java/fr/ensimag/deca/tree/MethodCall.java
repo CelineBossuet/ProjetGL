@@ -42,7 +42,8 @@ public class MethodCall extends AbstractExpr{
 
         MethodDefinition methodDefinition; //Pareil que précedemment
         try {
-            methodDefinition = methodType.getDefinition().getMembers().get(this.methodName.getName()).asMethodDefinition("Ceci n'est pas une méthode", this.getLocation());
+            methodDefinition = methodType.getDefinition().getMembers().get(this.methodName.getName()).asMethodDefinition(
+                    this.methodName.getName().getName()+" isn't a method", this.getLocation());
         }catch (ContextualError e){
             throw e;
         }
