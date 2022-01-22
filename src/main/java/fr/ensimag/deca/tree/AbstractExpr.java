@@ -11,15 +11,16 @@ import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.*;
 import fr.ensimag.ima.pseudocode.instructions.jasmin.aload;
-import fr.ensimag.ima.pseudocode.instructions.jasmin.getstatic;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.fload;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.fstore;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.iload;
 import fr.ensimag.ima.pseudocode.instructions.jasmin.invokestatic;
 import fr.ensimag.ima.pseudocode.instructions.jasmin.invokevirtual;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.istore;
 import fr.ensimag.ima.pseudocode.instructions.jasmin.ldc;
 import fr.ensimag.ima.pseudocode.jasmin.PrintInvoked;
-import fr.ensimag.ima.pseudocode.jasmin.PrintStreamOp;
 import fr.ensimag.ima.pseudocode.jasmin.StringValueOf;
 import fr.ensimag.ima.pseudocode.jasmin.Constant;
-import fr.ensimag.ima.pseudocode.jasmin.SystemOut;
 import fr.ensimag.ima.pseudocode.jasmin.VarID;
 
 import org.apache.commons.lang.Validate;
@@ -309,12 +310,26 @@ public abstract class AbstractExpr extends AbstractInst {
      * @param compiler
      */
     protected void codeGenPrintJasmin(DecacCompiler compiler, String suffix) {
-        compiler.addInstruction(new aload(new VarID(JasminStaticVars.SYSTEM_OUT.id())));
+
         if (getType().isInt() || getType().isFloat()) {
             this.codeGenStack(compiler);
-            compiler.addInstruction(new invokestatic(new StringValueOf(getType())));// convert to String
+            VarID store = compiler.getMemoryManager().allocJasmin();
+            // store result
+            if (getType().isInt())
+                compiler.addInstruction(new istore(store));
+            else if (getType().isFloat())
+                compiler.addInstruction(new fstore(store));
+            // load system out
+            compiler.addInstruction(new aload(new VarID(JasminStaticVars.SYSTEM_OUT.id())));
+            // load result
+            if (getType().isInt())
+                compiler.addInstruction(new iload(store));
+            else if (getType().isFloat())
+                compiler.addInstruction(new fload(store));
+            compiler.addInstruction(new invokestatic(new StringValueOf(getType())));// convert result to String
             compiler.addInstruction(new invokevirtual(new PrintInvoked(suffix)));
         } else if (getType().isString()) {
+            compiler.addInstruction(new aload(new VarID(JasminStaticVars.SYSTEM_OUT.id())));
             compiler.addInstruction(new ldc(new Constant(this.decompile())));
             compiler.addInstruction(new invokevirtual(new PrintInvoked(suffix)));
         } else {
