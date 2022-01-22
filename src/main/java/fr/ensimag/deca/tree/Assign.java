@@ -8,6 +8,7 @@ import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.PEA;
 import fr.ensimag.ima.pseudocode.instructions.POP;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.istore;
 
 /**
  * Assignment, i.e. lvalue = expr.
@@ -81,7 +82,14 @@ public class Assign extends AbstractBinaryExpr {
     @Override
     protected void codeGenStack(DecacCompiler compiler) {
         getLOG().trace("Assign codeGenStack");
-        throw new UnsupportedOperationException("Not yet implemented");
+        AbstractLValue left = getLeftOperand();
+        AbstractExpr right = getRightOperand();
+
+        // compute right expression
+        right.codeGenStack(compiler);
+
+        // store result in left identifier
+        compiler.addInstruction(new istore(((Identifier) left).getExpDefinition().getOperand()));
     }
 
     protected void codeGenArithJasmin(DecacCompiler compiler) {

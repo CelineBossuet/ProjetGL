@@ -187,11 +187,10 @@ public abstract class AbstractExpr extends AbstractInst {
         }
     }
 
-    /**
-     * */
     @Override
     protected void codeGenInst(DecacCompiler compiler, Label returnLabel, Label local) {
         getLOG().trace("AbsExpr codeGenInst");
+        System.out.println(this.decompile());
         codeGenExprIgnored(compiler);
         // peut être ajouter des labels en paramètre...
     }
@@ -283,14 +282,14 @@ public abstract class AbstractExpr extends AbstractInst {
      */
     protected void codeGenExprIgnored(DecacCompiler compiler) {
         compiler.addComment("value in " + codeGenReg(compiler) + " ignored");
-        LOG.info("Génère code pour l'expression avec codeGenExprIgnored");
+        LOG.trace("AbstractExpr codeGenExprIgnored");
     }
 
     ///////////////// Jasmin
     @Override
     protected void codeGenInstJasmin(DecacCompiler compiler, Label returnLabel, Label local) {
-        throw new UnsupportedOperationException("Not yet implemented"); // TODO A FAIRE implémenter dans les sous
-                                                                        // classes
+        getLOG().trace("AbsExpr codeGenInstJasmin");
+        codeGenStack(compiler);
     }
 
     /**
@@ -300,8 +299,7 @@ public abstract class AbstractExpr extends AbstractInst {
      */
     protected void codeGenStack(DecacCompiler compiler) {
         getLOG().trace("AbsExpr codeGenStack");
-        // compiler.addInstruction(new LOAD(codeGenNoReg(compiler), reg)); ????????
-        throw new UnsupportedOperationException("Not yet implemented");
+        // nothing
     }
 
     /**

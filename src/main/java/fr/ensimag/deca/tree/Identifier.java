@@ -10,6 +10,8 @@ import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.iload;
+
 import org.apache.commons.lang.Validate;
 
 import java.io.PrintStream;
@@ -255,7 +257,14 @@ public class Identifier extends AbstractIdentifier {
     @Override
     protected void codeGenStack(DecacCompiler compiler) {
         getLOG().trace("Identifier codeGenStack");
-        throw new UnsupportedOperationException("Not yet implemented");
+        if (getDefinition().isField()) {
+            // cas particulier pour les fields qui ne peuvent pas être générés avec un seul
+            // opérand
+            getLOG().trace("Field special case");
+            throw new UnsupportedOperationException("not yet implemented");
+        }
+
+        compiler.addInstruction(new iload(this.getExpDefinition().getOperand()));
     }
 
     @Override
