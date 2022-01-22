@@ -1,0 +1,8 @@
+class A { }
+
+{
+    A a;
+    int i=1;
+
+    a=i;
+}

@@ -22,9 +22,6 @@ public class DeclParam extends AbstractDeclParam{
     @Override
     protected Type verifParam(DecacCompiler compiler) throws ContextualError {
         Type type = this.type.verifyType(compiler);
-        if(type.isVoid()){
-            throw new ContextualError("Parameters can't be void", getLocation());
-        }
         return type;
     }
 

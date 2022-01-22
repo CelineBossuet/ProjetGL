@@ -36,7 +36,7 @@ public class MethodCall extends AbstractExpr{
             throw e;
         }
         if (methodType.getDefinition().getMembers().get(methodName.getName()) == null) {
-            throw new ContextualError("The methode " + methodName.getName()
+            throw new ContextualError("The method " + methodName.getName()
                     + " doesn't exist", getLocation());
         }
 

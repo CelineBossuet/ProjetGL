@@ -27,7 +27,7 @@ public class Not extends AbstractUnaryExpr {
             this.setType(ope);
             return ope;
         }else{
-            throw new ContextualError("Not is only for boolean but the operand is: " + ope, this.getLocation());
+            throw new ContextualError("! is only for boolean but the operand is: " + ope, this.getLocation());
         }
     }
 

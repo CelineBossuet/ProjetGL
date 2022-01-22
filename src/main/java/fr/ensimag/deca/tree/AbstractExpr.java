@@ -93,13 +93,22 @@ public abstract class AbstractExpr extends AbstractInst {
             throws ContextualError {
         Type type = this.verifyExpr(compiler, localEnv, currentClass);
         if (type.sameType(expectedType)) {
+            if(type.isClass()){
+                if((((ClassType)type).isSubClassOf((ClassType) expectedType))){
+                    System.out.println("b");
+                    throw new ContextualError(type.getName().getName()+" isn't a subtype of "
+                            +expectedType.getName().getName()+" so it cannot be assigned to it", this.getLocation());
+                }
+            }
+
             return this;
         } else if (type.isInt() && expectedType.isFloat()) {
             AbstractExpr abs = new ConvFloat(this);
             abs.verifyExpr(compiler, localEnv, currentClass);
             return abs;
         } else {
-            throw new ContextualError(this.type.getName().getName() + " is not compatible with " + expectedType.getName().getName(), this.getLocation());
+            throw new ContextualError(this.type.getName().getName() + " isn't a subtype of "
+                    + expectedType.getName().getName()+" so it cannot be assign to it", this.getLocation());
         }
     }
 

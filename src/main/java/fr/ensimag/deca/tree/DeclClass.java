@@ -85,7 +85,12 @@ public class DeclClass extends AbstractDeclClass {
     protected void verifyClassMembers(DecacCompiler compiler)
             throws ContextualError {
         //throw new UnsupportedOperationException("not yet implemented");
-
+        if(!this.name.getType().isClass()){
+            throw new ContextualError("Type "+this.name.getName()+ " isn't a class", this.getLocation());
+        }
+        if(!this.superClass.getType().isClass()){
+            throw new ContextualError("Type "+this.superClass.getName()+ " isn't a class", this.getLocation());
+        }
         (this.name.getClassDefinition()).setNumberOfFields(superClass.getClassDefinition().getNumberOfFields());
         (this.name.getClassDefinition()).setNumberOfMethods(superClass.getClassDefinition().getNumberOfMethods());
         for(AbstractDeclField adf : this.field.getList()){

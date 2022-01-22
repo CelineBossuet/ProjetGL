@@ -60,7 +60,7 @@ public class DeclMethod extends AbstractDeclMethod{
         int toVerify = currentClass.incNumberOfMethods() - 1 ;
         ExpDefinition parent = currentClass.getSuperClass().getMembers().get(this.name.getName());
         if (parent != null){
-            toVerify = parent.asMethodDefinition("Méthode déclaré dans la classe mère", this.getLocation()).getIndex();
+            toVerify = parent.asMethodDefinition("cannot Override "+name.getName(), this.getLocation()).getIndex();
             currentClass.decNumberOfMethods();
         }
         MethodDefinition newDef= new MethodDefinition(type, this.getLocation(), sig, toVerify);

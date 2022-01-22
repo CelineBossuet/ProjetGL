@@ -61,6 +61,10 @@ public class DeclField extends AbstractDeclField{
     protected void verifyMembers(DecacCompiler compiler, Environment<ExpDefinition> env, ClassDefinition currentClass) throws ContextualError {
         currentClass.incNumberOfFields();
         FieldDefinition field = new FieldDefinition(this.type.verifyType(compiler), this.getLocation(), this.visibility, currentClass, currentClass.getNumberOfFields() ); // +1 car nouvelle déclaration
+        Definition superDef = currentClass.getSuperClass().getMembers().get(fieldName.getName());
+        if(superDef!=null){
+            throw new ContextualError("Cannot Override "+this.fieldName.getName(), this.getLocation());
+        }
         try{
             currentClass.getMembers().declare(this.fieldName.getName(), field);
         } catch (Environment.DoubleDefException e) {

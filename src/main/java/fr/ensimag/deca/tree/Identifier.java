@@ -187,10 +187,10 @@ public class Identifier extends AbstractIdentifier {
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
         Definition def = compiler.getEnvironmentType().defOfType(getName());
         if(def==null){
-            throw new ContextualError("This type doesn't exist", getLocation());
+            throw new ContextualError("No such type "+getType(), getLocation());
         }
         if(def.getType().isVoid()){
-            throw new ContextualError("Variables can't be void type", getLocation());
+            throw new ContextualError("Variables, Parameters or Field can't be void type", getLocation());
         }
         setType(def.getType());
         setDefinition(def);
@@ -219,6 +219,7 @@ public class Identifier extends AbstractIdentifier {
             LOG.info("le type de la class est null");
             throw new ContextualError("class null", this.getLocation());
         }
+
         setDefinition(typeMethode);
         setType(typeMethode.getType());
         return typeMethode.getType();

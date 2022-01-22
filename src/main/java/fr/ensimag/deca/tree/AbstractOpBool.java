@@ -37,7 +37,7 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
             return left;
         }else{
             throw new ContextualError(
-                    "The two operands must be boolean", this.getLocation());
+                    "The two operands must be boolean for And/Or operation", this.getLocation());
         }
         //throw new UnsupportedOperationException("not yet implemented");
     }
