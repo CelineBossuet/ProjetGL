@@ -1,6 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.DecacCompiler.JasminStaticVars;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
@@ -9,6 +10,7 @@ import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.*;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.aload;
 import fr.ensimag.ima.pseudocode.instructions.jasmin.getstatic;
 import fr.ensimag.ima.pseudocode.instructions.jasmin.invokevirtual;
 import fr.ensimag.ima.pseudocode.instructions.jasmin.ldc;
@@ -16,6 +18,8 @@ import fr.ensimag.ima.pseudocode.jasmin.PrintInvoked;
 import fr.ensimag.ima.pseudocode.jasmin.PrintStreamOp;
 import fr.ensimag.ima.pseudocode.jasmin.Constant;
 import fr.ensimag.ima.pseudocode.jasmin.SystemOut;
+import fr.ensimag.ima.pseudocode.jasmin.VarID;
+
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
@@ -308,8 +312,7 @@ public abstract class AbstractExpr extends AbstractInst {
         } else if (getType().isFloat()) {
             throw new UnsupportedOperationException("Not yet implemented");
         } else if (getType().isString()) {
-            // (todo .limit stack ????????????????)
-            compiler.addInstruction(new getstatic(new SystemOut(), new PrintStreamOp()));
+            compiler.addInstruction(new aload(new VarID(JasminStaticVars.SYSTEM_OUT.id())));
             compiler.addInstruction(new ldc(new Constant(this.decompile())));
             compiler.addInstruction(new invokevirtual(new PrintInvoked(getType(), suffix)));
         } else {
@@ -328,8 +331,7 @@ public abstract class AbstractExpr extends AbstractInst {
         } else if (getType().isFloat()) {
             throw new UnsupportedOperationException("Not yet implemented");
         } else if (getType().isString()) {
-            // (todo .limit stack ????????????????)
-            compiler.addInstruction(new getstatic(new SystemOut(), new PrintStreamOp()));
+            compiler.addInstruction(new aload(new VarID(JasminStaticVars.SYSTEM_OUT.id())));
             compiler.addInstruction(new ldc(new Constant(this.decompile())));
             compiler.addInstruction(new invokevirtual(new PrintInvoked(getType(), suffix)));
         } else {

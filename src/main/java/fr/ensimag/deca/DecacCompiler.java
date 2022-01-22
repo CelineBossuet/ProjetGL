@@ -391,4 +391,23 @@ public class DecacCompiler {
         pS.println(".end method");
     }
 
+    public enum JasminStaticVars {
+        SYSTEM_OUT(1);
+
+        private int id;
+
+        private JasminStaticVars(int id) {
+            this.id = id;
+        }
+
+        public int id() {
+            return id;
+        }
+
+        public static int getLastUsed() {
+            return 1; // 1 used by SYSTEM_OUT
+        }
+
+    }
+
 }

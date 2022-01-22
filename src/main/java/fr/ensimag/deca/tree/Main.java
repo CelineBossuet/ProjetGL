@@ -1,10 +1,17 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.DecacCompiler.JasminStaticVars;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.Environment;
 import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.astore;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.getstatic;
+import fr.ensimag.ima.pseudocode.jasmin.PrintStreamOp;
+import fr.ensimag.ima.pseudocode.jasmin.SystemOut;
+import fr.ensimag.ima.pseudocode.jasmin.VarID;
+
 import java.io.PrintStream;
 
 import org.apache.commons.lang.Validate;
@@ -50,6 +57,11 @@ public class Main extends AbstractMain {
 
     @Override
     protected void codeGenMainJasmin(DecacCompiler compiler) {
+        // declare useful variables
+        compiler.addInstruction(new getstatic(new SystemOut(), new PrintStreamOp()));
+        compiler.addInstruction(new astore(new VarID(JasminStaticVars.SYSTEM_OUT.id())));
+
+        // program
         declVariables.codeGenListVarJasmin(compiler);
         compiler.addComment("Beginning of main instructions");
         insts.codeGenListInstJasmin(compiler, null, null);

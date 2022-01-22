@@ -1,5 +1,6 @@
 package fr.ensimag.deca.codegen;
 
+import fr.ensimag.deca.DecacCompiler.JasminStaticVars;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.ima.pseudocode.jasmin.VarID;
@@ -15,7 +16,7 @@ public class MemoryManager {
     private int currentGB = 0;
     private int maxLB;
 
-    private int currentJasmin = 0;
+    private int currentJasmin = JasminStaticVars.getLastUsed();
 
     public int getCurrentGB() {
         return currentGB;
