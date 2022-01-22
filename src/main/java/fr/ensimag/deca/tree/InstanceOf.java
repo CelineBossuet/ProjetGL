@@ -59,4 +59,10 @@ public class InstanceOf extends AbstractExpr {
         return null;
         // TODO
     }
+
+    @Override
+    protected void codeGenStack(DecacCompiler compiler) {
+        getLOG().trace("InstanceOf codeGenStack");
+        // TODO
+    }
 }

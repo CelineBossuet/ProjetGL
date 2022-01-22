@@ -26,12 +26,12 @@ public class UnaryMinus extends AbstractUnaryExpr {
             ClassDefinition currentClass) throws ContextualError {
         Type ope = getOperand().verifyExpr(compiler, localEnv, currentClass);
 
-        if ( !ope.isInt() && !ope.isFloat()){
-            throw new ContextualError("Unary pas possible pour le type "+ope, getLocation());
+        if (!ope.isInt() && !ope.isFloat()) {
+            throw new ContextualError("Unary pas possible pour le type " + ope, getLocation());
         }
         setType(ope);
         return getType();
-        //throw new UnsupportedOperationException("not yet implemented");
+        // throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override
@@ -59,5 +59,11 @@ public class UnaryMinus extends AbstractUnaryExpr {
             compiler.addInstruction(new OPP(reg, reg));
         }
         return reg;
+    }
+
+    @Override
+    protected void codeGenStack(DecacCompiler compiler) {
+        getLOG().trace("UnaryMinus codeGenStack");
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 }

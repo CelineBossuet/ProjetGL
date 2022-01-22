@@ -91,4 +91,10 @@ public class FloatLiteral extends AbstractExpr {
         compiler.getProgram().addInstruction(new LOAD(new ImmediateFloat(value), reg));
         return reg;
     }
+
+    @Override
+    protected void codeGenStack(DecacCompiler compiler) {
+        getLOG().trace("FloatLiteral codeGenStack");
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
 }

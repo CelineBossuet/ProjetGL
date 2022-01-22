@@ -57,4 +57,10 @@ public abstract class AbstractReadExpr extends AbstractExpr {
 
                 return reg;
         }
+
+        @Override
+        protected void codeGenStack(DecacCompiler compiler) {
+                getLOG().trace("AbsReadExpr codeGenStack");
+                throw new UnsupportedOperationException("Not yet implemented");
+        }
 }

@@ -26,12 +26,12 @@ public class Not extends AbstractUnaryExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, Environment<ExpDefinition> localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        //throw new UnsupportedOperationException("not yet implemented");
+        // throw new UnsupportedOperationException("not yet implemented");
         Type ope = this.getOperand().verifyExpr(compiler, localEnv, currentClass);
-        if (ope.isBoolean()){
+        if (ope.isBoolean()) {
             this.setType(ope);
             return ope;
-        }else{
+        } else {
             throw new ContextualError("Une négation peut être faite seulement sur un booléen", this.getLocation());
         }
     }
@@ -66,7 +66,13 @@ public class Not extends AbstractUnaryExpr {
     }
 
     @Override
-    protected void codeGenCond(DecacCompiler compiler, Label l, boolean saut){
+    protected void codeGenStack(DecacCompiler compiler) {
+        getLOG().trace("Not codeGenStack");
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    @Override
+    protected void codeGenCond(DecacCompiler compiler, Label l, boolean saut) {
         getLOG().info("le Not inverse la logique dans codeGenCond");
         getOperand().codeGenCond(compiler, l, !saut);
     }

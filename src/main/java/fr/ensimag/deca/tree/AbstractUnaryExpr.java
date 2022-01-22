@@ -82,4 +82,10 @@ public abstract class AbstractUnaryExpr extends AbstractExpr {
         compiler.addInstruction(geneInstru(reg));
         return reg;
     }
+
+    @Override
+    protected void codeGenStack(DecacCompiler compiler) {
+        getLOG().trace("AbsUnaryExpr codeGenStack");
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
 }

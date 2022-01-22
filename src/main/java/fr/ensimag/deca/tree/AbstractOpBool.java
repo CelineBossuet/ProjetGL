@@ -39,14 +39,14 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
             ClassDefinition currentClass) throws ContextualError {
         Type left = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
         Type right = getRightOperand().verifyExpr(compiler, localEnv, currentClass);
-        if (left.isBoolean() && right.isBoolean()){
+        if (left.isBoolean() && right.isBoolean()) {
             this.setType(left);
             return left;
-        }else{
+        } else {
             throw new ContextualError(
                     "Un opérande n'est pas un booléen impossible pour opération And/Or", this.getLocation());
         }
-        //throw new UnsupportedOperationException("not yet implemented");
+        // throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override
@@ -77,6 +77,12 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
         compiler.addInstruction(new LOAD(1, r));
         compiler.addLabel(endBranch);
         return r;
+    }
+
+    @Override
+    protected void codeGenStack(DecacCompiler compiler) {
+        getLOG().trace("AbsOpBool codeGenStack");
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 
     /**

@@ -106,6 +106,12 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         return codeGenRegInternal(compiler, true);
     }
 
+    @Override
+    protected void codeGenStack(DecacCompiler compiler) {
+        getLOG().trace("AbsBinary codeGenStack");
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
     protected GPRegister codeGenRegInternal(DecacCompiler compiler, boolean useful) {
         getLOG().trace("AbsBinaryExpr codeGenRegInternal");
         AbstractExpr right = getRightOperand();

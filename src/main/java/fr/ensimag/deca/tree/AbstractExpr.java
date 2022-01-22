@@ -287,6 +287,17 @@ public abstract class AbstractExpr extends AbstractInst {
     }
 
     /**
+     * Génère la valeur à mettre dans le haut de pile
+     * 
+     * @param compiler
+     */
+    protected void codeGenStack(DecacCompiler compiler) {
+        getLOG().trace("AbsExpr codeGenStack");
+        // compiler.addInstruction(new LOAD(codeGenNoReg(compiler), reg)); ????????
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    /**
      * Generate jasmin code to print the expression
      *
      * @param compiler

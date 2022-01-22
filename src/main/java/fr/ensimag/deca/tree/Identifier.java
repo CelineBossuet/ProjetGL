@@ -239,8 +239,6 @@ public class Identifier extends AbstractIdentifier {
         return ope;
     }
 
-
-
     @Override
     protected GPRegister codeGenReg(DecacCompiler compiler) {
         if (getDefinition().isField()) {
@@ -252,6 +250,12 @@ public class Identifier extends AbstractIdentifier {
             return current;
         }
         return super.codeGenReg(compiler);
+    }
+
+    @Override
+    protected void codeGenStack(DecacCompiler compiler) {
+        getLOG().trace("Identifier codeGenStack");
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 
     @Override

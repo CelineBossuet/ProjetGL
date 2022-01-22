@@ -41,7 +41,6 @@ public class IntLiteral extends AbstractExpr {
         return getType();
     }
 
-
     @Override
     String prettyPrintNode() {
         return "Int (" + getValue() + ")";
@@ -78,5 +77,11 @@ public class IntLiteral extends AbstractExpr {
         GPRegister reg = compiler.getRegisterManager().getCurrent();
         compiler.addInstruction(new LOAD(new ImmediateInteger(getValue()), reg));
         return reg;
+    }
+
+    @Override
+    protected void codeGenStack(DecacCompiler compiler) {
+        getLOG().trace("IntLiteral codeGenStack");
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 }
