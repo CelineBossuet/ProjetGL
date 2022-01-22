@@ -63,7 +63,6 @@ public class Initialization extends AbstractInitialization {
 
     @Override
     protected void codeGeneInitJasmin(DecacCompiler compiler, DAddr target) {
-        // TODO manage types
         // put expression result in top stack
         expression.codeGenStack(compiler);
 

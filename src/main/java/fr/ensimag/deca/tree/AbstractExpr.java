@@ -12,10 +12,12 @@ import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.*;
 import fr.ensimag.ima.pseudocode.instructions.jasmin.aload;
 import fr.ensimag.ima.pseudocode.instructions.jasmin.getstatic;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.invokestatic;
 import fr.ensimag.ima.pseudocode.instructions.jasmin.invokevirtual;
 import fr.ensimag.ima.pseudocode.instructions.jasmin.ldc;
 import fr.ensimag.ima.pseudocode.jasmin.PrintInvoked;
 import fr.ensimag.ima.pseudocode.jasmin.PrintStreamOp;
+import fr.ensimag.ima.pseudocode.jasmin.StringValueOf;
 import fr.ensimag.ima.pseudocode.jasmin.Constant;
 import fr.ensimag.ima.pseudocode.jasmin.SystemOut;
 import fr.ensimag.ima.pseudocode.jasmin.VarID;
@@ -307,14 +309,14 @@ public abstract class AbstractExpr extends AbstractInst {
      * @param compiler
      */
     protected void codeGenPrintJasmin(DecacCompiler compiler, String suffix) {
-        if (getType().isInt()) {
-            throw new UnsupportedOperationException("Not yet implemented");
-        } else if (getType().isFloat()) {
-            throw new UnsupportedOperationException("Not yet implemented");
+        compiler.addInstruction(new aload(new VarID(JasminStaticVars.SYSTEM_OUT.id())));
+        if (getType().isInt() || getType().isFloat()) {
+            this.codeGenStack(compiler);
+            compiler.addInstruction(new invokestatic(new StringValueOf(getType())));// convert to String
+            compiler.addInstruction(new invokevirtual(new PrintInvoked(suffix)));
         } else if (getType().isString()) {
-            compiler.addInstruction(new aload(new VarID(JasminStaticVars.SYSTEM_OUT.id())));
             compiler.addInstruction(new ldc(new Constant(this.decompile())));
-            compiler.addInstruction(new invokevirtual(new PrintInvoked(getType(), suffix)));
+            compiler.addInstruction(new invokevirtual(new PrintInvoked(suffix)));
         } else {
             throw new DecacInternalError("Print pas supporté pour le type" + getType());
         }
@@ -326,14 +328,14 @@ public abstract class AbstractExpr extends AbstractInst {
      * @param compiler
      */
     protected void codeGenPrintHexaJasmin(DecacCompiler compiler, String suffix) {
-        if (getType().isInt()) {
-            throw new UnsupportedOperationException("Not yet implemented");
-        } else if (getType().isFloat()) {
-            throw new UnsupportedOperationException("Not yet implemented");
+        compiler.addInstruction(new aload(new VarID(JasminStaticVars.SYSTEM_OUT.id())));
+        if (getType().isInt() || getType().isFloat()) {
+            this.codeGenStack(compiler);
+            compiler.addInstruction(new invokestatic(new StringValueOf(getType())));// convert to String
+            compiler.addInstruction(new invokevirtual(new PrintInvoked(suffix)));
         } else if (getType().isString()) {
-            compiler.addInstruction(new aload(new VarID(JasminStaticVars.SYSTEM_OUT.id())));
             compiler.addInstruction(new ldc(new Constant(this.decompile())));
-            compiler.addInstruction(new invokevirtual(new PrintInvoked(getType(), suffix)));
+            compiler.addInstruction(new invokevirtual(new PrintInvoked(suffix)));
         } else {
             throw new DecacInternalError("Printx pas supporté pour le type" + getType());
         }
