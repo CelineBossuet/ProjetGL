@@ -104,13 +104,27 @@ public abstract class AbstractExpr extends AbstractInst {
 
             return this;
         } else if (type.isInt() && expectedType.isFloat()) {
-            AbstractExpr abs = new ConvFloat(this);
+            ConvFloat abs = new ConvFloat(this);
             abs.verifyExpr(compiler, localEnv, currentClass);
             return abs;
-        } else {
+        }
+        else {
             throw new ContextualError(this.type.getName().getName() + " isn't a subtype of "
                     + expectedType.getName().getName()+" so it cannot be assign to it", this.getLocation());
         }
+    }
+
+    protected boolean verifySubType( Type subType, Type superType){
+        if(subType.sameType(superType)){
+            return true;
+        }
+        else if(!subType.isClass() || !superType.isClass()){
+            return false;
+        }
+        else if(subType.isNull() && superType.isClass()){
+            return true;
+        }
+        return ((ClassType)subType).isSubClassOf((ClassType) superType);
     }
 
     @Override

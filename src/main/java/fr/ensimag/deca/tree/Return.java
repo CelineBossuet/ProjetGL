@@ -20,6 +20,9 @@ public class Return extends AbstractInst{
     protected void verifyInst(DecacCompiler compiler, Environment<ExpDefinition> localEnv, ClassDefinition currentClass, Type returnType) throws ContextualError {
         //throw new UnsupportedOperationException("Not yet implemented");
         Type t = this.returnValue.verifyExpr(compiler, localEnv, currentClass);
+        if(returnType.isVoid()){
+            throw new ContextualError("Return statement forbidden in a void method", getLocation());
+        }
         if (t.isInt() && returnType.isFloat()){
             //nothing to do
         }else if(!t.sameType(returnType)){

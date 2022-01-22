@@ -47,8 +47,17 @@ public class MethodCall extends AbstractExpr{
         }catch (ContextualError e){
             throw e;
         }
+        Signature sig = methodDefinition.getSignature();
+        int index=0;
         for (AbstractExpr p : this.param.getList()){
-            p.verifyExpr(compiler, localEnv, currentClass);
+            Type t =p.verifyExpr(compiler, localEnv, currentClass);
+            if(!t.sameType(sig.paramNumber(index))){
+                throw new ContextualError("Parameter given hasn't the same type as in it's definition",
+                        getLocation());
+            }
+            index++;
+
+
         }
         this.setType(methodDefinition.getType());
         this.methodName.setDefinition(methodDefinition);
