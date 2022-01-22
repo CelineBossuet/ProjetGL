@@ -67,6 +67,8 @@ public abstract class AbstractUnaryExpr extends AbstractExpr {
      **/
     protected abstract Instruction geneInstru(GPRegister reg);
 
+    protected abstract void geneInstruJasmin(DecacCompiler compiler);
+
     @Override
     protected DVal codeGenNoReg(DecacCompiler compiler) {
         throw new DecacInternalError("Peut pas utiliser codeGenNoReg pour AbstractUnaryExpr car pas une feuille");
@@ -86,6 +88,7 @@ public abstract class AbstractUnaryExpr extends AbstractExpr {
     @Override
     protected void codeGenStack(DecacCompiler compiler) {
         getLOG().trace("AbsUnaryExpr codeGenStack");
-        throw new UnsupportedOperationException("Not yet implemented");
+        getOperand().codeGenStack(compiler);
+        geneInstruJasmin(compiler);
     }
 }

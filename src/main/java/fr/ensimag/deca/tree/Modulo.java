@@ -60,7 +60,7 @@ public class Modulo extends AbstractOpArith {
         if (getType().isInt())
             compiler.addInstruction(new irem());
         else
-            throw new DecacInternalError("Type " + getType() + " non supporté.");
+            throw new DecacInternalError("Type " + getType() + " not supported.");
     }
 
 }

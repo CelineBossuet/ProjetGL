@@ -47,6 +47,11 @@ public class Not extends AbstractUnaryExpr {
     }
 
     @Override
+    protected void geneInstruJasmin(DecacCompiler compiler) {
+        throw new DecacInternalError("Not instruction generation for Not");
+    }
+
+    @Override
     protected GPRegister codeGenReg(DecacCompiler compiler) {
         Label elseLabel = compiler.getLabelManager().newLabel("elseC2R");
         Label end = compiler.getLabelManager().newLabel("endC2R");

@@ -70,12 +70,7 @@ public abstract class AbstractPrint extends AbstractInst {
     protected void codeGenInstJasmin(DecacCompiler compiler, Label returnLabel, Label local) {
         getLOG().trace("AbsPrint codeGenInstJasmin");
         for (AbstractExpr a : getArguments().getList()) {
-            if (this.getPrintHex())
-                // print en hexa
-                a.codeGenPrintHexaJasmin(compiler, getSuffix());
-            else
-                // print normal
-                a.codeGenPrintJasmin(compiler, getSuffix());
+            a.codeGenPrintJasmin(compiler, getSuffix());
         }
     }
 

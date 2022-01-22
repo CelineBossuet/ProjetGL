@@ -36,6 +36,6 @@ public class Minus extends AbstractOpArith {
         else if (getType().isFloat())
             compiler.addInstruction(new fsub());
         else
-            throw new DecacInternalError("Type " + getType() + " non supporté.");
+            throw new DecacInternalError("Type " + getType() + " not supported.");
     }
 }

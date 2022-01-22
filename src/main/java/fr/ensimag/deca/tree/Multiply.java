@@ -36,7 +36,7 @@ public class Multiply extends AbstractOpArith {
         else if (getType().isFloat())
             compiler.addInstruction(new fmul());
         else
-            throw new DecacInternalError("Type " + getType() + " non supporté.");
+            throw new DecacInternalError("Type " + getType() + " not supported.");
     }
 
 }

@@ -10,6 +10,7 @@ import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.fload;
 import fr.ensimag.ima.pseudocode.instructions.jasmin.iload;
 
 import org.apache.commons.lang.Validate;
@@ -264,7 +265,12 @@ public class Identifier extends AbstractIdentifier {
             throw new UnsupportedOperationException("not yet implemented");
         }
 
-        compiler.addInstruction(new iload(this.getExpDefinition().getOperand()));
+        if (getType().isInt())
+            compiler.addInstruction(new iload(this.getExpDefinition().getOperand()));
+        else if (getType().isFloat())
+            compiler.addInstruction(new fload(this.getExpDefinition().getOperand()));
+        else
+            throw new DecacInternalError("Type " + getType() + " not supported.");
     }
 
     @Override

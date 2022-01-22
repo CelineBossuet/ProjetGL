@@ -335,24 +335,4 @@ public abstract class AbstractExpr extends AbstractInst {
         }
     }
 
-    /**
-     * Generate jasmin code to print the expression
-     *
-     * @param compiler
-     */
-    protected void codeGenPrintHexaJasmin(DecacCompiler compiler, String suffix) {
-        compiler.addInstruction(new aload(new VarID(JasminStaticVars.SYSTEM_OUT.id())));
-        if (getType().isInt() || getType().isFloat()) {
-            this.codeGenStack(compiler);
-            compiler.addInstruction(new invokestatic(new StringValueOf(getType())));// convert to String
-            compiler.addInstruction(new invokevirtual(new PrintInvoked(suffix)));
-        } else if (getType().isString()) {
-            compiler.addInstruction(new ldc(new Constant(this.decompile())));
-            compiler.addInstruction(new invokevirtual(new PrintInvoked(suffix)));
-        } else {
-            throw new DecacInternalError("Printx pas supporté pour le type" + getType());
-        }
-
-    }
-
 }

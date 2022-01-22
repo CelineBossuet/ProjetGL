@@ -1,6 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
@@ -10,6 +11,9 @@ import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Instruction;
 import fr.ensimag.ima.pseudocode.instructions.OPP;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.fneg;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.ineg;
+import fr.ensimag.ima.pseudocode.jasmin.VarID;
 
 /**
  * @author gl13
@@ -47,6 +51,16 @@ public class UnaryMinus extends AbstractUnaryExpr {
     }
 
     @Override
+    protected void geneInstruJasmin(DecacCompiler compiler) {
+        if (getType().isInt())
+            compiler.addInstruction(new ineg());
+        else if (getType().isFloat())
+            compiler.addInstruction(new fneg());
+        else
+            throw new DecacInternalError("Type " + getType() + " not supported.");
+    }
+
+    @Override
     protected GPRegister codeGenReg(DecacCompiler compiler) {
         // TODO verifier type int ou float
         GPRegister reg;
@@ -64,6 +78,16 @@ public class UnaryMinus extends AbstractUnaryExpr {
     @Override
     protected void codeGenStack(DecacCompiler compiler) {
         getLOG().trace("UnaryMinus codeGenStack");
-        throw new UnsupportedOperationException("Not yet implemented");
+
+        // compute expression
+        getOperand().codeGenStack(compiler);
+
+        // convert it
+        if (getType().isInt())
+            compiler.addInstruction(new ineg());
+        else if (getType().isFloat())
+            compiler.addInstruction(new fneg());
+        else
+            throw new DecacInternalError("Type " + getType() + " not supported.");
     }
 }
