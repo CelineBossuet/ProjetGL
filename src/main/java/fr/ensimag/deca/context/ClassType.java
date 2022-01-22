@@ -67,6 +67,9 @@ public class ClassType extends Type {
     public boolean isSubClassOf(ClassType potentialSuperClass) {//A faire dans la partie classe
         //throw new UnsupportedOperationException("not yet implemented");
         ClassType t = this.getDefinition().getSuperClass().getType();
+        if(t.sameType(potentialSuperClass)){
+            return true;
+        }
         while(t!=null){
             if (t.sameType(potentialSuperClass)){
                 return true;
