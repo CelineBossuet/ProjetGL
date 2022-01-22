@@ -33,6 +33,10 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
             throw new ContextualError(
                     "Impossible to compare "+left + " and "+right, getLocation());
         }
+        if(left.isClass() || right.isClass()){
+            throw new ContextualError(
+                    "Impossible to compare "+left + " and "+right, getLocation());
+        }
         if(right.isString() || left.isString()){
             throw new ContextualError("Impossible to compare Strings", this.getLocation());
         }

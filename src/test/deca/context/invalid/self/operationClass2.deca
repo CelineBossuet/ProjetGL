@@ -1,0 +1,9 @@
+class A {}
+
+{
+    A a = new A();
+    A b = new A();
+    boolean bool;
+
+    bool = a < b;
+}
