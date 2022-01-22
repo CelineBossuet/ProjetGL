@@ -254,7 +254,7 @@
                         </goals>
                     </execution>
 
-                    <!-- Code a décommenter quand cela va passer
+
                     <execution>
                         <id>basic-decac</id>
                         <configuration>
@@ -265,7 +265,7 @@
                             <goal>exec</goal>
                         </goals>
                     </execution>
-                    -->
+
 
                     <execution>
                         <id>common-tests</id>

@@ -1,7 +1,8 @@
 package fr.ensimag.deca;
 
-import java.io.File;
 import org.apache.log4j.Logger;
+
+import java.io.File;
 
 /**
  * Main class for the command-line Deca compiler.
@@ -26,7 +27,7 @@ public class DecacMain {
         if (options.getPrintBanner()) {
             System.out.println("Nom de l'équipe : 13");
         }
-        if (options.getSourceFiles().isEmpty()) {
+        if (options.getSourceFiles().isEmpty() && !options.getPrintBanner()) {
             options.displayUsage();
             System.exit(0);
         }
