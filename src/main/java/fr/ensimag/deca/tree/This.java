@@ -24,7 +24,6 @@ public class This extends AbstractExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, Environment<ExpDefinition> localEnv, ClassDefinition currentClass)
             throws ContextualError {
-        //throw new UnsupportedOperationException("Not yet implemented");
         if (currentClass == null){
             throw new ContextualError("Object is null", this.getLocation());
         }
