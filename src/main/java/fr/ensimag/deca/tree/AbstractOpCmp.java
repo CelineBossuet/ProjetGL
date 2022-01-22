@@ -1,11 +1,10 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import org.apache.log4j.Logger;
 
 /**
@@ -32,7 +31,10 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
         Type left =getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
         if(!left.sameType(right) && !(left.isFloat() && right.isInt()) && !(left.isInt() && right.isFloat()) && !right.isNull()){
             throw new ContextualError(
-                    "Comparaison non supportée entre types "+left + " et "+right, getLocation());
+                    "Impossible to compare "+left + " and "+right, getLocation());
+        }
+        if(right.isString() || left.isString()){
+            throw new ContextualError("Impossible to compare Strings", this.getLocation());
         }
         Type sortie = new BooleanType(compiler.getSymbolTable().create("boolean"));
         setType(sortie);
