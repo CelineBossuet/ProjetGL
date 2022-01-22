@@ -1,12 +1,12 @@
 package fr.ensimag.ima.pseudocode.instructions.jasmin;
 
-import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.UnaryInstructionToReg;
+import fr.ensimag.ima.pseudocode.UnaryInstruction;
+import fr.ensimag.ima.pseudocode.jasmin.Constant;
 
-public class bipush extends UnaryInstructionToReg {
+public class bipush extends UnaryInstruction {
 
-    public bipush(GPRegister op1) {
-        super(op1);
+    public bipush(Constant op) {
+        super(op);
     }
 
 }

@@ -3,9 +3,9 @@ package fr.ensimag.ima.pseudocode.instructions.jasmin;
 import fr.ensimag.ima.pseudocode.DAddr;
 import fr.ensimag.ima.pseudocode.UnaryInstruction;
 
-public class istore extends UnaryInstruction {
+public class fstore extends UnaryInstruction {
 
-    public istore(DAddr id) {
+    public fstore(DAddr id) {
         super(id);
     }
 

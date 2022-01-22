@@ -9,8 +9,11 @@ import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
+import javax.lang.model.util.ElementScanner6;
+
 import fr.ensimag.ima.pseudocode.DAddr;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.fstore;
 import fr.ensimag.ima.pseudocode.instructions.jasmin.istore;
 
 import org.apache.commons.lang.Validate;
@@ -63,7 +66,13 @@ public class Initialization extends AbstractInitialization {
         // TODO manage types
         // put expression result in top stack
         expression.codeGenStack(compiler);
-        compiler.addInstruction(new istore(target));
+
+        if (expression.getType().isInt())
+            compiler.addInstruction(new istore(target));
+        else if (expression.getType().isFloat())
+            compiler.addInstruction(new fstore(target));
+        else
+            throw new UnsupportedOperationException("Not yet implemented");
     }
 
     @Override

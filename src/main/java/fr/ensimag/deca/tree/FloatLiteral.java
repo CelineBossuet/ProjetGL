@@ -14,6 +14,8 @@ import fr.ensimag.ima.pseudocode.ImmediateFloat;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.WFLOATX;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.ldc;
+import fr.ensimag.ima.pseudocode.jasmin.Constant;
 
 import java.io.PrintStream;
 
@@ -95,6 +97,6 @@ public class FloatLiteral extends AbstractExpr {
     @Override
     protected void codeGenStack(DecacCompiler compiler) {
         getLOG().trace("FloatLiteral codeGenStack");
-        throw new UnsupportedOperationException("Not yet implemented");
+        compiler.addInstruction(new ldc(new Constant(getValue())));
     }
 }
