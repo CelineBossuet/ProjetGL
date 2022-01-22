@@ -33,12 +33,32 @@ public class Selection extends AbstractLValue{
         }
         FieldDefinition fieldDefinition = field.verifyField(compiler, type);
         if (fieldDefinition.getVisibility() == Visibility.PROTECTED){
-            //TODO
+            if(currentClass ==null){
+                throw new ContextualError("Access to the protected member "+this.field.getName()+" denied", this.getLocation());
+            }
+            if(!verifySubType(t, currentClass.getType())){
+                throw new ContextualError("Access to the protected member "+this.field.getName()+" denied", this.getLocation());
+            }
         }
         field.setDefinition(fieldDefinition);
         setType(fieldDefinition.getType());
         return this.getType();
     }
+
+    protected boolean verifySubType( Type subType, Type superType){
+        if(subType.sameType(superType)){
+            return true;
+        }
+        else if(!subType.isClass() || !superType.isClass()){
+            return false;
+        }
+        else if(subType.isNull() && superType.isClass()){
+            return true;
+        }
+        return ((ClassType)subType).isSubClassOf((ClassType) superType);
+    }
+
+
 
     @Override
     protected DVal codeGenNoReg(DecacCompiler compiler) {
