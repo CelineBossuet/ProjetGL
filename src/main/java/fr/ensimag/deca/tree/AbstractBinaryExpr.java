@@ -9,12 +9,16 @@ import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.POP;
 import fr.ensimag.ima.pseudocode.instructions.PUSH;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.fload;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.fstore;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.iload;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.istore;
+import fr.ensimag.ima.pseudocode.jasmin.VarID;
 import fr.ensimag.ima.pseudocode.instructions.BOV;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
 import java.io.PrintStream;
-import java.util.Objects;
 
 import static fr.ensimag.ima.pseudocode.Register.getR;
 
@@ -89,6 +93,8 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
      */
     protected abstract BinaryInstruction geneInstru(DVal val, GPRegister reg);
 
+    protected abstract void codeGenArithJasmin(DecacCompiler compiler);
+
     @Override
     protected DVal codeGenNoReg(DecacCompiler compiler) {
         throw new DecacInternalError("pas possible car pas feuille de AbstractEpression");
@@ -109,7 +115,7 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
     @Override
     protected void codeGenStack(DecacCompiler compiler) {
         getLOG().trace("AbsBinary codeGenStack");
-        throw new UnsupportedOperationException("Not yet implemented");
+        codeGenStackInternal(compiler);
     }
 
     protected GPRegister codeGenRegInternal(DecacCompiler compiler, boolean useful) {
@@ -151,6 +157,34 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         compiler.addInstruction(
                 new BOV(compiler.getLabelManager().getOverFlowLabel(), compiler.getCompilerOptions().getNoCheck()));
         return result;
+    }
+
+    private void codeGenStackInternal(DecacCompiler compiler) {
+        getLOG().trace("AbsBinaryExpr codeGenStackInternal");
+        AbstractExpr right = getRightOperand();
+        AbstractExpr left = getLeftOperand();
+
+        right.codeGenStack(compiler); // right result
+        VarID rightStore = compiler.getMemoryManager().allocJasmin();
+
+        // store right result
+        if (right.getType().isInt())
+            compiler.addInstruction(new istore(rightStore));
+        else if (right.getType().isFloat())
+            compiler.addInstruction(new fstore(rightStore));
+        else
+            throw new DecacInternalError("Type " + right.getType() + " non supporté.");
+
+        left.codeGenStack(compiler); // left result
+
+        // get right result
+        if (right.getType().isInt())
+            compiler.addInstruction(new iload(rightStore));
+        else if (right.getType().isFloat())
+            compiler.addInstruction(new fload(rightStore));
+
+        // do operation between two operands
+        codeGenArithJasmin(compiler);
     }
 
     protected void geneOneOrMoreInstru(DecacCompiler compiler, DVal val, GPRegister reg, boolean useful) {

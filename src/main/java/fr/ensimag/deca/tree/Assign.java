@@ -83,4 +83,8 @@ public class Assign extends AbstractBinaryExpr {
         getLOG().trace("Assign codeGenStack");
         throw new UnsupportedOperationException("Not yet implemented");
     }
+
+    protected void codeGenArithJasmin(DecacCompiler compiler) {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
 }

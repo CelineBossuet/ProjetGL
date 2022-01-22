@@ -1,9 +1,13 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.ima.pseudocode.BinaryInstruction;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.instructions.ADD;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.fadd;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.iadd;
 
 /**
  * @author gl13
@@ -25,10 +29,13 @@ public class Plus extends AbstractOpArith {
         return new ADD(val, reg);
     }
 
-    // TODO A FAIRE
-    // @Override
-    // protected void codeGenInstBytecode(DecacCompiler compiler, Label returnLabel,
-    // Label local) {
-
-    // }
+    @Override
+    protected void codeGenArithJasmin(DecacCompiler compiler) {
+        if (getType().isInt())
+            compiler.addInstruction(new iadd());
+        else if (getType().isFloat())
+            compiler.addInstruction(new fadd());
+        else
+            throw new DecacInternalError("Type " + getType() + " non supporté.");
+    }
 }

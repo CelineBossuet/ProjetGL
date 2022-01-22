@@ -1,11 +1,14 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.ima.pseudocode.BinaryInstruction;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.instructions.DIV;
 import fr.ensimag.ima.pseudocode.instructions.QUO;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.fdiv;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.idiv;
 
 /**
  *
@@ -35,5 +38,15 @@ public class Divide extends AbstractOpArith {
         } else {
             throw new DecacInternalError("Division interdite pour ce type");
         }
+    }
+
+    @Override
+    protected void codeGenArithJasmin(DecacCompiler compiler) {
+        if (getType().isInt())
+            compiler.addInstruction(new idiv());
+        else if (getType().isFloat())
+            compiler.addInstruction(new fdiv());
+        else
+            throw new DecacInternalError("Type " + getType() + " non supporté.");
     }
 }

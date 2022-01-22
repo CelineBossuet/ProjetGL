@@ -91,4 +91,8 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
      */
     @Override
     protected abstract void codeGenCond(DecacCompiler compiler, Label l, boolean saut);
+
+    protected void codeGenArithJasmin(DecacCompiler compiler) {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
 }
