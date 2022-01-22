@@ -57,7 +57,12 @@ public class ClassType extends Type {
 
     @Override
     public boolean sameType(Type otherType) {
-        return otherType.isClass();
+        if(otherType.isClass()){
+            if(otherType.getName() == this.getName()){
+                return true;
+            }
+        }
+        return false;
         //throw new UnsupportedOperationException("not yet implemented");
     }
 
@@ -66,17 +71,14 @@ public class ClassType extends Type {
      */
     public boolean isSubClassOf(ClassType potentialSuperClass) {//A faire dans la partie classe
         //throw new UnsupportedOperationException("not yet implemented");
-        ClassType t = this.getDefinition().getSuperClass().getType();
-        if(t.sameType(potentialSuperClass)){
+        System.out.println(definition + " and super "+potentialSuperClass);
+
+        if (sameType(potentialSuperClass)) {
             return true;
         }
-        while(t!=null){
-            if (t.sameType(potentialSuperClass)){
-                return true;
-            }else{
-                t = t.getDefinition().getSuperClass().getType();
-            }
+        if (getDefinition().getSuperClass() == null) {
+            return false;
         }
-        return false;
+        return getDefinition().getSuperClass().getType().isSubClassOf(potentialSuperClass);
     }
 }
