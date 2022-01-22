@@ -27,7 +27,7 @@ public class Selection extends AbstractLValue{
         Type t = this.object.verifyExpr(compiler, localEnv, currentClass);
         ClassType type;
         try{
-            type = t.asClassType("Doit être une classe avant séparateur", this.getLocation());
+            type = t.asClassType("Must be a Class Type before the selection", this.getLocation());
         }catch (ContextualError c){
             throw c;
         }
