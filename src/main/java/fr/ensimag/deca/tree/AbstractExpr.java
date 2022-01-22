@@ -94,7 +94,9 @@ public abstract class AbstractExpr extends AbstractInst {
         Type type = this.verifyExpr(compiler, localEnv, currentClass);
         if (type.sameType(expectedType)) {
             if(type.isClass()){
-                if((((ClassType)type).isSubClassOf((ClassType) expectedType))){
+                ClassType classType = (ClassType)type;
+                ClassType expectedClassType = (ClassType) expectedType;
+                if(!(classType.isSubClassOf(expectedClassType))){
                     System.out.println("b");
                     throw new ContextualError(type.getName().getName()+" isn't a subtype of "
                             +expectedType.getName().getName()+" so it cannot be assigned to it", this.getLocation());
