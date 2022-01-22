@@ -51,13 +51,17 @@ public class MethodCall extends AbstractExpr{
         int index=0;
         for (AbstractExpr p : this.param.getList()){
             Type t =p.verifyExpr(compiler, localEnv, currentClass);
+            if( index >= sig.size()){
+                throw new ContextualError("Wrong number of arguments", getLocation());
+            }
             if(!t.sameType(sig.paramNumber(index))){
                 throw new ContextualError("Parameter given hasn't the same type as in it's definition",
                         getLocation());
             }
             index++;
-
-
+        }
+        if(index != sig.size()){
+            throw new ContextualError("Wrong number of arguments", getLocation());
         }
         this.setType(methodDefinition.getType());
         this.methodName.setDefinition(methodDefinition);

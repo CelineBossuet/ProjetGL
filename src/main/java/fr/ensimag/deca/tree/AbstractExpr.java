@@ -114,19 +114,6 @@ public abstract class AbstractExpr extends AbstractInst {
         }
     }
 
-    protected boolean verifySubType( Type subType, Type superType){
-        if(subType.sameType(superType)){
-            return true;
-        }
-        else if(!subType.isClass() || !superType.isClass()){
-            return false;
-        }
-        else if(subType.isNull() && superType.isClass()){
-            return true;
-        }
-        return ((ClassType)subType).isSubClassOf((ClassType) superType);
-    }
-
     @Override
     protected void verifyInst(DecacCompiler compiler, Environment<ExpDefinition> localEnv,
             ClassDefinition currentClass, Type returnType)
