@@ -25,7 +25,7 @@ public class Cast extends AbstractExpr{
         Type t = this.typeToCheck.verifyType(compiler);
 
         if(t.sameType(toCast) || t.isInt() && toCast.isFloat() || t.isFloat() && toCast.isInt()){
-            this.setType(toCast);
+            this.setType(t);
             return getType();
         }
 
@@ -56,6 +56,7 @@ public class Cast extends AbstractExpr{
         GPRegister reg = expr.codeGenReg(compiler);
         if( typeToCast.isFloat() && expr.getType().isInt()){
             compiler.addInstruction(new FLOAT(reg, reg), "cast a int to float");
+            setType(typeToCast);
         }
 
         else if(expr.getType().sameType(typeToCast)

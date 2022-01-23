@@ -1,5 +1,5 @@
 {
-/*
+
     int a;
     float b=2.0;
 
@@ -8,6 +8,6 @@
 
     b=(float)(a);
     println(b);
-*/
+
 
 }

@@ -17,7 +17,6 @@ import java.io.PrintStream;
  */
 public class Program extends AbstractProgram {
     private static final Logger LOG = Logger.getLogger(Program.class);
-    protected boolean alreadyDeclared = false;
 
     public Program(ListDeclClass classes, AbstractMain main) {
         Validate.notNull(classes);
@@ -41,7 +40,7 @@ public class Program extends AbstractProgram {
     public void verifyProgram(DecacCompiler compiler) throws ContextualError {
         // declare language types :
 
-        // A FAIRE TODO 3 passes pour langage complet
+
         getClasses().verifyListClass(compiler); //Passe 1
         getClasses().verifyListClassMembers(compiler); //Passe 2
         getClasses().verifyListClassBody(compiler); //Passe 3
@@ -59,9 +58,6 @@ public class Program extends AbstractProgram {
     }
 
 
-    public boolean isAlreadyDeclared() {
-        return alreadyDeclared;
-    }
 
 
     @Override

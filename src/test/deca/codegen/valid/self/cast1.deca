@@ -1,0 +1,6 @@
+{
+    int i = 1;
+    float f;
+
+    println((float)(i));
+}

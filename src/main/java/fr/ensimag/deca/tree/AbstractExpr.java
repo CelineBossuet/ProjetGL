@@ -100,6 +100,7 @@ public abstract class AbstractExpr extends AbstractInst {
                     throw new ContextualError(type.getName().getName()+" isn't a subtype of "
                             +expectedType.getName().getName()+" so it cannot be assigned to it", this.getLocation());
                 }
+
             }
 
             return this;
