@@ -3,4 +3,5 @@
     float f;
 
     println((float)(i));
+    println((int)i);
 }

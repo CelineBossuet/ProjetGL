@@ -3,10 +3,9 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.DVal;
-import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.instructions.FLOAT;
-import fr.ensimag.ima.pseudocode.instructions.INT;
+import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.instructions.*;
+import org.apache.log4j.Logger;
 
 import java.io.PrintStream;
 
@@ -49,6 +48,8 @@ public class Cast extends AbstractExpr{
     protected DVal codeGenNoReg(DecacCompiler compiler) {
         throw new UnsupportedOperationException("Methode pas possible pour un Cast");
     }
+    private static final Logger LOG = Logger.getLogger(Cast.class);
+
 
     @Override
     protected GPRegister codeGenReg(DecacCompiler compiler){
@@ -64,7 +65,28 @@ public class Cast extends AbstractExpr{
             //nothing to do
         }
         else if(typeToCast.isInt() && expr.getType().isFloat()){
+            Label overflowCast =compiler.getLabelManager().newLabel("overflowCast");
+            Label suiteCast = compiler.getLabelManager().newLabel("suiteCast");
+            Label minCast = compiler.getLabelManager().newLabel("maxCast");
+
             compiler.addInstruction(new INT(reg, reg), "cast a float to int");
+            LOG.info("Si la valeur absolue du float est trop grande on peut pas le traduire en int");
+            compiler.addInstruction(new BOV(overflowCast, compiler.getCompilerOptions().getNoCheck()));
+            compiler.addInstruction(new BRA(suiteCast)); //si pas overflow on continue normalement
+
+            compiler.addLabel(overflowCast); //overflow soit trop grand soit trop petit
+            compiler.addInstruction(new CMP(new ImmediateFloat(0.0f), reg));
+            compiler.addInstruction(new BLE(minCast));
+            //si plus petit que 0 alors on va au label petit pour mettre plus petite valeur
+            compiler.addInstruction(new LOAD(new ImmediateInteger(0x7fffffff),reg)); //sinon met plus grande valeur
+            compiler.addInstruction(new BRA(suiteCast)); //on va a la fin du cast
+
+            compiler.addLabel(minCast);
+            compiler.addInstruction(new LOAD(new ImmediateInteger(0x80000000), reg));
+            compiler.addInstruction(new BRA(suiteCast));
+
+            compiler.addLabel(suiteCast);
+
         }
 
         return reg;
