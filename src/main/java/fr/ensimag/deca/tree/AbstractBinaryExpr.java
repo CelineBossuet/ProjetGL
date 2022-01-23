@@ -149,7 +149,7 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
                 compiler.addInstruction(new LOAD(getR(0), result));
             }
         }
-        if(getType().isFloat()){
+        if(canOverFlow()){
             getLOG().info("si erreur rentre dans le Label OverFlow");
             compiler.addInstruction(new BOV(compiler.getLabelManager().getOverFlowLabel(), compiler.getCompilerOptions().getNoCheck()));
         }
@@ -157,6 +157,9 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         return result;
     }
 
+    protected boolean canOverFlow(){
+        return getType().isFloat();
+    }
 
     protected void geneOneOrMoreInstru(DecacCompiler compiler, DVal val, GPRegister reg, boolean useful){
         getLOG().trace("AbsBinaryExpr geneOneOrMoreInstru");

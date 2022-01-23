@@ -24,6 +24,11 @@ public class Modulo extends AbstractOpArith {
     }
 
     @Override
+    protected boolean canOverFlow(){
+        return true;
+    }
+
+    @Override
     public Type verifyExpr(DecacCompiler compiler, Environment<ExpDefinition> localEnv,
             ClassDefinition currentClass) throws ContextualError {
         Type left = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);

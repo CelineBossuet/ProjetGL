@@ -1,0 +1,10 @@
+class A {}
+
+{
+    A a;
+    int c =0;
+    while (c <=10000){
+        a = new A();
+        c =c +1;
+    }
+}
