@@ -11,7 +11,7 @@ public class LabelManager {
     private Label input_errorLabel; //label permettant de gérer un mauvais input pour readInt, readFloat
     private Label overFlowLabel; //label gérant les overflow error
     private Label stack_overflowLabel;
-    private Label pilePleineLabel; //utilisée pour le NEW()
+    private Label tasPleinLabel; //utilisée pour le NEW()
     private Label noReturnLabel; //erreur pas de return dans une méthode non void
     private Label equalsLabel;
     private Label castFailedLabel;
@@ -65,10 +65,10 @@ public class LabelManager {
         return this.overFlowLabel;
     }
 
-    public Label getPilePleineLabel(){
-        if(this.pilePleineLabel ==null){
-            this.pilePleineLabel = new Label("pilePleineLabel", 0);
+    public Label getTasPleinLabel(){
+        if(this.tasPleinLabel ==null){
+            this.tasPleinLabel = new Label("pilePleineLabel", 0);
         }
-        return pilePleineLabel;
+        return tasPleinLabel;
     }
 }

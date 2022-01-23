@@ -342,13 +342,13 @@ public class DecacCompiler {
         this.addInstruction(new WNL());
         this.addInstruction(new ERROR());
 
-        this.addLabel(this.labelManager.getPilePleineLabel());
-        this.addInstruction(new WSTR("Error: Stack full"));
+        this.addLabel(this.labelManager.getTasPleinLabel());
+        this.addInstruction(new WSTR("Error: Heap full"));
         this.addInstruction(new WNL());
         this.addInstruction(new ERROR());
 
         this.addLabel(this.labelManager.getNoReturnLabel());
-        this.addInstruction(new WSTR("Error: No return in the methode"));
+        this.addInstruction(new WSTR("Error: No return in the method"));
         this.addInstruction(new WNL());
         this.addInstruction(new ERROR());
 
