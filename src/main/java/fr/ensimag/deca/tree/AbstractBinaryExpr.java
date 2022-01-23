@@ -17,6 +17,7 @@ import fr.ensimag.ima.pseudocode.instructions.jasmin.iload;
 import fr.ensimag.ima.pseudocode.instructions.jasmin.istore;
 import fr.ensimag.ima.pseudocode.jasmin.VarID;
 import fr.ensimag.ima.pseudocode.instructions.BOV;
+import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
@@ -126,14 +127,26 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         AbstractExpr left = getLeftOperand();
         GPRegister result;
         GPRegister leftValue = left.codeGenReg(compiler);
+        DVal rightValue;
+        try {
+            if (left.getType().isInt() && right.getType().isFloat()) {
+                compiler.addInstruction(new FLOAT(leftValue, leftValue));
+                left.setType(right.getType());
+            }
+        } catch (Exception e) {
+
+        }
+
         if (!right.NeedsRegister()) {
             getLOG().info("cas ou pas besoin de registre");
-            geneOneOrMoreInstru(compiler, right.codeGenNoReg(compiler), leftValue, useful);
+            rightValue = right.codeGenNoReg(compiler);
+            geneOneOrMoreInstru(compiler, rightValue, leftValue, useful);
             result = leftValue;
         } else if (compiler.getRegisterManager().getMax() - compiler.getRegisterManager().getCurrentv() + 1 > 1) {
+
             getLOG().info("cas ou il y a des registres libres qu'on peut allouer");
             GPRegister r = compiler.allocate(); // on alloue un registre
-            DVal rightValue = right.codeGenReg(compiler);
+            rightValue = right.codeGenReg(compiler);
             compiler.release(r);
             geneOneOrMoreInstru(compiler, rightValue, leftValue, useful);
             result = leftValue;
@@ -144,7 +157,7 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
             compiler.addInstruction(new PUSH(leftValue));
             // PUSH décrémente le pointeur de la pile et entrepose leftValue en haut de la
             // pile
-            DVal rightValue = right.codeGenReg(compiler);
+            rightValue = right.codeGenReg(compiler);
 
             compiler.addInstruction(new POP(getR(0)));
             // POP permet de désempiler de la pile un mot et la met dans R0
@@ -155,10 +168,26 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
                 compiler.addInstruction(new LOAD(getR(0), result));
             }
         }
-        getLOG().info("si erreur rentre dans le Label OverFlow");
-        compiler.addInstruction(
-                new BOV(compiler.getLabelManager().getOverFlowLabel(), compiler.getCompilerOptions().getNoCheck()));
+        try {
+            if (left.getType().isFloat() && right.getType().isInt()) {
+                System.out.println("hello");
+                compiler.addInstruction(new FLOAT(rightValue, (GPRegister) rightValue));
+                right.setType(left.getType());
+            }
+        } catch (Exception e) {
+        }
+
+        if (canOverFlow()) {
+            getLOG().info("si erreur rentre dans le Label OverFlow");
+            compiler.addInstruction(
+                    new BOV(compiler.getLabelManager().getOverFlowLabel(), compiler.getCompilerOptions().getNoCheck()));
+        }
+
         return result;
+    }
+
+    protected boolean canOverFlow() {
+        return getType().isFloat();
     }
 
     private void codeGenStackInternal(DecacCompiler compiler) {
@@ -186,6 +215,7 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
 
         // do operation between two operands
         geneOneOrMoreInstruJasmin(compiler, rightStore, right.getType());
+
     }
 
     protected void geneOneOrMoreInstru(DecacCompiler compiler, DVal val, GPRegister reg, boolean useful) {

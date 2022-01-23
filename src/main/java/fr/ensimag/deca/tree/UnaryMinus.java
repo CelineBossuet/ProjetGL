@@ -13,7 +13,7 @@ import fr.ensimag.ima.pseudocode.Instruction;
 import fr.ensimag.ima.pseudocode.instructions.OPP;
 import fr.ensimag.ima.pseudocode.instructions.jasmin.fneg;
 import fr.ensimag.ima.pseudocode.instructions.jasmin.ineg;
-import fr.ensimag.ima.pseudocode.jasmin.VarID;
+import org.apache.log4j.Logger;
 
 /**
  * @author gl13
@@ -31,7 +31,7 @@ public class UnaryMinus extends AbstractUnaryExpr {
         Type ope = getOperand().verifyExpr(compiler, localEnv, currentClass);
 
         if (!ope.isInt() && !ope.isFloat()) {
-            throw new ContextualError("Unary pas possible pour le type " + ope, getLocation());
+            throw new ContextualError("Unary Minus not possible for type " + ope, getLocation());
         }
         setType(ope);
         return getType();
@@ -50,6 +50,8 @@ public class UnaryMinus extends AbstractUnaryExpr {
         return new OPP(reg, reg);
     }
 
+    private static final Logger LOG = Logger.getLogger(UnaryMinus.class);
+
     @Override
     protected void geneInstruJasmin(DecacCompiler compiler) {
         if (getType().isInt())
@@ -65,10 +67,12 @@ public class UnaryMinus extends AbstractUnaryExpr {
         // TODO verifier type int ou float
         GPRegister reg;
         if (!getOperand().NeedsRegister()) {
+            LOG.info("l'opération a besoin de registres");
             reg = compiler.getRegisterManager().getCurrent();
             DVal val = getOperand().codeGenNoReg(compiler);
             compiler.addInstruction(new OPP(val, reg));
         } else {
+            LOG.info("l'opération n'a pas besoin de registres");
             reg = getOperand().codeGenReg(compiler);
             compiler.addInstruction(new OPP(reg, reg));
         }

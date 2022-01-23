@@ -1,16 +1,11 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.Definition;
-import fr.ensimag.deca.context.FieldDefinition;
-import fr.ensimag.deca.context.MethodDefinition;
-import fr.ensimag.deca.context.ExpDefinition;
-import fr.ensimag.deca.context.VariableDefinition;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.SymbolTable;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -93,4 +88,15 @@ public abstract class AbstractIdentifier extends AbstractLValue {
      *         (corresponds to the "type" attribute)
      */
     public abstract Type verifyType(DecacCompiler compiler) throws ContextualError;
+
+    private static final Logger LOG = Logger.getLogger(AbstractIdentifier.class);
+
+    public abstract Type verifyTypeClass(DecacCompiler compiler) throws ContextualError;
+
+    public abstract Type verifyMethodType(DecacCompiler compiler) throws ContextualError;
+
+    public abstract FieldDefinition verifyField(DecacCompiler compiler, ClassType type)throws ContextualError;
+
+
+    public abstract GPRegister initDefaultValue(DecacCompiler compiler, GPRegister reg);
 }

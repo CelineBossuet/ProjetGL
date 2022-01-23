@@ -1,0 +1,5 @@
+class A{
+    void inutile(int x, int x){
+        int y = x+x;
+    }
+}

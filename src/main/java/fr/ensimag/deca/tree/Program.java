@@ -1,16 +1,13 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.*;
-import fr.ensimag.deca.context.Environment.DoubleDefException;
-import fr.ensimag.deca.tools.DecacInternalError;
+import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.instructions.*;
-
-import java.io.PrintStream;
-
+import fr.ensimag.ima.pseudocode.instructions.HALT;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
+
+import java.io.PrintStream;
 
 /**
  * Deca complete program (class definition plus main block)
@@ -41,47 +38,37 @@ public class Program extends AbstractProgram {
 
     @Override
     public void verifyProgram(DecacCompiler compiler) throws ContextualError {
+        // declare language types :
 
-        // A FAIRE TODO 3 passes pour langage complet
-        // getClasses().verifyListClass(compiler);
+        getClasses().verifyListClass(compiler); // Passe 1
+        getClasses().verifyListClassMembers(compiler); // Passe 2
+        getClasses().verifyListClassBody(compiler); // Passe 3
         // LOG.debug("Pass 1 verification");
         // LOG.debug("Pass 2 verification");
         // LOG.debug("Pass 3 verification");
 
         LOG.debug("verify program: start");
 
-        // declare language types :
-        declareBuiltinTypes(compiler);
-
         getMain().verifyMain(compiler);
 
         LOG.debug("verify program: end");
     }
 
-    private void declareBuiltinTypes(DecacCompiler compiler) {
-        try {
-            compiler.getEnvironmentType().declare(compiler.getSymbolTable().create("void"),
-                    new TypeDefinition(new VoidType(compiler.getSymbolTable().create("void")), Location.BUILTIN));
-            compiler.getEnvironmentType().declare(compiler.getSymbolTable().create("boolean"),
-                    new TypeDefinition(new BooleanType(compiler.getSymbolTable().create("boolean")), Location.BUILTIN));
-            compiler.getEnvironmentType().declare(compiler.getSymbolTable().create("float"),
-                    new TypeDefinition(new FloatType(compiler.getSymbolTable().create("float")), Location.BUILTIN));
-            compiler.getEnvironmentType().declare(compiler.getSymbolTable().create("int"),
-                    new TypeDefinition(new IntType(compiler.getSymbolTable().create("int")), Location.BUILTIN));
-            compiler.getEnvironmentType().declare(compiler.getSymbolTable().create("string"),
-                    new TypeDefinition(new StringType(compiler.getSymbolTable().create("string")), Location.BUILTIN));
-            compiler.getEnvironmentType().declare(compiler.getSymbolTable().create("null"),
-                    new TypeDefinition(new NullType(compiler.getSymbolTable().create("null")), Location.BUILTIN));
-        } catch (DoubleDefException e) {
-            throw new DecacInternalError("Double built in type definition");
-        }
-    }
-
     @Override
     public void codeGenProgram(DecacCompiler compiler) {
+
+        compiler.startBlock();
+        getClasses().codeGenListClass(compiler);
+        // A FAIRE: compléter ce squelette très rudimentaire de code
         compiler.addComment("Main program");
         main.codeGenMain(compiler);
+
+        int sizeGlobal = compiler.getMemoryManager().getCurrentGB();
+        compiler.endBlock(false, false, sizeGlobal, null);
+
         compiler.addInstruction(new HALT());
+
+        getClasses().codeGenListClassBody(compiler);
     }
 
     @Override

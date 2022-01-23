@@ -1,0 +1,23 @@
+class A {
+   int add2(int x) {
+      return 2 + x ;
+   }
+}
+
+{
+   A a = new A() ; 
+   int x = 1 ; 
+   int y = 2 ;
+
+   int z = a.add2(x);
+   println(z);
+   z=z+a.add2(y);
+   println(a.add2(y));
+   println(a.add2(x));
+   println(a.add2(y) + a.add2(x));
+   println(z, "==7 ?");
+
+
+
+
+}

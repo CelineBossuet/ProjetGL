@@ -18,7 +18,6 @@ public class ReadFloat extends AbstractReadExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, Environment<ExpDefinition> localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        //throw new UnsupportedOperationException("not yet implemented");
         setType(new FloatType(compiler.getSymbolTable().create("float")));
         return this.getType();
     }

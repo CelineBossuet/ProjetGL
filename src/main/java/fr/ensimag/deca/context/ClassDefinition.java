@@ -1,6 +1,8 @@
 package fr.ensimag.deca.context;
 
+import fr.ensimag.deca.codegen.VTable;
 import fr.ensimag.deca.tree.Location;
+import fr.ensimag.ima.pseudocode.Label;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -10,6 +12,29 @@ import org.apache.commons.lang.Validate;
  * @date 01/01/2022
  */
 public class ClassDefinition extends TypeDefinition {
+    private Label constructorLabel;
+    private VTable vTable;
+    private int numberOfFields ;
+    private int numberOfMethods;
+    private final Environment<ExpDefinition> members;
+    private final ClassDefinition superClass;
+
+    public VTable getvTable() {
+        return vTable;
+    }
+
+    public void setvTable(VTable vTable) {
+        this.vTable = vTable;
+    }
+
+    public Label getConstructorLabel() {
+        return constructorLabel;
+    }
+
+    public void setConstructorLabel(Label l){
+        this.constructorLabel=l;
+    }
+
     public void setNumberOfFields(int numberOfFields) {
         this.numberOfFields = numberOfFields;
     }
@@ -36,8 +61,12 @@ public class ClassDefinition extends TypeDefinition {
         return numberOfMethods;
     }
 
-    private int numberOfFields = 0;
-    private int numberOfMethods = 0;
+    public int decNumberOfMethods(){
+        numberOfMethods--;
+        return numberOfMethods;
+    }
+
+
 
     @Override
     public boolean isClass() {
@@ -55,8 +84,7 @@ public class ClassDefinition extends TypeDefinition {
         return superClass;
     }
 
-    private final Environment<ExpDefinition> members;
-    private final ClassDefinition superClass;
+
 
     public Environment<ExpDefinition> getMembers() {
         return members;
@@ -72,6 +100,8 @@ public class ClassDefinition extends TypeDefinition {
         }
         members = new Environment<ExpDefinition>(parent);
         this.superClass = superClass;
+
+
     }
 
 }

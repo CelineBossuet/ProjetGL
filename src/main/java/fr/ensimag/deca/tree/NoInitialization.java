@@ -45,6 +45,9 @@ public class NoInitialization extends AbstractInitialization {
     }
 
     @Override
+    protected boolean hasInit(){return false;}
+
+    @Override
     public void decompile(IndentPrintStream s) {
         // nothing
     }

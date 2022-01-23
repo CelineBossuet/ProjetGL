@@ -6,6 +6,8 @@ import fr.ensimag.deca.tree.AbstractExpr;
 import fr.ensimag.deca.tree.Plus;
 import fr.ensimag.deca.tree.TreeFunction;
 import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.Label;
+
 import org.junit.jupiter.api.Test;
 
 import java.io.PrintStream;
@@ -66,6 +68,11 @@ public class TestPlusWithoutMock {
          */
         public void checkProperUse() {
             assertTrue(hasBeenVerified, "verifyExpr has not been called");
+        }
+
+        @Override
+        protected void codeGenJasminJump(DecacCompiler compiler, Label l, boolean jump) {
+            throw new UnsupportedOperationException("Should not be called.");
         }
     }
 

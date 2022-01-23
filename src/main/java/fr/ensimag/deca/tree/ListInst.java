@@ -35,6 +35,7 @@ public class ListInst extends TreeList<AbstractInst> {
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
         // verify each instructions
+        LOG.info("Début verification de la Liste d'Instructions ie pass 3");
         for (AbstractInst i : this.getList())
             i.verifyInst(compiler, localEnv, currentClass, returnType);
     }

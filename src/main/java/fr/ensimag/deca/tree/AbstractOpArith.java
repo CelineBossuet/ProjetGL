@@ -45,9 +45,13 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
             setLeftOperand(conversion);
             this.setType(right);
             return right;
-        } else {
+
+        } else if ((left.isInt() && right.isInt()) || (left.isFloat() && right.isFloat())) {
             setType(right);
             return right;
+        } else {
+            throw new ContextualError("Can't do aritmetical operation between types " + left + " and " + right,
+                    this.getLocation());
         }
     }
 

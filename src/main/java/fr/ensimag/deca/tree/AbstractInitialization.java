@@ -40,4 +40,6 @@ public abstract class AbstractInitialization extends Tree {
 
     protected abstract void codeGeneInitJasmin(DecacCompiler compiler, DAddr target);
 
+    protected abstract boolean hasInit();
+
 }

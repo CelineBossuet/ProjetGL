@@ -1,0 +1,11 @@
+class A {
+    int add(int x){
+        return x+1;
+    }
+}
+
+class B extends A{
+    int add(int x, int y){
+        return x+y+1;
+    }
+}

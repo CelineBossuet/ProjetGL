@@ -6,6 +6,7 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.Environment;
 import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import org.apache.log4j.Logger;
 
 /**
  * List of declarations (e.g. int x; float y,z).
@@ -46,10 +47,13 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
             dV.verifyDeclVar(compiler, localEnv, currentClass);
     }
 
-    protected int codeGenListVar(DecacCompiler compiler) {
-        int size = 0; // TODO fini ?
+    private static final Logger LOG = Logger.getLogger(ListDeclVar.class);
+
+    protected int codeGenListVar(DecacCompiler compiler, boolean local) {
+        int size = 0;
         for (AbstractDeclVar var : this.getList()) {
-            size += var.codeGenVar(compiler);
+            LOG.info("On récupère la taille de toutees les variables");
+            size += var.codeGenVar(compiler, local, size + 1);
         }
         return size;
     }
