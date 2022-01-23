@@ -6,6 +6,7 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.Environment;
 import fr.ensimag.deca.context.ExpDefinition;
+import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
@@ -66,12 +67,16 @@ public class Initialization extends AbstractInitialization {
         // put expression result in top stack
         expression.codeGenStack(compiler);
 
-        if (expression.getType().isInt())
+        if (expression.getType().isInt()) {
             compiler.addInstruction(new istore(target));
-        else if (expression.getType().isFloat())
+        } else if (expression.getType().isFloat()) {
             compiler.addInstruction(new fstore(target));
-        else
-            throw new UnsupportedOperationException("Not yet implemented");
+        } else if (expression.getType().isBoolean()) {
+            compiler.addComment("init boolean");
+            compiler.addInstruction(new istore(target));
+        } else {
+            throw new DecacInternalError("Type " + expression.getType() + " not supported.");
+        }
     }
 
     @Override

@@ -1,6 +1,6 @@
 package fr.ensimag.deca.tree;
 
-
+import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Instruction;
 import fr.ensimag.ima.pseudocode.Label;
@@ -23,24 +23,24 @@ public class Equals extends AbstractOpExactCmp {
     protected Instruction geneBranchInstru(boolean saut, Label l) {
         if (saut) {
             return new BEQ(l);
-            //Branch if Equals
+            // Branch if Equals
         } else {
             return new BNE(l);
-            //Branch if not Equals
+            // Branch if not Equals
         }
     }
 
     @Override
     protected Instruction genSccInstruction(GPRegister result) {
         return new SEQ(result);
-        //Set on EQuals
-        //Si le Zero flag testé est vrai l'opérand destinataire est set sinon il est cleared
+        // Set on EQuals
+        // Si le Zero flag testé est vrai l'opérand destinataire est set sinon il est
+        // cleared
     }
-
 
     @Override
     protected String getOperatorName() {
         return "==";
-    }    
-    
+    }
+
 }

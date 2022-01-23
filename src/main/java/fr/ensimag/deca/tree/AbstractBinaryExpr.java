@@ -168,7 +168,7 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         VarID rightStore = compiler.getMemoryManager().allocJasmin();
 
         // store right result
-        if (right.getType().isInt())
+        if (right.getType().isInt() || right.getType().isBoolean())
             compiler.addInstruction(new istore(rightStore));
         else if (right.getType().isFloat())
             compiler.addInstruction(new fstore(rightStore));
@@ -177,18 +177,22 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
 
         left.codeGenStack(compiler); // left result
 
-        // get right result
-        if (right.getType().isInt())
-            compiler.addInstruction(new iload(rightStore));
-        else if (right.getType().isFloat())
-            compiler.addInstruction(new fload(rightStore));
-
         // do operation between two operands
-        codeGenArithJasmin(compiler);
+        geneOneOrMoreInstruJasmin(compiler, rightStore);
     }
 
     protected void geneOneOrMoreInstru(DecacCompiler compiler, DVal val, GPRegister reg, boolean useful) {
         getLOG().trace("AbsBinaryExpr geneOneOrMoreInstru");
         compiler.addInstruction(geneInstru(val, reg));
+    }
+
+    protected void geneOneOrMoreInstruJasmin(DecacCompiler compiler, VarID rightVar) {
+        getLOG().trace("AbsBinaryExpr geneOneOrMoreInstruJasmin");
+        // get right result
+        if (getRightOperand().getType().isInt() || getRightOperand().getType().isBoolean())
+            compiler.addInstruction(new iload(rightVar));
+        else if (getRightOperand().getType().isFloat())
+            compiler.addInstruction(new fload(rightVar));
+        codeGenArithJasmin(compiler);
     }
 }
