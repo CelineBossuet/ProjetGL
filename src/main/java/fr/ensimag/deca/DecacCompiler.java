@@ -470,7 +470,7 @@ public class DecacCompiler {
         LOG.info("Compilation of " + sourceName + " successful.");
 
         // .j conversion
-        Main.main(new String[] { destName });
+        Main.main(new String[] { "-d", destName.substring(0, destName.lastIndexOf('/')), destName });
         LOG.info("Conversion in class file successful.");
 
         File file = new File(destName);
