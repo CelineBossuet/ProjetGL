@@ -28,7 +28,7 @@ public class Environment<D extends Definition> {
 
     Environment<D> parentEnvironment;
 
-    public Environment(Environment parentEnvironment) {
+    public Environment(Environment<D> parentEnvironment) {
         this.parentEnvironment = parentEnvironment;
         this.environment = new HashMap<Symbol, D>();
     }
