@@ -5,6 +5,8 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.f2l;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.fload;
 import fr.ensimag.ima.pseudocode.instructions.jasmin.i2l;
 import fr.ensimag.ima.pseudocode.instructions.jasmin.iadd;
 import fr.ensimag.ima.pseudocode.instructions.jasmin.iload;
@@ -91,12 +93,20 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
     }
 
     @Override
-    protected void geneOneOrMoreInstruJasmin(DecacCompiler compiler, VarID rightVar) {
+    protected void geneOneOrMoreInstruJasmin(DecacCompiler compiler, VarID rightVar, Type rightType) {
         getLOG().trace("AbsOpCmp geneOneOrMoreInstruJasmin");
 
-        compiler.addInstruction(new i2l());// convert left to long
-        compiler.addInstruction(new iload(rightVar));
-        compiler.addInstruction(new i2l()); // and right
+        if (rightType.isInt() || rightType.isBoolean()) {
+            compiler.addInstruction(new i2l());// convert left to long
+            compiler.addInstruction(new iload(rightVar));
+            compiler.addInstruction(new i2l()); // and right
+        } else if (rightType.isFloat()) {
+            compiler.addInstruction(new f2l());
+            compiler.addInstruction(new fload(rightVar));
+            compiler.addInstruction(new f2l());
+        } else {
+            throw new DecacInternalError("Type " + rightType + "not supported.");
+        }
 
         // compare (automatically reconvert to int)
         // give 0 for equality, else -1 or 1

@@ -1,6 +1,8 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.DecacFatalError;
+import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.BinaryInstruction;
@@ -164,6 +166,11 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         AbstractExpr right = getRightOperand();
         AbstractExpr left = getLeftOperand();
 
+        // type verification
+        if ((right.getType().isFloat() && !left.getType().isFloat())
+                || (left.getType().isFloat() && !right.getType().isFloat()))
+            throw new DecacInternalError("Can't compare float with other type");
+
         right.codeGenStack(compiler); // right result
         VarID rightStore = compiler.getMemoryManager().allocJasmin();
 
@@ -178,7 +185,7 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         left.codeGenStack(compiler); // left result
 
         // do operation between two operands
-        geneOneOrMoreInstruJasmin(compiler, rightStore);
+        geneOneOrMoreInstruJasmin(compiler, rightStore, right.getType());
     }
 
     protected void geneOneOrMoreInstru(DecacCompiler compiler, DVal val, GPRegister reg, boolean useful) {
@@ -186,12 +193,12 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         compiler.addInstruction(geneInstru(val, reg));
     }
 
-    protected void geneOneOrMoreInstruJasmin(DecacCompiler compiler, VarID rightVar) {
+    protected void geneOneOrMoreInstruJasmin(DecacCompiler compiler, VarID rightVar, Type rightType) {
         getLOG().trace("AbsBinaryExpr geneOneOrMoreInstruJasmin");
         // get right result
-        if (getRightOperand().getType().isInt() || getRightOperand().getType().isBoolean())
+        if (rightType.isInt() || rightType.isBoolean())
             compiler.addInstruction(new iload(rightVar));
-        else if (getRightOperand().getType().isFloat())
+        else if (rightType.isFloat())
             compiler.addInstruction(new fload(rightVar));
         codeGenArithJasmin(compiler);
     }
