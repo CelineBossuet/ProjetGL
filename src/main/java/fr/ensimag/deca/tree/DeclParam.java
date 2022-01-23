@@ -8,13 +8,13 @@ import fr.ensimag.ima.pseudocode.RegisterOffset;
 
 import java.io.PrintStream;
 
-public class DeclParam extends AbstractDeclParam{
+public class DeclParam extends AbstractDeclParam {
     private AbstractIdentifier type;
     private AbstractIdentifier name;
 
-    public DeclParam(AbstractIdentifier type, AbstractIdentifier name){
-        this.type=type;
-        this.name=name;
+    public DeclParam(AbstractIdentifier type, AbstractIdentifier name) {
+        this.type = type;
+        this.name = name;
     }
 
     @Override
@@ -28,7 +28,7 @@ public class DeclParam extends AbstractDeclParam{
         Type t = this.type.verifyType(compiler);
         ParamDefinition definition = new ParamDefinition(t, this.getLocation());
         this.name.setDefinition(definition);
-        try{
+        try {
             localENv.declare(this.name.getName(), definition);
         } catch (Environment.DoubleDefException e) {
             throw new ContextualError(name.getName().getName() + " already in the parameters ", this.getLocation());
@@ -37,14 +37,13 @@ public class DeclParam extends AbstractDeclParam{
 
     @Override
     protected void codeGenParam(DecacCompiler compiler, int i) {
-        name.getExpDefinition().setOperand(new RegisterOffset(-3-i, Register.LB));
+        name.getExpDefinition().setOperand(new RegisterOffset(-3 - i, Register.LB));
     }
-
 
     @Override
     public void decompile(IndentPrintStream s) {
-        //throw new UnsupportedOperationException("Not yet implemented");
         s.print(this.type.getName().getName());
+        s.print(" ");
         s.print(this.name.getName().getName());
     }
 
@@ -58,6 +57,5 @@ public class DeclParam extends AbstractDeclParam{
     protected void iterChildren(TreeFunction f) {
         type.iter(f);
         name.iter(f);
-        //throw new UnsupportedOperationException("Not yet implemented");
     }
 }

@@ -431,7 +431,7 @@ primary_expr returns[AbstractExpr tree]
     | m=ident OPARENT args=list_expr CPARENT {
             assert($args.tree != null);
             assert($m.tree != null);
-            This t = new This(true); // m() signifie this.m()
+            This t = new This(false); // m() signifie this.m()
             t.setLocation($m.tree.getLocation());
 
             $tree = new MethodCall(t, $m.tree, $args.tree);
@@ -518,7 +518,7 @@ literal returns[AbstractExpr tree]
         setLocation($tree, $FALSE);
         }//TOBETESTED
     | THIS {
-        $tree = new This(true);
+        $tree = new This(false);
         setLocation($tree, $THIS);
         }//TOBETESTED
     | NULL {
