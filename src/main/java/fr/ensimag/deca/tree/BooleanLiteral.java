@@ -7,11 +7,14 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.Environment;
 import fr.ensimag.deca.context.ExpDefinition;
+import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.BRA;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.bipush;
+import fr.ensimag.ima.pseudocode.jasmin.Constant;
 
 import java.io.PrintStream;
 
@@ -29,6 +32,11 @@ public class BooleanLiteral extends AbstractExpr {
     }
 
     public boolean getValue() {
+        return value;
+    }
+
+    @Override
+    protected boolean getBool() {
         return value;
     }
 
@@ -74,13 +82,23 @@ public class BooleanLiteral extends AbstractExpr {
     }
 
     @Override
-    protected void codeGenCond(DecacCompiler compiler, Label l, boolean saut){
+    protected void codeGenStack(DecacCompiler compiler) {
+        getLOG().trace("BooleanIdentifier codeGenStack");
+        compiler.addInstruction(new bipush(new Constant(value ? 1 : 0)));
+    }
+
+    @Override
+    protected void codeGenCond(DecacCompiler compiler, Label l, boolean saut) {
         getLOG().trace("BooleanLit codeGenCond");
-        if(saut==getValue()){
+        if (saut == getValue()) {
             compiler.addInstruction(new BRA(l));
+        } else {
+            getLOG().info("pas besoin de jump le boolean litteral " + getValue());
         }
-        else{
-            getLOG().info("pas besoin de jump le boolean litteral "+getValue());
-        }
+    }
+
+    @Override
+    protected void codeGenJasminJump(DecacCompiler compiler, Label l, boolean jump) {
+        // nothing
     }
 }

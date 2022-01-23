@@ -1,0 +1,39 @@
+{
+
+println("Not fully implemented");
+//if(true || false){
+    //println("ok");
+//}else{
+    //println("erreur");
+//}
+//
+//if(false || true){
+    //println("ok");
+//}else{
+    //println("erreur");
+//}
+//
+//if(true && false){
+    //println("error");
+//}else{
+    //println("ok");
+//}
+//
+//if(false && true){
+    //println("error");
+//}else{
+    //println("ok");
+//}
+//
+//if(!true){
+    //println("error");
+//}else{
+    //println("ok");
+//}
+//if(!false){
+    //println("ok");
+//}else{
+    //println("error");
+//}
+
+}

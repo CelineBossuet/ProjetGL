@@ -1,6 +1,5 @@
 package fr.ensimag.deca.tree;
 
-
 /**
  *
  * @author gl13
@@ -8,10 +7,8 @@ package fr.ensimag.deca.tree;
  */
 public abstract class AbstractOpExactCmp extends AbstractOpCmp {
 
-
     public AbstractOpExactCmp(AbstractExpr leftOperand, AbstractExpr rightOperand) {
         super(leftOperand, rightOperand);
     }
-
 
 }

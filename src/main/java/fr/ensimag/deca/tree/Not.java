@@ -1,16 +1,11 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.Environment;
-import fr.ensimag.deca.context.ExpDefinition;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Instruction;
 import fr.ensimag.ima.pseudocode.Label;
-import fr.ensimag.ima.pseudocode.instructions.*;
 
 /**
  *
@@ -26,13 +21,13 @@ public class Not extends AbstractUnaryExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, Environment<ExpDefinition> localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        //throw new UnsupportedOperationException("not yet implemented");
+        // throw new UnsupportedOperationException("not yet implemented");
         Type ope = this.getOperand().verifyExpr(compiler, localEnv, currentClass);
-        if (ope.isBoolean()){
+        if (ope.isBoolean()) {
             this.setType(ope);
             return ope;
-        }else{
-            throw new ContextualError("Une négation peut être faite seulement sur un booléen", this.getLocation());
+        } else {
+            throw new ContextualError("! is only for boolean but the operand is: " + ope, this.getLocation());
         }
     }
 
@@ -43,31 +38,30 @@ public class Not extends AbstractUnaryExpr {
 
     @Override
     protected Instruction geneInstru(GPRegister reg) {
-        throw new DecacInternalError("Pas de génération d'instruction pour Not");
+        throw new DecacInternalError("No instruction for Not");
+    }
+
+    @Override
+    protected void geneInstruJasmin(DecacCompiler compiler) {
+        throw new DecacInternalError("Not instruction generation for Not");
     }
 
     @Override
     protected GPRegister codeGenReg(DecacCompiler compiler) {
-        Label elseLabel = compiler.getLabelManager().newLabel("elseC2R");
-        Label end = compiler.getLabelManager().newLabel("endC2R");
-        GPRegister r = compiler.getRegisterManager().getCurrent();
 
-        compiler.addInstruction(new CMP(0, r));
-        compiler.addInstruction(new BEQ(elseLabel));
-        compiler.addInstruction(new LOAD(0, r));
-        compiler.addInstruction(new BRA(end));
-        compiler.addLabel(elseLabel);
-
-        compiler.addInstruction(new LOAD(1, r));
-        compiler.addInstruction(new BRA(end));
-
-        compiler.addLabel(end);
-        return r;
+        return codeGenCondToReg(compiler);
     }
 
     @Override
-    protected void codeGenCond(DecacCompiler compiler, Label l, boolean saut){
+    protected void codeGenStack(DecacCompiler compiler) {
+        getLOG().trace("Not codeGenStack");
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    @Override
+    protected void codeGenCond(DecacCompiler compiler, Label l, boolean saut) {
         getLOG().info("le Not inverse la logique dans codeGenCond");
+
         getOperand().codeGenCond(compiler, l, !saut);
     }
 }

@@ -1,0 +1,6 @@
+{
+    boolean b = 3 > 2;
+    boolean c = 3 < 2;
+    boolean d = 3 <= 2;
+    boolean e = 3 >= 2;
+}

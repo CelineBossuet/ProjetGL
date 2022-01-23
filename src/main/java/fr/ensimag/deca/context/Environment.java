@@ -1,8 +1,10 @@
 package fr.ensimag.deca.context;
 
-import java.util.HashMap;
-
+import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
+import org.apache.log4j.Logger;
+
+import java.util.HashMap;
 
 /**
  * Dictionary associating identifier's D to their names.
@@ -27,8 +29,11 @@ public class Environment<D extends Definition> {
     private HashMap<Symbol, D> environment;
 
     Environment<D> parentEnvironment;
+    private static final Logger LOG = Logger.getLogger(Environment.class);
 
-    public Environment(Environment parentEnvironment) {
+    public HashMap<Symbol, D> getEnvironment(){return environment;}
+
+    public Environment(Environment<D> parentEnvironment) {
         this.parentEnvironment = parentEnvironment;
         this.environment = new HashMap<Symbol, D>();
     }
@@ -47,9 +52,29 @@ public class Environment<D extends Definition> {
      */
     public D get(Symbol key) {
         D result = environment.get(key); // first look in current block
-        if (result != null || parentEnvironment == null)
+        if (result != null) {
+            LOG.info("le Symbol est déjà dans la table");
             return result;
-        return parentEnvironment.get(key);
+        }else if (parentEnvironment == null){
+            LOG.info("Il y a pas de parent");
+            return null;
+        }else{
+            LOG.info("On ajoute le symbol dans la table");
+            return parentEnvironment.get(key);
+        }
+    }
+
+    public ClassDefinition getClass(Symbol key){
+        D def = environment.get(key);
+        if (def instanceof ClassDefinition){
+            LOG.info("c'est une classe");
+            return (ClassDefinition) def;
+        }else if (parentEnvironment == null){
+            return null;
+        }else{
+            LOG.info("on retourne la classe parent");
+            return parentEnvironment.getClass(key);
+        }
     }
 
     /**
@@ -75,6 +100,15 @@ public class Environment<D extends Definition> {
         else
             environment.put(name, def); // create symbol in this environment without modify upper block
 
+    }
+
+    public void declareClass(Symbol name, D def) throws Environment.DoubleDefException {
+        D previousDef = this.environment.get(name);
+        if (previousDef == null) {
+            this.environment.put(name, def);
+        } else {
+            throw new DoubleDefException();
+        }
     }
 
 }

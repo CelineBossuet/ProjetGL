@@ -1,0 +1,22 @@
+class A{
+    int x=0;
+
+    void compteur(int a){
+        if(x>a){
+            println("je peux pas compter");
+        }
+        else{
+            while(x<=a){
+                print(x, ", ");
+                x=x+1;
+            }
+            println();
+        }
+    }
+}
+
+{
+    A a = new A();
+    a.compteur(5);
+    a.compteur(4);
+}

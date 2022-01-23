@@ -7,13 +7,17 @@ import fr.ensimag.deca.context.Environment;
 import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.context.FloatType;
 import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.ImmediateFloat;
+import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.WFLOATX;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.ldc;
+import fr.ensimag.ima.pseudocode.jasmin.Constant;
 
 import java.io.PrintStream;
 
@@ -88,7 +92,18 @@ public class FloatLiteral extends AbstractExpr {
     protected GPRegister codeGenReg(DecacCompiler compiler) {
         GPRegister reg = compiler.getRegisterManager().getCurrent();
 
-        compiler.getProgram().addInstruction(new LOAD(new ImmediateFloat(value), reg));
+        compiler.getCurrentBlock().addInstruction(new LOAD(new ImmediateFloat(value), reg));
         return reg;
+    }
+
+    @Override
+    protected void codeGenStack(DecacCompiler compiler) {
+        getLOG().trace("FloatLiteral codeGenStack");
+        compiler.addInstruction(new ldc(new Constant(getValue())));
+    }
+
+    @Override
+    protected void codeGenJasminJump(DecacCompiler compiler, Label l, boolean jump) {
+        throw new DecacInternalError("Can't jump with float literals");
     }
 }

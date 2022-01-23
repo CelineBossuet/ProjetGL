@@ -31,6 +31,11 @@ public class NoInitialization extends AbstractInitialization {
         // rien à faire
     }
 
+    @Override
+    protected void codeGeneInitJasmin(DecacCompiler compiler, DAddr target) {
+        // rien à faire
+    }
+
     /**
      * Node contains no real information, nothing to check.
      */
@@ -38,6 +43,9 @@ public class NoInitialization extends AbstractInitialization {
     protected void checkLocation() {
         // nothing
     }
+
+    @Override
+    protected boolean hasInit(){return false;}
 
     @Override
     public void decompile(IndentPrintStream s) {

@@ -7,10 +7,17 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.ima.pseudocode.DAddr;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.fload;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.ifeq;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.ifne;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.iload;
+
 import org.apache.commons.lang.Validate;
+import org.apache.log4j.Logger;
 
 import java.io.PrintStream;
 
@@ -21,6 +28,8 @@ import java.io.PrintStream;
  * @date 01/01/2022
  */
 public class Identifier extends AbstractIdentifier {
+
+    private static final Logger LOG = Logger.getLogger(Identifier.class);
 
     @Override
     protected void checkDecoration() {
@@ -165,15 +174,18 @@ public class Identifier extends AbstractIdentifier {
     public Type verifyExpr(DecacCompiler compiler, Environment<ExpDefinition> localEnv,
             ClassDefinition currentClass) throws ContextualError {
         if (localEnv.get(this.getName()) != null) {
-            Definition def = localEnv.get(getName()); // TODO
+            Definition def = localEnv.get(getName());
+            if (!def.isExpression()) {
+                throw new ContextualError("Identifier " + getName() +
+                        " cannot be used as an expression because it is of kind " + def.getNature(), getLocation());
+            }
             this.setDefinition(def);
             this.setType(def.getType());
             return getType();
         } else {
             throw new ContextualError(
-                    "La variable " + this.getName() + " n'a pas été déclarée", this.getLocation());
+                    "this variable: " + this.getName() + " is not declared yet ", this.getLocation());
         }
-        // throw new UnsupportedOperationException("not yet implemented");
     }
 
     /**
@@ -185,15 +197,59 @@ public class Identifier extends AbstractIdentifier {
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
         Definition def = compiler.getEnvironmentType().defOfType(getName());
         if (def == null) {
-            throw new ContextualError("Type n'existe pas", getLocation());
+            throw new ContextualError("No such type " + getType(), getLocation());
         }
         if (def.getType().isVoid()) {
-            throw new ContextualError("Variables ne peuvent pas être déclarées de type void", getLocation());
+            throw new ContextualError("Variables, Parameters or Field can't be void type", getLocation());
         }
         setType(def.getType());
         setDefinition(def);
         return getType();
 
+    }
+
+    public Type verifyTypeClass(DecacCompiler compiler) throws ContextualError {
+        /*
+         * System.out.println(this.name.getName());
+         * System.out.println(compiler.getSymbolTable().create(name.getName()));
+         * System.out.println(compiler.getEnvironmentType().get(compiler.getSymbolTable(
+         * ).create(name.getName())));
+         */
+        TypeDefinition defClass = compiler.getEnvironmentType()
+                .get(compiler.getSymbolTable().create(this.getName().getName()));
+        if (defClass == null) {
+            throw new ContextualError("class null", this.getLocation());
+        }
+        setDefinition(defClass);
+        setType(defClass.getType());
+        return defClass.getType();
+    }
+
+    public Type verifyMethodType(DecacCompiler compiler) throws ContextualError {
+        TypeDefinition typeMethode = compiler.getEnvironmentType()
+                .get(compiler.getSymbolTable().create(getName().getName()));
+        if (typeMethode == null) {
+            LOG.info("le type de la class est null");
+            throw new ContextualError("class null", this.getLocation());
+        }
+
+        setDefinition(typeMethode);
+        setType(typeMethode.getType());
+        return typeMethode.getType();
+    }
+
+    public FieldDefinition verifyField(DecacCompiler compiler, ClassType type) throws ContextualError {
+        Definition fieldDefinition = type.getDefinition().getMembers().get(this.getName());
+        if (fieldDefinition == null) {
+            throw new ContextualError("The field " + this.getName().getName() + " is not declared yet",
+                    this.getLocation());
+        }
+        try {
+            fieldDefinition = fieldDefinition.asFieldDefinition(fieldDefinition + "is not a field", this.getLocation());
+        } catch (ContextualError c) {
+            throw c;
+        }
+        return (FieldDefinition) fieldDefinition;
     }
 
     private Definition definition;
@@ -206,6 +262,11 @@ public class Identifier extends AbstractIdentifier {
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         // leaf node => nothing to do
+    }
+
+    @Override
+    public boolean NeedsRegister() {
+        return getDefinition().isField();
     }
 
     @Override
@@ -227,6 +288,20 @@ public class Identifier extends AbstractIdentifier {
             s.print(d);
             s.println();
         }
+    }
+
+    private GPRegister defaultValue = null;
+
+    @Override
+    public GPRegister initDefaultValue(DecacCompiler compiler, GPRegister reg) {
+        if (defaultValue != null) {
+            return defaultValue;
+        }
+        defaultValue = Register.getR(0);
+        compiler.addInstruction(new LOAD(this.getType().getDefaultValue(), defaultValue));
+        // a changer pour initialisation var de type int x,y,z
+        return defaultValue;
+        // throw new UnsupportedOperationException("Not yet implmented");
     }
 
     @Override
@@ -253,16 +328,43 @@ public class Identifier extends AbstractIdentifier {
     }
 
     @Override
+    protected void codeGenStack(DecacCompiler compiler) {
+        getLOG().trace("Identifier codeGenStack");
+        if (getDefinition().isField()) {
+            // cas particulier pour les fields qui ne peuvent pas être générés avec un seul
+            // opérand
+            getLOG().trace("Field special case");
+            throw new UnsupportedOperationException("not yet implemented");
+        }
+
+        if (getType().isInt() || getType().isBoolean())
+            compiler.addInstruction(new iload(this.getExpDefinition().getOperand()));
+        else if (getType().isFloat())
+            compiler.addInstruction(new fload(this.getExpDefinition().getOperand()));
+        else
+            throw new DecacInternalError("Type " + getType() + " not supported.");
+    }
+
+    @Override
     public DAddr codeGenAddr(DecacCompiler compiler) {
         if (getDefinition().isField()) {
             getLOG().info("cas particulier pour les fields, génération par plusieurs opérandes");
             GPRegister current = compiler.getRegisterManager().getCurrent();
             RegisterOffset offset = new RegisterOffset(-2, Register.LB);
-            RegisterOffset field = new RegisterOffset(getFieldDefinition().getIndex() + 1, current);
+            RegisterOffset field = new RegisterOffset(getFieldDefinition().getIndex(), current);
             compiler.addInstruction(new LOAD(offset, current));
             return field;
         }
         DAddr ope = codeGenNoReg(compiler);
         return ope;
+    }
+
+    @Override
+    protected void codeGenJasminJump(DecacCompiler compiler, Label l, boolean jump) {
+        // boolean jump
+        if (jump)
+            compiler.addInstruction(new ifne(l));
+        else
+            compiler.addInstruction(new ifeq(l));
     }
 }

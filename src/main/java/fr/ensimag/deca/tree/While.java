@@ -5,6 +5,8 @@ import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.BRA;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.spaghetti;
+
 import org.apache.commons.lang.Validate;
 
 import java.io.PrintStream;
@@ -44,8 +46,19 @@ public class While extends AbstractInst {
         compiler.addLabel(condwhile);
         this.condition.codeGenCond(compiler, debutwhile, true);
         getLOG().info("création et fixation du Label de début du while");
+    }
 
-        // throw new UnsupportedOperationException("not yet implemented");
+    @Override
+    protected void codeGenInstJasmin(DecacCompiler compiler, Label returnLabel, Label local) {
+        getLOG().trace("While codeGenInstJasmin");
+        Label startWhile = compiler.getLabelManager().newLabel("while");
+        Label whileCond = compiler.getLabelManager().newLabel("condWhile");
+
+        compiler.addInstruction(new spaghetti(whileCond));
+        compiler.addLabel(startWhile);
+        this.body.codeGenListInstJasmin(compiler, returnLabel, whileCond);
+        compiler.addLabel(whileCond);
+        this.condition.codeGenCondJasmin(compiler, startWhile, true);
     }
 
     @Override
@@ -54,7 +67,8 @@ public class While extends AbstractInst {
             throws ContextualError {
         Type cond = this.getCondition().verifyExpr(compiler, localEnv, currentClass);
         if (!cond.isBoolean()) {
-            throw new ContextualError("La condition d'un while doit être un booléen", this.getLocation());
+            throw new ContextualError("The condition of a while loop should be a bool but here it is a: " + cond,
+                    this.getLocation());
         }
 
         this.body.verifyListInst(compiler, localEnv, currentClass, returnType);

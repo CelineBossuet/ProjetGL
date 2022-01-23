@@ -1,0 +1,14 @@
+// Description:
+//    Programme vérifiant le bon fonctionnement d'un modulo
+//
+// Resultats:
+//    1
+//
+// Historique:
+//    cree le 11/01/2022
+{
+print("modulo de 5%2 : ");
+println(5%2);
+
+//println(5%2.0); renvoit bien une erreur car 2.0 float
+}

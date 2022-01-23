@@ -35,12 +35,12 @@ public class ListInst extends TreeList<AbstractInst> {
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
         // verify each instructions
+        LOG.info("Début verification de la Liste d'Instructions ie pass 3");
         for (AbstractInst i : this.getList())
             i.verifyInst(compiler, localEnv, currentClass, returnType);
     }
 
     public void codeGenListInst(DecacCompiler compiler, Label returnLabel, Label local) {
-        // System.out.println("LinstInst codeGenListInst");
         int compteur = 1;
         for (AbstractInst i : getList()) {
             if (compteur != this.getList().size()) {
@@ -48,6 +48,18 @@ public class ListInst extends TreeList<AbstractInst> {
                 compteur += 1;
             } else {
                 i.codeGenInst(compiler, returnLabel, local);
+            }
+        }
+    }
+
+    public void codeGenListInstJasmin(DecacCompiler compiler, Label returnLabel, Label local) {
+        int compteur = 1;
+        for (AbstractInst i : getList()) {
+            if (compteur != this.getList().size()) {
+                i.codeGenInstJasmin(compiler, returnLabel, null);
+                compteur += 1;
+            } else {
+                i.codeGenInstJasmin(compiler, returnLabel, local);
             }
         }
     }

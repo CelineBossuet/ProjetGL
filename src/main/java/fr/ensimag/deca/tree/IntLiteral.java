@@ -7,13 +7,15 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.Environment;
 import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.context.IntType;
+import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.ImmediateInteger;
-import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
-import fr.ensimag.ima.pseudocode.instructions.WINT;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.ldc;
+import fr.ensimag.ima.pseudocode.jasmin.Constant;
 
 import java.io.PrintStream;
 
@@ -40,7 +42,6 @@ public class IntLiteral extends AbstractExpr {
         setType(new IntType(compiler.getSymbolTable().create("int")));
         return getType();
     }
-
 
     @Override
     String prettyPrintNode() {
@@ -78,5 +79,16 @@ public class IntLiteral extends AbstractExpr {
         GPRegister reg = compiler.getRegisterManager().getCurrent();
         compiler.addInstruction(new LOAD(new ImmediateInteger(getValue()), reg));
         return reg;
+    }
+
+    @Override
+    protected void codeGenStack(DecacCompiler compiler) {
+        getLOG().trace("IntLiteral codeGenStack");
+        compiler.addInstruction(new ldc(new Constant(getValue())));
+    }
+
+    @Override
+    protected void codeGenJasminJump(DecacCompiler compiler, Label l, boolean jump) {
+        throw new DecacInternalError("Can't jump with int literals");
     }
 }

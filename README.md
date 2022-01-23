@@ -155,4 +155,16 @@ Pour relancer en mode sans échec, vous pouvez aussi lancer
 mvn verify -Dmaven.test.failure.ignore
 ``
 
+## Compilateur bytecode Java
+
+Notre compilateur permet de compiler des programmes decac en bytecode exécutable par la JVM avec l'option `-j`
+
+### Problèmes fréquents
+En cas de Stack Overflow, il peut être nécessaire d'ajuster les limites du nombre de variables et de la taille de pile des méthodes :
+
+Dans le fichier [DecacCompiler.java](src/main/java/fr/ensimag/deca/DecacCompiler.java) à la fin, aux lignes :
+```
+pS.println(".limit stack 256");
+pS.println(".limit locals 256");
+```
 

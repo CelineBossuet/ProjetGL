@@ -6,11 +6,17 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.Environment;
 import fr.ensimag.deca.context.ExpDefinition;
+import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
+import javax.lang.model.util.ElementScanner6;
+
 import fr.ensimag.ima.pseudocode.DAddr;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.fstore;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.istore;
+
 import org.apache.commons.lang.Validate;
 
 /**
@@ -42,10 +48,9 @@ public class Initialization extends AbstractInitialization {
         Type expr = getExpression().verifyExpr(compiler, localEnv, currentClass);
         if (!expr.sameType(t) && !(expr.isInt() && t.isFloat())) {
             throw new ContextualError(
-                    t + " n'est pas un sous type de " + expr + " et ne peut donc pas lui être assigné", getLocation());
+                    t + " isn't a subtype of " + expr + " and can't be assign to it", getLocation());
         }
         setExpression(expression.verifyRValue(compiler, localEnv, currentClass, t));
-        // throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override
@@ -58,9 +63,31 @@ public class Initialization extends AbstractInitialization {
     }
 
     @Override
+    protected void codeGeneInitJasmin(DecacCompiler compiler, DAddr target) {
+        // put expression result in top stack
+        expression.codeGenStack(compiler);
+
+        if (expression.getType().isInt()) {
+            compiler.addInstruction(new istore(target));
+        } else if (expression.getType().isFloat()) {
+            compiler.addInstruction(new fstore(target));
+        } else if (expression.getType().isBoolean()) {
+            compiler.addComment("init boolean");
+            compiler.addInstruction(new istore(target));
+        } else {
+            throw new DecacInternalError("Type " + expression.getType() + " not supported.");
+        }
+    }
+
+    @Override
     public void decompile(IndentPrintStream s) {
         s.print(" = ");
         getExpression().decompile(s);
+    }
+
+    @Override
+    protected boolean hasInit() {
+        return true;
     }
 
     @Override

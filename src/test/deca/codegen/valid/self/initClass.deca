@@ -1,0 +1,12 @@
+class A{
+    int x;
+    int y=3;
+
+    int getx(){return this.x;}
+    int gety(){return this.y;}
+}
+
+{
+    A obj = new A();
+    println("x est ", obj.getx(), " et y est ", obj.gety());
+}

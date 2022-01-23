@@ -4,7 +4,8 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ContextualError;
 
 /**
- * Entry point for contextual verifications and code generation from outside the package.
+ * Entry point for contextual verifications and code generation from outside the
+ * package.
  * 
  * @author gl13
  * @date 01/01/2022
@@ -12,6 +13,8 @@ import fr.ensimag.deca.context.ContextualError;
  */
 public abstract class AbstractProgram extends Tree {
     public abstract void verifyProgram(DecacCompiler compiler) throws ContextualError;
-    public abstract void codeGenProgram(DecacCompiler compiler) ;
 
+    public abstract void codeGenProgram(DecacCompiler compiler);
+
+    public abstract void codeGenProgramJasmin(DecacCompiler compiler);
 }

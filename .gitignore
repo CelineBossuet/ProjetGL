@@ -15,3 +15,8 @@
 *.res
 *.ass
 *.decap
+
+
+# Jasmin
+*.j
+*.class

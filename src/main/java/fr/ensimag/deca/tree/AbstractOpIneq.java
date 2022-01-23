@@ -1,6 +1,6 @@
 package fr.ensimag.deca.tree;
 
-
+import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.ima.pseudocode.BinaryInstruction;
 import fr.ensimag.ima.pseudocode.DVal;
@@ -27,5 +27,9 @@ public abstract class AbstractOpIneq extends AbstractOpCmp {
     @Override
     protected BinaryInstruction geneInstru(DVal val, GPRegister reg) {
         throw new DecacInternalError("peut pas utiliser geneInstru() pour AbstractOpIneq");
+    }
+
+    protected void codeGenArithJasmin(DecacCompiler compiler) {
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 }

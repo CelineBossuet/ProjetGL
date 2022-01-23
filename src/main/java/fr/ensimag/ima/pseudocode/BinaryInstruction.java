@@ -21,7 +21,7 @@ public class BinaryInstruction extends Instruction {
     }
 
     @Override
-    void displayOperands(PrintStream s) {
+    protected void displayOperands(PrintStream s) {
         s.print(" ");
         s.print(operand1);
         s.print(", ");

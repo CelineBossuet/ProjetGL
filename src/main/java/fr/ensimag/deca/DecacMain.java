@@ -34,7 +34,7 @@ public class DecacMain {
         if (options.getPrintBanner()) {
             System.out.println("Nom de l'équipe : 13");
         }
-        if (options.getSourceFiles().isEmpty()) {
+        if (options.getSourceFiles().isEmpty() && !options.getPrintBanner()) {
             options.displayUsage();
             System.exit(0);
         }

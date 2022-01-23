@@ -1,6 +1,8 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.DecacFatalError;
+import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.BinaryInstruction;
@@ -9,12 +11,17 @@ import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.POP;
 import fr.ensimag.ima.pseudocode.instructions.PUSH;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.fload;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.fstore;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.iload;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.istore;
+import fr.ensimag.ima.pseudocode.jasmin.VarID;
 import fr.ensimag.ima.pseudocode.instructions.BOV;
+import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
 import java.io.PrintStream;
-import java.util.Objects;
 
 import static fr.ensimag.ima.pseudocode.Register.getR;
 
@@ -89,6 +96,8 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
      */
     protected abstract BinaryInstruction geneInstru(DVal val, GPRegister reg);
 
+    protected abstract void codeGenArithJasmin(DecacCompiler compiler);
+
     @Override
     protected DVal codeGenNoReg(DecacCompiler compiler) {
         throw new DecacInternalError("pas possible car pas feuille de AbstractEpression");
@@ -106,20 +115,38 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         return codeGenRegInternal(compiler, true);
     }
 
+    @Override
+    protected void codeGenStack(DecacCompiler compiler) {
+        getLOG().trace("AbsBinary codeGenStack");
+        codeGenStackInternal(compiler);
+    }
+
     protected GPRegister codeGenRegInternal(DecacCompiler compiler, boolean useful) {
         getLOG().trace("AbsBinaryExpr codeGenRegInternal");
         AbstractExpr right = getRightOperand();
         AbstractExpr left = getLeftOperand();
         GPRegister result;
         GPRegister leftValue = left.codeGenReg(compiler);
+        DVal rightValue;
+        try {
+            if (left.getType().isInt() && right.getType().isFloat()) {
+                compiler.addInstruction(new FLOAT(leftValue, leftValue));
+                left.setType(right.getType());
+            }
+        } catch (Exception e) {
+
+        }
+
         if (!right.NeedsRegister()) {
             getLOG().info("cas ou pas besoin de registre");
-            geneOneOrMoreInstru(compiler, right.codeGenNoReg(compiler), leftValue, useful);
+            rightValue = right.codeGenNoReg(compiler);
+            geneOneOrMoreInstru(compiler, rightValue, leftValue, useful);
             result = leftValue;
         } else if (compiler.getRegisterManager().getMax() - compiler.getRegisterManager().getCurrentv() + 1 > 1) {
+
             getLOG().info("cas ou il y a des registres libres qu'on peut allouer");
             GPRegister r = compiler.allocate(); // on alloue un registre
-            DVal rightValue = right.codeGenReg(compiler);
+            rightValue = right.codeGenReg(compiler);
             compiler.release(r);
             geneOneOrMoreInstru(compiler, rightValue, leftValue, useful);
             result = leftValue;
@@ -130,7 +157,7 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
             compiler.addInstruction(new PUSH(leftValue));
             // PUSH décrémente le pointeur de la pile et entrepose leftValue en haut de la
             // pile
-            DVal rightValue = right.codeGenReg(compiler);
+            rightValue = right.codeGenReg(compiler);
 
             compiler.addInstruction(new POP(getR(0)));
             // POP permet de désempiler de la pile un mot et la met dans R0
@@ -141,14 +168,68 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
                 compiler.addInstruction(new LOAD(getR(0), result));
             }
         }
-        getLOG().info("si erreur rentre dans le Label OverFlow");
-        compiler.addInstruction(
-                new BOV(compiler.getLabelManager().getOverFlowLabel(), compiler.getCompilerOptions().getNoCheck()));
+        try {
+            if (left.getType().isFloat() && right.getType().isInt()) {
+                System.out.println("hello");
+                compiler.addInstruction(new FLOAT(rightValue, (GPRegister) rightValue));
+                right.setType(left.getType());
+            }
+        } catch (Exception e) {
+        }
+
+        if (canOverFlow()) {
+            getLOG().info("si erreur rentre dans le Label OverFlow");
+            compiler.addInstruction(
+                    new BOV(compiler.getLabelManager().getOverFlowLabel(), compiler.getCompilerOptions().getNoCheck()));
+        }
+
         return result;
+    }
+
+    protected boolean canOverFlow() {
+        return getType().isFloat();
+    }
+
+    private void codeGenStackInternal(DecacCompiler compiler) {
+        getLOG().trace("AbsBinaryExpr codeGenStackInternal");
+        AbstractExpr right = getRightOperand();
+        AbstractExpr left = getLeftOperand();
+
+        // type verification
+        if ((right.getType().isFloat() && !left.getType().isFloat())
+                || (left.getType().isFloat() && !right.getType().isFloat()))
+            throw new DecacInternalError("Can't compare float with other type");
+
+        right.codeGenStack(compiler); // right result
+        VarID rightStore = compiler.getMemoryManager().allocJasmin();
+
+        // store right result
+        if (right.getType().isInt() || right.getType().isBoolean())
+            compiler.addInstruction(new istore(rightStore));
+        else if (right.getType().isFloat())
+            compiler.addInstruction(new fstore(rightStore));
+        else
+            throw new DecacInternalError("Type " + right.getType() + " non supporté.");
+
+        left.codeGenStack(compiler); // left result
+
+        // do operation between two operands
+        geneOneOrMoreInstruJasmin(compiler, rightStore, right.getType());
+
     }
 
     protected void geneOneOrMoreInstru(DecacCompiler compiler, DVal val, GPRegister reg, boolean useful) {
         getLOG().trace("AbsBinaryExpr geneOneOrMoreInstru");
         compiler.addInstruction(geneInstru(val, reg));
+    }
+
+    protected void geneOneOrMoreInstruJasmin(DecacCompiler compiler, VarID rightVar, Type rightType) {
+        getLOG().trace("AbsBinaryExpr geneOneOrMoreInstruJasmin");
+        // get right result
+        if (rightType.isInt() || rightType.isBoolean())
+            compiler.addInstruction(new iload(rightVar));
+        else if (rightType.isFloat())
+            compiler.addInstruction(new fload(rightVar));
+        codeGenArithJasmin(compiler);
     }
 }

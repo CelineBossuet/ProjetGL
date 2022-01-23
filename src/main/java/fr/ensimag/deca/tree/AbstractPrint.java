@@ -46,7 +46,7 @@ public abstract class AbstractPrint extends AbstractInst {
             Type type = a.verifyExpr(compiler, localEnv, currentClass);
             if (!type.isInt() && !type.isFloat() && !type.isString()) {
                 throw new ContextualError(
-                        "Type " + type + " non supporté pour print/println",
+                        "Type " + type + " is not supported by print or println",
                         getLocation());
             }
         }
@@ -63,6 +63,14 @@ public abstract class AbstractPrint extends AbstractInst {
                 // print normal
                 a.codeGenPrint(compiler);
 
+        }
+    }
+
+    @Override
+    protected void codeGenInstJasmin(DecacCompiler compiler, Label returnLabel, Label local) {
+        getLOG().trace("AbsPrint codeGenInstJasmin");
+        for (AbstractExpr a : getArguments().getList()) {
+            a.codeGenPrintJasmin(compiler, getSuffix());
         }
     }
 

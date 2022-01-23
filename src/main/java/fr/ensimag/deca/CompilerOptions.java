@@ -1,12 +1,12 @@
 package fr.ensimag.deca;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
 
 /**
  * User-specified options influencing the compilation.
@@ -44,6 +44,10 @@ public class CompilerOptions {
         return verif;
     }
 
+    public boolean getJava() {
+        return java;
+    }
+
     /**
      * 
      * @return Limit of registers or -1 if no limit.
@@ -64,6 +68,8 @@ public class CompilerOptions {
     private boolean verif = false;
     private int registers = -1;
     private boolean noCheck = false;
+
+    private boolean java = false;
 
     public void parseArgs(String[] args) throws CLIException {
         boolean register = false;
@@ -94,6 +100,9 @@ public class CompilerOptions {
                         break;
                     case "-P":
                         parallel = true;
+                        break;
+                    case "-j":
+                        java = true;
                         break;
                     default:
                         sourceFiles.add(new File(arg));
@@ -159,6 +168,7 @@ public class CompilerOptions {
                 "traces.\n" +
                 ". -P (parallel) : s'il y a plusieurs fichiers sources, " +
                 "lance la compilation des fichiers en " +
-                "parallèle (pour accélérer la compilation).");
+                "parallèle (pour accélérer la compilation).\n" +
+                ". -j (java bytecode) : Compile le fichier en bytecode Java, au format .class exécutable par une JVM.");
     }
 }

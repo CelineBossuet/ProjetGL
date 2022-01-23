@@ -31,6 +31,12 @@ public class NoOperation extends AbstractInst {
     }
 
     @Override
+    protected void codeGenInstJasmin(DecacCompiler compiler, Label returnLabel,
+            Label local) {
+        compiler.addComment("Aucune instruction donnée");
+    }
+
+    @Override
     public void decompile(IndentPrintStream s) {
         s.print(";");
     }

@@ -1,10 +1,22 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.DecacCompiler.JasminStaticVars;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.Environment;
 import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.astore;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.dup;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.getstatic;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.invokespecial;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.newI;
+import fr.ensimag.ima.pseudocode.jasmin.IOStream;
+import fr.ensimag.ima.pseudocode.jasmin.ScannerObject;
+import fr.ensimag.ima.pseudocode.jasmin.SpecialScanner;
+import fr.ensimag.ima.pseudocode.jasmin.SystemIO;
+import fr.ensimag.ima.pseudocode.jasmin.VarID;
+
 import java.io.PrintStream;
 
 import org.apache.commons.lang.Validate;
@@ -43,9 +55,26 @@ public class Main extends AbstractMain {
     protected void codeGenMain(DecacCompiler compiler) {
         // A FAIRE: traiter les déclarations de variables.
         // System.out.println("Main");
-        declVariables.codeGenListVar(compiler);
+        declVariables.codeGenListVar(compiler, false);
         compiler.addComment("Beginning of main instructions:");
         insts.codeGenListInst(compiler, null, null);
+    }
+
+    @Override
+    protected void codeGenMainJasmin(DecacCompiler compiler) {
+        // declare useful variables
+        compiler.addInstruction(new getstatic(new SystemIO(false), new IOStream(false))); // system out
+        compiler.addInstruction(new astore(new VarID(JasminStaticVars.SYSTEM_OUT.id())));
+        compiler.addInstruction(new newI(new ScannerObject())); // system in
+        compiler.addInstruction(new dup());
+        compiler.addInstruction(new getstatic(new SystemIO(true), new IOStream(true)));
+        compiler.addInstruction(new invokespecial(new SpecialScanner()));
+        compiler.addInstruction(new astore(new VarID(JasminStaticVars.SYSTEM_IN.id())));
+
+        // program
+        declVariables.codeGenListVarJasmin(compiler);
+        compiler.addComment("Beginning of main instructions");
+        insts.codeGenListInstJasmin(compiler, null, null);
     }
 
     @Override

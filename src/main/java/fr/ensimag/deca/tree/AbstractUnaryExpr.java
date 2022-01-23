@@ -6,6 +6,8 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Instruction;
+import fr.ensimag.ima.pseudocode.Label;
+
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
@@ -67,6 +69,8 @@ public abstract class AbstractUnaryExpr extends AbstractExpr {
      **/
     protected abstract Instruction geneInstru(GPRegister reg);
 
+    protected abstract void geneInstruJasmin(DecacCompiler compiler);
+
     @Override
     protected DVal codeGenNoReg(DecacCompiler compiler) {
         throw new DecacInternalError("Peut pas utiliser codeGenNoReg pour AbstractUnaryExpr car pas une feuille");
@@ -81,5 +85,17 @@ public abstract class AbstractUnaryExpr extends AbstractExpr {
         GPRegister reg = getOperand().codeGenReg(compiler);
         compiler.addInstruction(geneInstru(reg));
         return reg;
+    }
+
+    @Override
+    protected void codeGenStack(DecacCompiler compiler) {
+        getLOG().trace("AbsUnaryExpr codeGenStack");
+        getOperand().codeGenStack(compiler);
+        geneInstruJasmin(compiler);
+    }
+
+    @Override
+    protected void codeGenJasminJump(DecacCompiler compiler, Label l, boolean jump) {
+        throw new DecacInternalError("Can't jump with unary expression");
     }
 }
