@@ -6,7 +6,6 @@ import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Instruction;
 import fr.ensimag.ima.pseudocode.instructions.FLOAT;
 import fr.ensimag.ima.pseudocode.instructions.jasmin.i2f;
-import fr.ensimag.ima.pseudocode.instructions.jasmin.iload;
 
 /**
  * Conversion of an int into a float. Used for implicit conversions.

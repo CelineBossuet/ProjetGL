@@ -392,7 +392,8 @@ public class DecacCompiler {
     }
 
     public enum JasminStaticVars {
-        SYSTEM_OUT(1);
+        SYSTEM_OUT(1),
+        SYSTEM_IN(2);
 
         private int id;
 
@@ -405,7 +406,7 @@ public class DecacCompiler {
         }
 
         public static int getLastUsed() {
-            return 1; // 1 used by SYSTEM_OUT
+            return 2; // 2 used by SYSTEM_IN
         }
 
     }

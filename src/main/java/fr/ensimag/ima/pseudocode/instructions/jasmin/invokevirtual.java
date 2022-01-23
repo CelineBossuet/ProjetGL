@@ -1,12 +1,12 @@
 package fr.ensimag.ima.pseudocode.instructions.jasmin;
 
+import fr.ensimag.ima.pseudocode.Operand;
 import fr.ensimag.ima.pseudocode.UnaryInstruction;
-import fr.ensimag.ima.pseudocode.jasmin.PrintInvoked;
 
-// TODO A FAIRE généraliser cette classe pas que pour les print
+// TODO A FAIRE généraliser cette classe correctement
 public class invokevirtual extends UnaryInstruction {
 
-    public invokevirtual(PrintInvoked op) { // todo Prendre pas que des printinvoked
+    public invokevirtual(Operand op) {
         super(op);
     }
 

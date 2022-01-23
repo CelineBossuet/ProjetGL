@@ -1,6 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.DecacCompiler.JasminStaticVars;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
@@ -8,6 +9,11 @@ import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.NullaryInstruction;
 import fr.ensimag.ima.pseudocode.instructions.BOV;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.aload;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.invokevirtual;
+import fr.ensimag.ima.pseudocode.jasmin.ScannerRead;
+import fr.ensimag.ima.pseudocode.jasmin.VarID;
+
 import org.apache.log4j.Logger;
 
 import static fr.ensimag.ima.pseudocode.Register.getR;
@@ -61,7 +67,9 @@ public abstract class AbstractReadExpr extends AbstractExpr {
         @Override
         protected void codeGenStack(DecacCompiler compiler) {
                 getLOG().trace("AbsReadExpr codeGenStack");
-                throw new UnsupportedOperationException("Not yet implemented");
+                // load scanner
+                compiler.addInstruction(new aload(new VarID(JasminStaticVars.SYSTEM_IN.id())));
+                compiler.addInstruction(new invokevirtual(new ScannerRead(getType())));
         }
 
         @Override
