@@ -28,14 +28,14 @@ public abstract class AbstractPrint extends AbstractInst {
 
     abstract String getSuffix();
 
+    public ListExpr getArguments() {
+        return arguments;
+    }
+
     public AbstractPrint(boolean printHex, ListExpr arguments) {
         Validate.notNull(arguments);
         this.arguments = arguments;
         this.printHex = printHex;
-    }
-
-    public ListExpr getArguments() {
-        return arguments;
     }
 
     @Override
@@ -66,6 +66,10 @@ public abstract class AbstractPrint extends AbstractInst {
         }
     }
 
+    private boolean getPrintHex() {
+        return printHex;
+    }
+
     @Override
     protected void codeGenInstJasmin(DecacCompiler compiler, Label returnLabel, Label local) {
         getLOG().trace("AbsPrint codeGenInstJasmin");
@@ -74,20 +78,18 @@ public abstract class AbstractPrint extends AbstractInst {
         }
     }
 
-    private boolean getPrintHex() {
-        return printHex;
+
+    @Override
+    protected void iterChildren(TreeFunction f) {
+        arguments.iter(f);
     }
+
 
     @Override
     public void decompile(IndentPrintStream s) {
         s.print("print" + getSuffix() + (getPrintHex() ? "x" : "") + "(");
         getArguments().decompile(s);
         s.print(");");
-    }
-
-    @Override
-    protected void iterChildren(TreeFunction f) {
-        arguments.iter(f);
     }
 
     @Override

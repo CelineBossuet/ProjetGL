@@ -79,6 +79,9 @@ public class CompilerOptions {
                     case "-b":
                         printBanner = true;
                         break;
+                    case "-n":
+                        noCheck = true;
+                        break;
                     case "-p":
                         if (verif)
                             throw new CLIException("Impossible d'utiliser simultanément les options -p et -v.");
@@ -89,17 +92,14 @@ public class CompilerOptions {
                             throw new CLIException("Impossible d'utiliser simultanément les options -p et -v.");
                         verif = true;
                         break;
-                    case "-n":
-                        noCheck = true;
-                        break;
                     case "-r":
                         register = true;
                         break;
-                    case "-d":
-                        debug++;
-                        break;
                     case "-P":
                         parallel = true;
+                        break;
+                    case "-d":
+                        debug++;
                         break;
                     case "-j":
                         java = true;

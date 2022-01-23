@@ -61,17 +61,9 @@ public abstract class AbstractExpr extends AbstractInst {
 
     private Type type;
 
-    @Override
-    protected void checkDecoration() {
-        if (getType() == null) {
-            throw new DecacInternalError("Expression " + decompile() + " has no Type decoration");
-        }
-    }
-
-    // TODO Tout ce qui est verify c'est la partie B !
     /**
      * Verify the expression for contextual error.
-     * 
+     *
      * implements non-terminals "expr" and "lvalue"
      * of [SyntaxeContextuelle] in pass 3
      *
@@ -87,8 +79,16 @@ public abstract class AbstractExpr extends AbstractInst {
      *         (corresponds to the "type" attribute)
      */
     public abstract Type verifyExpr(DecacCompiler compiler,
-            Environment<ExpDefinition> localEnv, ClassDefinition currentClass)
+                                    Environment<ExpDefinition> localEnv, ClassDefinition currentClass)
             throws ContextualError;
+
+    @Override
+    protected void checkDecoration() {
+        if (getType() == null) {
+            throw new DecacInternalError("Expression " + decompile() + " has no Type decoration");
+        }
+    }
+
 
     /**
      * Verify the expression in right hand-side of (implicit) assignments

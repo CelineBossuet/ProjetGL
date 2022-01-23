@@ -1,0 +1,8 @@
+class Fma {
+      float fma(float a, float b, float c) asm("
+	   LOAD -5(LB), R1
+      	   LOAD -3(LB), R0
+	   FMA -4(LB), R0
+	   RTS
+	   ");
+}
