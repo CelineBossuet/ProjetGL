@@ -5,6 +5,8 @@ import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.BRA;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.spaghetti;
+
 import org.apache.commons.lang.Validate;
 
 import java.io.PrintStream;
@@ -48,7 +50,15 @@ public class While extends AbstractInst {
 
     @Override
     protected void codeGenInstJasmin(DecacCompiler compiler, Label returnLabel, Label local) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        getLOG().trace("While codeGenInstJasmin");
+        Label startWhile = compiler.getLabelManager().newLabel("while");
+        Label whileCond = compiler.getLabelManager().newLabel("condWhile");
+
+        compiler.addInstruction(new spaghetti(whileCond));
+        compiler.addLabel(startWhile);
+        this.body.codeGenListInstJasmin(compiler, returnLabel, whileCond);
+        compiler.addLabel(whileCond);
+        this.condition.codeGenCondJasmin(compiler, startWhile, true);
     }
 
     @Override
