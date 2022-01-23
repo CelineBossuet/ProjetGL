@@ -88,9 +88,20 @@ public class Cast extends AbstractExpr{
             compiler.addLabel(suiteCast);
 
         }
+        else if(expr.getType().isClass() && typeToCast.isClass()){
+            /*Label suiteCast = compiler.getLabelManager().newLabel("suiteCast");
 
+            compiler.addInstruction(new CMP(new NullOperand(), reg));
+            compiler.addInstruction(new BEQ(suiteCast));
+
+
+            compiler.addInstruction(new CMP(0, Register.getR(0)));
+            compiler.addInstruction(new BNE(suiteCast));
+            compiler.addInstruction(new BRA(compiler.getLabelManager().getCastFailedLabel()));
+
+            compiler.addLabel(suiteCast);*/
+        }
         return reg;
-        //TODO cas type est une class
         //throw new UnsupportedOperationException("Not yet implemented");
     }
 

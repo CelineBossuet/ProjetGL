@@ -352,6 +352,11 @@ public class DecacCompiler {
         this.addInstruction(new WNL());
         this.addInstruction(new ERROR());
 
+        this.addLabel(this.labelManager.getCastFailedLabel());
+        this.addInstruction(new WSTR("Error: Cast Failed"));
+        this.addInstruction(new WNL());
+        this.addInstruction(new ERROR());
+
 
         this.addLabel(this.labelManager.getEqualsLabel());
         this.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), Register.getR(0)));
