@@ -124,5 +124,30 @@ do
   fi
 done
 
+echo -e "${jaune}Cas non valide créé${blanc}"
+
+for i in ./src/test/deca/codegen/invalid/*.deca
+do
+  fichier=$(basename $i)
+  if decac "$i" 2>&1 | grep -q -e "$fichier" -e 'Error'
+  then
+    decac "$i" > "${i%.deca}".ass 2>&1
+    ima "${i%.deca}".ass > "${i%.deca}".res 2>&1 &
+    echo -e "$fichier ${rouge} FAILED ${blanc}"
+    status=1
+  else
+    decac "$i" > "${i%.deca}".ass 2>&1
+    if ima "${i%.deca}".ass 2>&1 | grep -q -e "$fichier" -e 'Error' -e '** IMA'
+    then
+      ima "${i%.deca}".ass > "${i%.deca}".res 2>&1 &
+      echo -e "$fichier ${vert} PASSED ${blanc}"
+    else
+      ima "${i%.deca}".ass > "${i%.deca}".res 2>&1 &
+      echo -e "$fichier ${rouge} FAILED ${blanc}"
+      status=1
+    fi
+  fi
+done
+
 #On exit sous le bon status
 exit ${status}
