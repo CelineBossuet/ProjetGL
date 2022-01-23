@@ -8,6 +8,7 @@ import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.PEA;
 import fr.ensimag.ima.pseudocode.instructions.POP;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.fstore;
 import fr.ensimag.ima.pseudocode.instructions.jasmin.istore;
 
 /**
@@ -89,7 +90,14 @@ public class Assign extends AbstractBinaryExpr {
         right.codeGenStack(compiler);
 
         // store result in left identifier
-        compiler.addInstruction(new istore(((Identifier) left).getExpDefinition().getOperand()));
+        if (getType().isInt()) {
+            compiler.addInstruction(new istore(((Identifier) left).getExpDefinition().getOperand()));
+        } else if (getType().isFloat()) {
+            compiler.addInstruction(new fstore(((Identifier) left).getExpDefinition().getOperand()));
+        } else {
+            throw new DecacInternalError("Type " + getType() + " not supported.");
+        }
+
     }
 
     protected void codeGenArithJasmin(DecacCompiler compiler) {
