@@ -161,8 +161,8 @@ inst returns[AbstractInst tree]
         } //TOBETESTED
     | RETURN expr SEMI { //si c'est un return
             assert($expr.tree != null);
-            $tree=$expr.tree;
-            setLocation($tree, $expr.start);
+            $tree= new Return($expr.tree);
+            setLocation($tree, $RETURN);
         }
     ;
 
@@ -405,14 +405,19 @@ select_expr returns[AbstractExpr tree]
     | e1=select_expr DOT i=ident {
             assert($e1.tree != null);
             assert($i.tree != null);
-        }//TODO compilateur avec objet
+        }//TODO gestion des erreurs ?
         (o=OPARENT args=list_expr CPARENT {
             // we matched "e1.i(args)"
+            // i correspond au nom de la méthode qu'on va appeler
             assert($args.tree != null);
-        }//TODO compilateur avec objet
+            $tree = new MethodCall($e1.tree, $i.tree, $args.tree); //on appelle une methode déjà créee
+            setLocation($tree, $o);
+        }//TOBETESTED
         | /* epsilon */ {
             // we matched "e.i"
-        }//TODO
+            $tree = new Selection($e1.tree, $i.tree);;
+            setLocation($tree, $DOT);
+        }//TOBETESTED
         )
     ;
 
@@ -426,8 +431,14 @@ primary_expr returns[AbstractExpr tree]
     | m=ident OPARENT args=list_expr CPARENT {
             assert($args.tree != null);
             assert($m.tree != null);
+            This t = new This(true); // m() signifie this.m()
+            t.setLocation($m.tree.getLocation());
 
-        }//TODO
+            $tree = new MethodCall(t, $m.tree, $args.tree);
+            //encore une fois on appelle une méthode mais sans vraiment de paramètres implicites
+            // donc on fait this().m(args) avec m le nom de la méthode
+            setLocation($tree, $OPARENT);
+        }//TOBETESTED
     | OPARENT expr CPARENT {
             assert($expr.tree != null);
             $tree=$expr.tree;
@@ -442,12 +453,17 @@ primary_expr returns[AbstractExpr tree]
         }//TOBETESTED
     | NEW ident OPARENT CPARENT {
             assert($ident.tree != null);
-        }//TODO
+            $tree = new New($ident.tree);
+            setLocation($tree, $NEW);
+        }//TOBETESTED
     | cast=OPARENT type CPARENT OPARENT expr CPARENT {
             assert($type.tree != null);
             assert($expr.tree != null);
+            //ici on change le type de expr avec un cast
+            $tree = new Cast($type.tree, $expr.tree);
+            setLocation($tree, $cast);
 
-        }//TODO
+        }//TOBETESTED
     | literal {
             assert($literal.tree != null);
             $tree=$literal.tree;
@@ -515,82 +531,146 @@ literal returns[AbstractExpr tree]
 ident returns[AbstractIdentifier tree]
     : IDENT {
         $tree = new Identifier(getDecacCompiler().getSymbolTable().create($IDENT.getText()));
+        //on créé un nouveau identifier en créant un nouveau symbol
         setLocation($tree, $IDENT);
         }//TOBETESTED
     ;
 
 /****     Class related rules     ****/
 
+
 list_classes returns[ListDeclClass tree]
 @init{
     $tree = new ListDeclClass();
 }    :
       (c1=class_decl {
-
+            assert($c1.tree !=null);
+            $tree.add($c1.tree); //on ajoute toutes les déclaration de classes qu'on fait
         }
       )*
     ;
 
-class_decl
+class_decl returns[DeclClass tree]
     : CLASS name=ident superclass=class_extension OBRACE class_body CBRACE {
+            //chaque déclaration de classe comprend son nom, sa classe mère, ses attributs et ses méthodes
+            $tree = new DeclClass($name.tree, $superclass.tree, $class_body.field, $class_body.method);
+            setLocation($tree, $name.start);
+            setLocation($superclass.tree, $superclass.start);
+            setLocation($name.tree, $name.start);
         }
     ;
 
 class_extension returns[AbstractIdentifier tree]
     : EXTENDS ident {
+            $tree=$ident.tree;
+            setLocation($ident.tree, $ident.start);
         }
     | /* epsilon */ {
+            $tree = new Identifier(getDecacCompiler().getSymbolTable().create("Object"));
+            $tree.setLocation(Location.BUILTIN);
         }
     ;
 
-class_body
+class_body returns[ListDeclField field, ListDeclMethod method]
+@init{
+ //dans une classe on a des methodes et des attributs donc on les ajoute
+ $method = new ListDeclMethod();
+ $field = new ListDeclField();
+}
     : (m=decl_method {
+            $method.add($m.tree); //on ajoute à notre liste des methodes déclarées chaque méthode
         }
-      | decl_field_set
+      | decl_field_set [$field]
+
       )*
     ;
 
-decl_field_set
-    : v=visibility t=type list_decl_field
+decl_field_set [ListDeclField tree]
+    : v=visibility t=type list_decl_field[$tree, $v.tree, $t.tree]
       SEMI
     ;
 
-visibility
+visibility returns[Visibility tree] //visibilité des attributs qui sont soit public soit protected
     : /* epsilon */ {
+            $tree = Visibility.PUBLIC;
         }
     | PROTECTED {
+            $tree = Visibility.PROTECTED;
         }
     ;
 
-list_decl_field
-    : dv1=decl_field
-        (COMMA dv2=decl_field
+list_decl_field [ListDeclField tree, Visibility v, AbstractIdentifier iden]
+    : dv1=decl_field [$v, $iden]
+    {
+        $tree.add($dv1.tree); //on ajoute tous les attributs déclarés
+    }
+        (COMMA dv2=decl_field [$v, $iden]
+    {
+        $tree.add($dv2.tree);
+    }
       )*
     ;
 
-decl_field
+decl_field [Visibility v, AbstractIdentifier t] returns[AbstractDeclField tree]
+@init{
+    AbstractIdentifier ident; //nom de l'attribut
+    AbstractInitialization init = null; //si l'attribut est initialisé en même temps que sa déclaration
+}
     : i=ident {
+            ident = $i.tree;
         }
       (EQUALS e=expr {
+            init = new Initialization($e.tree); //on a une initialisation
+            setLocation(init, $EQUALS);
         }
       )? {
+            if (init == null) { //l'attribut n'a pas été initialisé
+                init = new NoInitialization();
+            }
+            $tree = new DeclField($v, $t, ident, init); //dans tous les cas on déclare l'attribut
+            $tree.setLocation(ident.getLocation());
         }
     ;
 
-decl_method
+
+decl_method returns[DeclMethod tree]
 @init {
+    AbstractMethodBody body = null; //au départ il y a rien dans la méthode
 }
     : type ident OPARENT params=list_params CPARENT (block {
+            //on ajoute dans notre méthode toutes les déclaration et instructions de block
+            body = new MethodBody($block.decls, $block.insts);
+            setLocation(body, $block.start);
         }
       | ASM OPARENT code=multi_line_string CPARENT SEMI {
+            //methode écrite en assembleur aucune vérification du code est faite on récupère le code tel quel
+            String s = $code.text;
+            StringBuffer f = new StringBuffer();
+            for (int i = 1; i < s.length() - 1; i++) {
+                    if (s.charAt(i) == '\\') {
+                            i++;
+                    }
+                    f.append(s.charAt(i));
+            }
+            AbstractStringLiteral asmCode = new StringLiteral(f.toString());
+            asmCode.setLocation($code.location);
+            body = new MethodAsmBody(asmCode);
+            setLocation(body, $ASM);
         }
       ) {
+            $tree = new DeclMethod($type.tree, $ident.tree, $params.tree, body);
+            setLocation($tree, $type.start);
         }
     ;
 
-list_params
+list_params returns[ListDeclParam tree]
+@init{
+    $tree = new ListDeclParam();
+}
     : (p1=param {
+            $tree.add($p1.tree); //on ajoute les paramètres à la liste
         } (COMMA p2=param {
+            $tree.add($p2.tree);
         }
       )*)?
     ;
@@ -606,7 +686,9 @@ multi_line_string returns[String text, Location location]
         }
     ;
 
-param
+param returns[AbstractDeclParam tree]
     : type ident {
+            $tree = new DeclParam($type.tree, $ident.tree); //on déclare les paramètres
+            setLocation($tree, $type.start);
         }
     ;

@@ -1,0 +1,13 @@
+{
+
+    int a;
+    float b=2.0;
+
+    a=(int) (b);
+    println(a);
+
+    b=(float)(a);
+    println(b);
+
+
+}

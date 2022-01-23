@@ -1,12 +1,12 @@
 package fr.ensimag.deca;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
 
 /**
  * User-specified options influencing the compilation.

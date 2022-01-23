@@ -1,0 +1,9 @@
+class A {
+    void add(){
+        println("ok");
+    }
+
+    void add(){
+        println("ah");
+    }
+}

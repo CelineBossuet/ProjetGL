@@ -1,6 +1,8 @@
 package fr.ensimag.deca.context;
 
+import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.SymbolTable;
+import fr.ensimag.ima.pseudocode.DVal;
 
 /**
  *
@@ -16,6 +18,11 @@ public class StringType extends Type {
     @Override
     public boolean isString() {
         return true;
+    }
+
+    @Override
+    public DVal getDefaultValue() {
+        throw new DecacInternalError("Pas de valeur par défaut car on peut pas déclarer des types String");
     }
 
     @Override

@@ -1,0 +1,7 @@
+class A {
+    protected int x;
+
+    void setx(int x){
+        this.x = x;
+    }
+}

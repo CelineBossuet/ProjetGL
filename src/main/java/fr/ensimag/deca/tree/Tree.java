@@ -3,9 +3,10 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import org.apache.log4j.Logger;
+
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import org.apache.log4j.Logger;
 
 /**
  * Base class for any node in the Deca abstract syntax tree.
@@ -54,6 +55,7 @@ public abstract class Tree {
         decompile(s);
         return out.toString();
     }
+
 
     /**
      * wrapper for

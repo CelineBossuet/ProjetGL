@@ -3,15 +3,14 @@ package fr.ensimag.deca;
 import fr.ensimag.deca.codegen.LabelManager;
 import fr.ensimag.deca.codegen.MemoryManager;
 import fr.ensimag.deca.codegen.RegisterManager;
-import fr.ensimag.deca.context.Environment;
-import fr.ensimag.deca.context.TypeDefinition;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.syntax.DecaLexer;
 import fr.ensimag.deca.syntax.DecaParser;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.SymbolTable;
-import fr.ensimag.deca.tree.AbstractProgram;
-import fr.ensimag.deca.tree.LocationException;
+import fr.ensimag.deca.tree.*;
 import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.instructions.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -19,9 +18,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 
-import fr.ensimag.ima.pseudocode.instructions.ERROR;
-import fr.ensimag.ima.pseudocode.instructions.WNL;
-import fr.ensimag.ima.pseudocode.instructions.WSTR;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.apache.log4j.Logger;
@@ -44,6 +40,9 @@ import org.apache.log4j.Logger;
 public class DecacCompiler {
     private static final Logger LOG = Logger.getLogger(DecacCompiler.class);
 
+    public ClassDefinition OBJECT;
+    public EqualsDefinition EQUALS;
+
     public static Logger getLOG() {
         return LOG;
     }
@@ -57,6 +56,49 @@ public class DecacCompiler {
         super();
         this.compilerOptions = compilerOptions;
         this.source = source;
+        declareBuiltinTypes(this);
+    }
+
+    private void declareBuiltinTypes(DecacCompiler compiler) {
+        try {
+            compiler.getEnvironmentType().declare(compiler.getSymbolTable().create("void"),
+                    new TypeDefinition(new VoidType(compiler.getSymbolTable().create("void")), Location.BUILTIN));
+            compiler.getEnvironmentType().declare(compiler.getSymbolTable().create("boolean"),
+                    new TypeDefinition(new BooleanType(compiler.getSymbolTable().create("boolean")), Location.BUILTIN));
+            compiler.getEnvironmentType().declare(compiler.getSymbolTable().create("float"),
+                    new TypeDefinition(new FloatType(compiler.getSymbolTable().create("float")), Location.BUILTIN));
+            compiler.getEnvironmentType().declare(compiler.getSymbolTable().create("int"),
+                    new TypeDefinition(new IntType(compiler.getSymbolTable().create("int")), Location.BUILTIN));
+            compiler.getEnvironmentType().declare(compiler.getSymbolTable().create("string"),
+                    new TypeDefinition(new StringType(compiler.getSymbolTable().create("string")), Location.BUILTIN));
+            compiler.getEnvironmentType().declare(compiler.getSymbolTable().create("null"),
+                    new TypeDefinition(new NullType(compiler.getSymbolTable().create("null")), Location.BUILTIN));
+            IMAProgram newProg = new IMAProgram();
+            ObjectType objectType = new ObjectType(compiler.getSymbolTable().create("Object"), null, newProg);
+            newProg.addInstruction(new RTS());
+            ClassDefinition newt = new ClassDefinition(objectType, Location.BUILTIN, null);
+            this.OBJECT = objectType.getDefinition();
+
+            IMAProgram equalsProgram = new IMAProgram();
+            // gérer la comparaison de registre TODO
+            equalsProgram.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), Register.R0));
+            equalsProgram.addInstruction(new CMP(new RegisterOffset(-3, Register.LB), Register.R0));
+            equalsProgram.addInstruction(new SEQ(Register.R0));
+            equalsProgram.addInstruction(new RTS());
+
+            Signature sig = new Signature();
+            sig.add(objectType);
+            EqualsDefinition equals = new EqualsDefinition(
+                    compiler.environmentType.get(getSymbolTable().create("boolean")).getType(), Location.BUILTIN, sig,
+                    0, equalsProgram);
+            equals.setLabel(compiler.getLabelManager().getEqualsLabel());
+            OBJECT.getMembers().declare(compiler.getSymbolTable().create("equals"), equals);
+            OBJECT.incNumberOfMethods();
+            compiler.getEnvironmentType().declareClass(compiler.getSymbolTable().create("Object"), newt);
+
+        } catch (Environment.DoubleDefException e) {
+            throw new DecacInternalError("Double built in type definition");
+        }
     }
 
     /**
@@ -79,14 +121,14 @@ public class DecacCompiler {
      *      fr.ensimag.ima.pseudocode.IMAProgram#add(fr.ensimag.ima.pseudocode.AbstractLine)
      */
     public void add(AbstractLine line) {
-        program.add(line);
+        getCurrentBlock().add(line);
     }
 
     /**
      * @see fr.ensimag.ima.pseudocode.IMAProgram#addComment(java.lang.String)
      */
     public void addComment(String comment) {
-        program.addComment(comment);
+        getCurrentBlock().addComment(comment);
     }
 
     /**
@@ -94,7 +136,7 @@ public class DecacCompiler {
      *      fr.ensimag.ima.pseudocode.IMAProgram#addLabel(fr.ensimag.ima.pseudocode.Label)
      */
     public void addLabel(Label label) {
-        program.addLabel(label);
+        getCurrentBlock().addLabel(label);
     }
 
     /**
@@ -103,7 +145,7 @@ public class DecacCompiler {
      */
     public void addInstruction(Instruction instruction) {
         // System.out.println("DecacCompiler add Instru : " +instruction);
-        program.addInstruction(instruction);
+        getCurrentBlock().addInstruction(instruction);
     }
 
     /**
@@ -112,7 +154,7 @@ public class DecacCompiler {
      *      java.lang.String)
      */
     public void addInstruction(Instruction instruction, String comment) {
-        program.addInstruction(instruction, comment);
+        getCurrentBlock().addInstruction(instruction, comment);
     }
 
     /**
@@ -125,19 +167,32 @@ public class DecacCompiler {
 
     private final CompilerOptions compilerOptions;
     private final File source;
-    private final RegisterManager registerManager = new RegisterManager();
-    private final MemoryManager memoryManager = new MemoryManager();
+
     private final LabelManager labelManager = new LabelManager();
     /**
      * The main program. Every instruction generated will eventually end up here.
      */
     private final IMAProgram program = new IMAProgram();
+
+    /**
+     * IMA code Block ou sont généré les instructions, cela peut changé en fonction
+     * de si c'est pour une méthode ou c'est le main programme.
+     * Par défaut il correspond au main program
+     */
+    private IMAProgram currentBlock = program;
     private final SymbolTable symbolTable = new SymbolTable();
-    private Environment<TypeDefinition> environmentType = new Environment<TypeDefinition>(null);
+    private Environment<TypeDefinition> environmentType = new Environment<TypeDefinition>(this.getEnvironmentType());
 
     public SymbolTable getSymbolTable() {
         return symbolTable;
     }
+
+    public IMAProgram getCurrentBlock() {
+        return currentBlock;
+    }
+
+    private final RegisterManager registerManager = new RegisterManager();
+    private final MemoryManager memoryManager = new MemoryManager();
 
     public RegisterManager getRegisterManager() {
         return registerManager;
@@ -153,6 +208,45 @@ public class DecacCompiler {
 
     public IMAProgram getProgram() {
         return program;
+    }
+
+    public void startBlock() {
+        assert (currentBlock == program);
+        currentBlock = new IMAProgram(); // on créé un nouveau block
+        getMemoryManager().initLGB(); // et on reinitialise tout
+        getRegisterManager().initRegister();
+    }
+
+    public void endBlock(boolean error, boolean saveReg, int size, Label returnLabel) {
+        if (error) { // correspond a un oubli de return dans une fonction non void
+            addInstruction(new BRA(getLabelManager().getNoReturnLabel()));
+        }
+        if (returnLabel != null) {
+            addLabel(returnLabel);
+        }
+        int nbReg = 0; // on compte le nombre de registres utilisés pour TSTO
+        if (saveReg) {
+            for (int i = 2; i <= getRegisterManager().getLastUsed() + 1; ++i) {
+                currentBlock.addFirst(new PUSH(Register.getR(i)), "je push le registre");
+                currentBlock.addInstruction(new POP(Register.getR(i)));
+                nbReg++;
+            }
+        }
+        if (size != 0) {
+            currentBlock.addFirst(new ADDSP(size));
+        }
+
+        if (getMemoryManager().getMaxLB() + size + nbReg != 0) {
+            currentBlock
+                    .addFirst(new BOV(getLabelManager().getStack_overflowLabel(), getCompilerOptions().getNoCheck()));
+            currentBlock.addFirst(new TSTO(getMemoryManager().getMaxLB() + size + nbReg + 1));
+        }
+
+        if (returnLabel != null) {
+            addInstruction(new RTS());
+        }
+        program.append(currentBlock); // on ajout notre block au reste des blocks
+        currentBlock = program;
     }
 
     /**
@@ -234,7 +328,7 @@ public class DecacCompiler {
             return false;
         }
 
-        // assert(prog.checkAllLocations()); A FAIRE
+        assert (prog.checkAllLocations());
         LOG.info("Starting verification");
         prog.verifyProgram(this);
         // assert(prog.checkAllDecorations()); A FAIRE
@@ -263,7 +357,28 @@ public class DecacCompiler {
         this.addInstruction(new WNL());
         this.addInstruction(new ERROR());
 
-        LOG.debug("Generated assembly code:" + nl + program.display());
+        this.addLabel(this.labelManager.getTasPleinLabel());
+        this.addInstruction(new WSTR("Error: Heap full"));
+        this.addInstruction(new WNL());
+        this.addInstruction(new ERROR());
+
+        this.addLabel(this.labelManager.getNoReturnLabel());
+        this.addInstruction(new WSTR("Error: No return in the method"));
+        this.addInstruction(new WNL());
+        this.addInstruction(new ERROR());
+
+        this.addLabel(this.labelManager.getCastFailedLabel());
+        this.addInstruction(new WSTR("Error: Cast Failed"));
+        this.addInstruction(new WNL());
+        this.addInstruction(new ERROR());
+
+        this.addLabel(this.labelManager.getEqualsLabel());
+        this.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), Register.getR(0)));
+        this.addInstruction(new CMP(new RegisterOffset(-3, Register.LB), Register.getR(0)));
+        this.addInstruction(new SEQ(Register.getR(0)));
+        this.addInstruction(new RTS());
+
+        LOG.debug("Generated assembly code:" + nl + currentBlock.display());
         LOG.info("Output file assembly file is: " + destName);
 
         FileOutputStream fstream = null;
@@ -275,7 +390,9 @@ public class DecacCompiler {
 
         LOG.info("Writing assembler file ...");
 
-        program.display(new PrintStream(fstream));
+        getCurrentBlock().display(new PrintStream(fstream));
+
+        // program.display(new PrintStream(fstream));
         LOG.info("Compilation of " + sourceName + " successful.");
         return false;
     }

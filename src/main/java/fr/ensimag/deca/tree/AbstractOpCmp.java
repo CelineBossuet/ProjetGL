@@ -1,7 +1,7 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
@@ -29,9 +29,16 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
 
         Type right =getRightOperand().verifyExpr(compiler, localEnv, currentClass);
         Type left =getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
-        if(!left.sameType(right) && !(left.isFloat() && right.isInt()) && !(left.isInt() && right.isFloat())){
+        if(!left.sameType(right) && !(left.isFloat() && right.isInt()) && !(left.isInt() && right.isFloat()) && !right.isNull()){
             throw new ContextualError(
-                    "Comparaison non supportée entre types "+left + " et "+right, getLocation());
+                    "Impossible to compare "+left + " and "+right, getLocation());
+        }
+        if(left.isClass() || right.isClass()){
+            throw new ContextualError(
+                    "Impossible to compare "+left + " and "+right, getLocation());
+        }
+        if(right.isString() || left.isString()){
+            throw new ContextualError("Impossible to compare Strings", this.getLocation());
         }
         Type sortie = new BooleanType(compiler.getSymbolTable().create("boolean"));
         setType(sortie);
@@ -72,7 +79,7 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
     @Override
     protected void geneOneOrMoreInstru(DecacCompiler compiler, DVal val, GPRegister reg, boolean usefull){
         getLOG().trace("AbsOpCmp geneOneOrMoreInstru");
-        compiler.addInstruction(new CMP(val, reg));
+        compiler.addInstruction(new CMP(val, reg), "comparaison de OpComp");
         if(usefull){
             compiler.addInstruction(genSccInstruction(reg));
         }

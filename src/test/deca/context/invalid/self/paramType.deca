@@ -1,0 +1,8 @@
+class A{
+    void method(int a) {}
+}
+
+{
+    A a = new A();
+    a.method(true);
+}

@@ -1,16 +1,13 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.Environment;
-import fr.ensimag.deca.context.ExpDefinition;
-import fr.ensimag.deca.context.VariableDefinition;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.context.Environment.DoubleDefException;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
-import fr.ensimag.ima.pseudocode.DAddr;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -45,23 +42,29 @@ public class DeclVar extends AbstractDeclVar {
             varName.setDefinition(new VariableDefinition(type.getType(), getLocation()));
             localEnv.declare(varName.getName(), varName.getExpDefinition());
         } catch (DoubleDefException e) {
-            throw new ContextualError("Double definition of this identifier", getLocation());
+            throw new ContextualError("Double definition of this identifier: " + this.varName, getLocation());
         }
 
-        // A FAIRE TODO verifier initialisation
         // Initialization
         initialization.verifyInitialization(compiler, this.type.getType(), localEnv, currentClass);
 
     }
 
     @Override
-    protected int codeGenVar(DecacCompiler compiler) {
+    protected int codeGenVar(DecacCompiler compiler, boolean local, int offsetLocal) {
         // TODO
         // System.out.println("DeclVar codeGenVar");
+        RegisterOffset adr;
         VariableDefinition d = varName.getVariableDefinition();
-
-        DAddr o = compiler.getMemoryManager().allocGB(1);
-        d.setOperand(o);
+        if (local) {
+            // les variables sont déclarées localements dans une méthode donc on créé un
+            // RegisterOffset
+            adr = new RegisterOffset(offsetLocal, Register.LB);
+        } else {
+            // les variables sont globales
+            adr = compiler.getMemoryManager().allocGB(1);
+        }
+        d.setOperand(adr);
         initialization.codeGeneInit(compiler, d.getOperand());
         return 1;
     }

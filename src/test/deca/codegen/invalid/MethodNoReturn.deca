@@ -1,0 +1,10 @@
+class A {
+    int method(){
+
+    }
+}
+
+{
+    A a = new A();
+    a.method();
+}

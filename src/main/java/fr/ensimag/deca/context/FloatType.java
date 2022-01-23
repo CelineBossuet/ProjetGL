@@ -1,6 +1,8 @@
 package fr.ensimag.deca.context;
 
 import fr.ensimag.deca.tools.SymbolTable;
+import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.ImmediateFloat;
 
 /**
  *
@@ -16,6 +18,11 @@ public class FloatType extends Type {
     @Override
     public boolean isFloat() {
         return true;
+    }
+
+    @Override
+    public DVal getDefaultValue() {
+        return new ImmediateFloat(0.0f);
     }
 
     @Override

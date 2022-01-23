@@ -1,0 +1,5 @@
+{
+    Object o;
+    o = new Object();
+    println("ok");
+}

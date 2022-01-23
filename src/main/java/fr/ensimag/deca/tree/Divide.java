@@ -23,6 +23,11 @@ public class Divide extends AbstractOpArith {
     }
 
     @Override
+    protected boolean canOverFlow(){
+        return true;
+    }
+
+    @Override
     protected BinaryInstruction geneInstru(DVal val, GPRegister reg) {
         // Génération de l'instruction pour une division dans le registre reg
 

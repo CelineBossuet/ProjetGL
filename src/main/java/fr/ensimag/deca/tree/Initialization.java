@@ -42,7 +42,7 @@ public class Initialization extends AbstractInitialization {
         Type expr = getExpression().verifyExpr(compiler, localEnv, currentClass);
         if (!expr.sameType(t) && !(expr.isInt() && t.isFloat())) {
             throw new ContextualError(
-                    t + " n'est pas un sous type de " + expr + " et ne peut donc pas lui être assigné", getLocation());
+                    t + " isn't a subtype of " + expr + " and can't be assign to it", getLocation());
         }
         setExpression(expression.verifyRValue(compiler, localEnv, currentClass, t));
         // throw new UnsupportedOperationException("not yet implemented");
@@ -61,6 +61,11 @@ public class Initialization extends AbstractInitialization {
     public void decompile(IndentPrintStream s) {
         s.print(" = ");
         getExpression().decompile(s);
+    }
+
+    @Override
+    protected boolean hasInit() {
+        return true;
     }
 
     @Override

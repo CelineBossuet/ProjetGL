@@ -19,6 +19,7 @@ public class RegisterManager {
     private int lastUsed = -1;
 
     public void initRegister() {
+        assert (current == 2);
         this.lastUsed = 1;
     }
 

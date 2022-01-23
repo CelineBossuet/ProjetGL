@@ -24,6 +24,11 @@ public class Modulo extends AbstractOpArith {
     }
 
     @Override
+    protected boolean canOverFlow(){
+        return true;
+    }
+
+    @Override
     public Type verifyExpr(DecacCompiler compiler, Environment<ExpDefinition> localEnv,
             ClassDefinition currentClass) throws ContextualError {
         Type left = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
@@ -31,11 +36,11 @@ public class Modulo extends AbstractOpArith {
 
         if (!left.isInt()) {
             throw new ContextualError(
-                    "Modulo que entre des int, l'opérande de gauche est de type " + left, getLocation());
+                    "Modulo should be between Int but left operand is: " + left, getLocation());
         }
         if (!right.isInt()) {
             throw new ContextualError(
-                    "Modulo que entre des int, l'opérande de droite est de type " + right, getLocation());
+                    "Modulo should be between Int but right operand is: " + right, getLocation());
         }
         setType(new IntType(compiler.getSymbolTable().create("int")));
 

@@ -2,6 +2,8 @@ package fr.ensimag.deca.context;
 
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.deca.tree.Location;
+import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.NullOperand;
 
 /**
  * Type defined by a class.
@@ -20,6 +22,11 @@ public class ClassType extends Type {
     @Override
     public ClassType asClassType(String errorMessage, Location l) {
         return this;
+    }
+
+    @Override
+    public DVal getDefaultValue() {
+        return new NullOperand();
     }
 
     @Override
@@ -50,7 +57,12 @@ public class ClassType extends Type {
 
     @Override
     public boolean sameType(Type otherType) {
-        return otherType.isClass();
+        if(otherType.isClass()){
+            if(otherType.getName() == this.getName()){
+                return true;
+            }
+        }
+        return false;
         //throw new UnsupportedOperationException("not yet implemented");
     }
 
@@ -58,7 +70,14 @@ public class ClassType extends Type {
      * Return true if potentialSuperClass is a superclass of this class.
      */
     public boolean isSubClassOf(ClassType potentialSuperClass) {//A faire dans la partie classe
-        throw new UnsupportedOperationException("not yet implemented");
-    }
+        //throw new UnsupportedOperationException("not yet implemented");
 
+        if (sameType(potentialSuperClass)) {
+            return true;
+        }
+        if (getDefinition().getSuperClass() == null) {
+            return false;
+        }
+        return getDefinition().getSuperClass().getType().isSubClassOf(potentialSuperClass);
+    }
 }

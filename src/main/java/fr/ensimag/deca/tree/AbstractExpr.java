@@ -4,10 +4,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.DVal;
-import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.Label;
-import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
@@ -96,15 +93,23 @@ public abstract class AbstractExpr extends AbstractInst {
             throws ContextualError {
         Type type = this.verifyExpr(compiler, localEnv, currentClass);
         if (type.sameType(expectedType)) {
+            if (type.isClass()) {
+                ClassType classType = (ClassType) type;
+                ClassType expectedClassType = (ClassType) expectedType;
+                if (!(classType.isSubClassOf(expectedClassType))) {
+                    throw new ContextualError(type.getName().getName() + " isn't a subtype of "
+                            + expectedType.getName().getName() + " so it cannot be assigned to it", this.getLocation());
+                }
+
+            }
+
             return this;
-        } else if (type.isInt() && expectedType.isFloat()) {
-            AbstractExpr abs = new ConvFloat(this);
-            abs.verifyExpr(compiler, localEnv, currentClass);
-            return abs;
+        } else if (type.isInt() && expectedType.isFloat() || type.isFloat() && expectedType.isInt()) {
+            return this;
         } else {
-            throw new ContextualError("Type incompatible", this.getLocation());
+            throw new ContextualError(this.type.getName().getName() + " isn't a subtype of "
+                    + expectedType.getName().getName() + " so it cannot be assign to it", this.getLocation());
         }
-        // throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override
@@ -112,6 +117,7 @@ public abstract class AbstractExpr extends AbstractInst {
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
         this.type = this.verifyExpr(compiler, localEnv, currentClass);
+
     }
 
     /**
@@ -129,7 +135,7 @@ public abstract class AbstractExpr extends AbstractInst {
             ClassDefinition currentClass) throws ContextualError {
         Type type = this.verifyExpr(compiler, localEnv, currentClass);
         if (!type.isBoolean()) {
-            throw new ContextualError("la condition doit être booléenne", getLocation());
+            throw new ContextualError(this.type.getName().getName() + " should have been boolean ", getLocation());
         }
     }
 
@@ -149,7 +155,7 @@ public abstract class AbstractExpr extends AbstractInst {
 
             compiler.addInstruction(new WFLOAT());
         } else {
-            throw new DecacInternalError("Print pas supporté pour le type " + getType());
+            throw new DecacInternalError("Print not supported for type: " + getType());
         }
     }
 
@@ -179,7 +185,6 @@ public abstract class AbstractExpr extends AbstractInst {
     protected void codeGenInst(DecacCompiler compiler, Label returnLabel, Label local) {
         getLOG().trace("AbsExpr codeGenInst");
         codeGenExprIgnored(compiler);
-        // peut être ajouter des labels en paramètre...
         // throw new UnsupportedOperationException("not yet implemented");
     }
 
@@ -228,10 +233,14 @@ public abstract class AbstractExpr extends AbstractInst {
     protected GPRegister codeGenReg(DecacCompiler compiler) {
         getLOG().trace("AbsExpr codeGenReg");
         GPRegister reg = compiler.getRegisterManager().getCurrent();
-        compiler.addInstruction(new LOAD(codeGenNoReg(compiler), reg));
+        compiler.addInstruction(new LOAD(codeGenNoReg(compiler), reg), "AbsExpr");
         // cette instruction permet de charger une valeur dans un registre ici le
         // Registre Current
         return reg;
+    }
+
+    protected boolean getBool() {
+        return false;
     }
 
     /**
@@ -245,9 +254,9 @@ public abstract class AbstractExpr extends AbstractInst {
      */
     protected void codeGenCond(DecacCompiler compiler, Label l, boolean saut) {
         getLOG().trace("AbsExpr codeGenCond");
-        compiler.addInstruction(new CMP(0, codeGenReg(compiler)));
-        // Cette instruction permet d'effectuer une comparaison comme si une
-        // soustraction avait été effectuée.
+        GPRegister reg = codeGenReg(compiler);
+        compiler.addInstruction(new CMP(0, reg), "oupsi");
+        // Cette instruction permet d'effectuer une comparaison
         LOG.info("Vérification du résultat de l'évaluation avec codeGenCond()");
         if (saut) {
             // Cette instruction permet de faire un saut à l'emplacement spécifié si le
@@ -271,6 +280,25 @@ public abstract class AbstractExpr extends AbstractInst {
     protected void codeGenExprIgnored(DecacCompiler compiler) {
         compiler.addComment("value in " + codeGenReg(compiler) + " ignored");
         LOG.info("Génère code pour l'expression avec codeGenExprIgnored");
+    }
+
+    protected GPRegister codeGenCondToReg(DecacCompiler compiler) {
+        Label elseLabel = compiler.getLabelManager().newLabel("elseC2R");
+        Label end = compiler.getLabelManager().newLabel("endC2R");
+        GPRegister r = compiler.getRegisterManager().getCurrent();
+
+        codeGenCond(compiler, elseLabel, true);
+
+        compiler.addInstruction(new LOAD(0, r));
+        compiler.addInstruction(new BRA(end));
+        compiler.addLabel(elseLabel);
+
+        compiler.addInstruction(new LOAD(1, r));
+        compiler.addInstruction(new BRA(end));
+
+        compiler.addLabel(end);
+
+        return r;
     }
 
 }
