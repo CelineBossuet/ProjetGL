@@ -39,7 +39,7 @@ public class Selection extends AbstractLValue{
             if(!verifySubType(t, currentClass.getType())){
                 throw new ContextualError("Access to the protected member "+this.field.getName()+" denied", this.getLocation());
             }
-            if(!verifySubType(currentClass.getType(), fieldDefinition.getType())){
+            if(!verifySubType(currentClass.getType(), fieldDefinition.getContainingClass().getType())){
                 throw new ContextualError("Access to the protected member "+this.field.getName()+" denied", this.getLocation());
             }
         }
