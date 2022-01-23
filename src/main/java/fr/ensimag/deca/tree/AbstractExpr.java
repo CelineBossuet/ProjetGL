@@ -13,6 +13,8 @@ import fr.ensimag.ima.pseudocode.instructions.*;
 import fr.ensimag.ima.pseudocode.instructions.jasmin.aload;
 import fr.ensimag.ima.pseudocode.instructions.jasmin.fload;
 import fr.ensimag.ima.pseudocode.instructions.jasmin.fstore;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.ifeq;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.ifne;
 import fr.ensimag.ima.pseudocode.instructions.jasmin.iload;
 import fr.ensimag.ima.pseudocode.instructions.jasmin.invokestatic;
 import fr.ensimag.ima.pseudocode.instructions.jasmin.invokevirtual;
@@ -334,5 +336,36 @@ public abstract class AbstractExpr extends AbstractInst {
             throw new DecacInternalError("Print pas supporté pour le type" + getType());
         }
     }
+
+    /**
+     * Genere le code comme une condition en utilisant le control-flow
+     * est utilisée que pour les expressions booléennes
+     *
+     * @param compiler
+     * @param l        le label vers lequel on va sauter
+     * @param jump     booléen qui régit le saut vers le label
+     * @return GPRegister reg
+     */
+    protected void codeGenCondJasmin(DecacCompiler compiler, Label l, boolean jump) {
+        getLOG().trace("AbsExpr codeGenCondJasmin");
+
+        // compute expression
+        codeGenStack(compiler);
+
+        codeGenJasminJump(compiler, l, jump);
+
+        // if (saut) {
+        // // Cette instruction permet de faire un saut à l'emplacement spécifié si le
+        // // drapeau d'égalité vaut 0.
+        // compiler.addInstruction(new ifne(l));
+        // } else {
+        // compiler.addInstruction(new ifeq(l));
+        // // Cette instruction permet de faire un saut à l'emplacement spécifié si le
+        // // drapeau d'égalité vaut 1.
+        // }
+
+    }
+
+    protected abstract void codeGenJasminJump(DecacCompiler compiler, Label l, boolean jump);
 
 }

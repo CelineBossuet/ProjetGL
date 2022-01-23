@@ -6,6 +6,8 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Instruction;
+import fr.ensimag.ima.pseudocode.Label;
+
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
@@ -90,5 +92,10 @@ public abstract class AbstractUnaryExpr extends AbstractExpr {
         getLOG().trace("AbsUnaryExpr codeGenStack");
         getOperand().codeGenStack(compiler);
         geneInstruJasmin(compiler);
+    }
+
+    @Override
+    protected void codeGenJasminJump(DecacCompiler compiler, Label l, boolean jump) {
+        throw new DecacInternalError("Can't jump with unary expression");
     }
 }

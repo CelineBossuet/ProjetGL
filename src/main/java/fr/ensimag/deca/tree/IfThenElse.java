@@ -9,11 +9,11 @@ import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.BRA;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.gotoo;
+
 import org.apache.commons.lang.Validate;
 
 import java.io.PrintStream;
-
-import static fr.ensimag.deca.tree.AbstractExpr.getLOG;
 
 /**
  * Full if/else if/else statement.
@@ -89,7 +89,31 @@ public class IfThenElse extends AbstractInst {
 
     @Override
     protected void codeGenInstJasmin(DecacCompiler compiler, Label returnLabel, Label local) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        getLOG().trace("IfThenElse codeGenInstJasmin");
+        Label endIf;
+        if (local == null)
+            endIf = compiler.getLabelManager().newLabel("endif");
+        else
+            endIf = local;
+
+        if (!elseBranch.isEmpty()) {
+            getLOG().trace("else block");
+            Label startElse = compiler.getLabelManager().newLabel("startelse");
+
+            condition.codeGenCondJasmin(compiler, startElse, false);
+            thenBranch.codeGenListInstJasmin(compiler, returnLabel, endIf);
+            compiler.addInstruction(new gotoo(endIf));
+            compiler.addLabel(startElse);
+            elseBranch.codeGenListInstJasmin(compiler, returnLabel, endIf);
+        } else {
+            getLOG().trace("no else block");
+            condition.codeGenCondJasmin(compiler, endIf, false);
+            thenBranch.codeGenListInstJasmin(compiler, returnLabel, endIf);
+        }
+        if (local == null) {
+            getLOG().trace("endif label");
+            compiler.addLabel(endIf);
+        }
     }
 
     @Override

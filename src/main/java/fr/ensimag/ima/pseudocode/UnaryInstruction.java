@@ -13,7 +13,7 @@ public abstract class UnaryInstruction extends Instruction {
     private Operand operand;
 
     @Override
-    void displayOperands(PrintStream s) {
+    protected void displayOperands(PrintStream s) {
         s.print(" ");
         s.print(operand);
     }

@@ -11,6 +11,10 @@ import java.io.PrintStream;
 public abstract class Instruction {
     private boolean active = true;
 
+    protected boolean isActive() {
+        return active;
+    }
+
     /**
      * Disable the instruction in generated code.
      */
@@ -24,8 +28,8 @@ public abstract class Instruction {
 
     abstract void displayOperands(PrintStream s);
 
-    void display(PrintStream s) {
-        if (active) {
+    protected void display(PrintStream s) {
+        if (isActive()) {
             s.print(getName());
             displayOperands(s);
         }

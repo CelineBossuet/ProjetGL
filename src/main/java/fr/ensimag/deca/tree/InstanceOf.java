@@ -11,6 +11,7 @@ import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Label;
 
 import java.io.PrintStream;
 
@@ -64,5 +65,10 @@ public class InstanceOf extends AbstractExpr {
     protected void codeGenStack(DecacCompiler compiler) {
         getLOG().trace("InstanceOf codeGenStack");
         // TODO
+    }
+
+    @Override
+    protected void codeGenJasminJump(DecacCompiler compiler, Label l, boolean jump) {
+        throw new DecacInternalError("Can't jump with instanceof");
     }
 }

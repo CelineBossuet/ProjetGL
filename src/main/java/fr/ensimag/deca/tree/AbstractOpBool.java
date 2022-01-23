@@ -95,4 +95,9 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
     protected void codeGenArithJasmin(DecacCompiler compiler) {
         throw new UnsupportedOperationException("Not yet implemented");
     }
+
+    @Override
+    protected void codeGenJasminJump(DecacCompiler compiler, Label l, boolean jump) {
+        throw new DecacInternalError("Can't jump with booleans");
+    }
 }

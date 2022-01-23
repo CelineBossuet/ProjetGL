@@ -6,8 +6,10 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.Environment;
 import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.Label;
 
 import java.io.PrintStream;
 
@@ -43,5 +45,10 @@ public class This extends AbstractExpr {
     @Override
     protected void iterChildren(TreeFunction f) {
 
+    }
+
+    @Override
+    protected void codeGenJasminJump(DecacCompiler compiler, Label l, boolean jump) {
+        throw new DecacInternalError("Can't jump with this");
     }
 }

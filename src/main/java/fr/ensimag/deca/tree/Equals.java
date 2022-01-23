@@ -7,6 +7,8 @@ import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.BEQ;
 import fr.ensimag.ima.pseudocode.instructions.BNE;
 import fr.ensimag.ima.pseudocode.instructions.SEQ;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.ifeq;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.ifne;
 
 /**
  *
@@ -41,6 +43,14 @@ public class Equals extends AbstractOpExactCmp {
     @Override
     protected String getOperatorName() {
         return "==";
+    }
+
+    @Override
+    protected void codeGenJasminJump(DecacCompiler compiler, Label l, boolean jump) {
+        if (jump)
+            compiler.addInstruction(new ifeq(l));
+        else
+            compiler.addInstruction(new ifne(l));
     }
 
 }

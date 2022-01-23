@@ -63,4 +63,9 @@ public abstract class AbstractReadExpr extends AbstractExpr {
                 getLOG().trace("AbsReadExpr codeGenStack");
                 throw new UnsupportedOperationException("Not yet implemented");
         }
+
+        @Override
+        protected void codeGenJasminJump(DecacCompiler compiler, Label l, boolean jump) {
+                throw new DecacInternalError("Can't jump with read instructions");
+        }
 }

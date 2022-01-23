@@ -1,6 +1,8 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.tools.DecacInternalError;
+import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
@@ -31,22 +33,26 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
             ClassDefinition currentClass) throws ContextualError {
         Type left = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
         Type right = getRightOperand().verifyExpr(compiler, localEnv, currentClass);
-        if(left.isFloat() && right.isInt()){
+        if (left.isFloat() && right.isInt()) {
             ConvFloat conversion = new ConvFloat(getRightOperand());
             conversion.verifyExpr(compiler, localEnv, currentClass);
             setRightOperand(conversion);
             this.setType(left);
             return left;
-        }else if(left.isInt() && right.isFloat()){
+        } else if (left.isInt() && right.isFloat()) {
             ConvFloat conversion = new ConvFloat(getLeftOperand());
             conversion.verifyExpr(compiler, localEnv, currentClass);
             setLeftOperand(conversion);
             this.setType(right);
             return right;
-        }else{
+        } else {
             setType(right);
             return right;
         }
-        // throw new UnsupportedOperationException("not yet implemented");
+    }
+
+    @Override
+    protected void codeGenJasminJump(DecacCompiler compiler, Label l, boolean jump) {
+        throw new DecacInternalError("Can't jump with arithmetics");
     }
 }
