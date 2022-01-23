@@ -1,9 +1,11 @@
 package fr.ensimag.deca.context;
 
 import fr.ensimag.deca.codegen.VTable;
+import fr.ensimag.deca.tree.AbstractPrint;
 import fr.ensimag.deca.tree.Location;
 import fr.ensimag.ima.pseudocode.Label;
 import org.apache.commons.lang.Validate;
+import org.apache.log4j.Logger;
 
 /**
  * Definition of a class.
@@ -30,6 +32,9 @@ public class ClassDefinition extends TypeDefinition {
     public Label getConstructorLabel() {
         return constructorLabel;
     }
+
+    private static final Logger LOG = Logger.getLogger(ClassDefinition.class);
+
 
     public void setConstructorLabel(Label l){
         this.constructorLabel=l;
@@ -92,6 +97,7 @@ public class ClassDefinition extends TypeDefinition {
 
     public ClassDefinition(ClassType type, Location location, ClassDefinition superClass) {
         super(type, location);
+        LOG.info("Définition de classDefinition");
         Environment<ExpDefinition> parent;
         if (superClass != null) {
             parent = superClass.getMembers();

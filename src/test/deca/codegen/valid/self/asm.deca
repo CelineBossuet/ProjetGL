@@ -1,0 +1,15 @@
+class A {
+    void method(int a) asm("
+    LOAD -3(LB), R2
+    LOAD R2, R1
+    WINT
+    WNL
+
+    ");
+
+}
+
+{
+    A a = new A();
+    a.method(2);
+}

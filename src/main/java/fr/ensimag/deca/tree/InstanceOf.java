@@ -30,6 +30,7 @@ public class InstanceOf extends AbstractExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, Environment<ExpDefinition> localEnv, ClassDefinition currentClass)
             throws ContextualError {
+        LOG.info("verifyExpr de InstanceOf: start");
         Type t = this.expr.verifyExpr(compiler, localEnv, currentClass);
         Type typeToCheck = type.verifyType(compiler);
         if (!t.isClass() || !typeToCheck.isClass()) {
