@@ -343,12 +343,12 @@ public class DecacCompiler {
         this.addInstruction(new ERROR());
 
         this.addLabel(this.labelManager.getPilePleineLabel());
-        this.addInstruction(new WSTR("Error: Pile Pleine"));
+        this.addInstruction(new WSTR("Error: Stack full"));
         this.addInstruction(new WNL());
         this.addInstruction(new ERROR());
 
         this.addLabel(this.labelManager.getNoReturnLabel());
-        this.addInstruction(new WSTR("Error: Pas de Return dans la méthode"));
+        this.addInstruction(new WSTR("Error: No return in the methode"));
         this.addInstruction(new WNL());
         this.addInstruction(new ERROR());
 
