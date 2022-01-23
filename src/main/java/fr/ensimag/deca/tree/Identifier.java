@@ -7,10 +7,13 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.ima.pseudocode.DAddr;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.jasmin.fload;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.ifeq;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.ifne;
 import fr.ensimag.ima.pseudocode.instructions.jasmin.iload;
 
 import org.apache.commons.lang.Validate;
@@ -265,7 +268,7 @@ public class Identifier extends AbstractIdentifier {
             throw new UnsupportedOperationException("not yet implemented");
         }
 
-        if (getType().isInt())
+        if (getType().isInt() || getType().isBoolean())
             compiler.addInstruction(new iload(this.getExpDefinition().getOperand()));
         else if (getType().isFloat())
             compiler.addInstruction(new fload(this.getExpDefinition().getOperand()));
@@ -285,5 +288,14 @@ public class Identifier extends AbstractIdentifier {
         }
         DAddr ope = codeGenNoReg(compiler);
         return ope;
+    }
+
+    @Override
+    protected void codeGenJasminJump(DecacCompiler compiler, Label l, boolean jump) {
+        // boolean jump
+        if (jump)
+            compiler.addInstruction(new ifne(l));
+        else
+            compiler.addInstruction(new ifeq(l));
     }
 }

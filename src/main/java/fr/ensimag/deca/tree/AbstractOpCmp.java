@@ -8,7 +8,6 @@ import fr.ensimag.ima.pseudocode.instructions.CMP;
 import fr.ensimag.ima.pseudocode.instructions.jasmin.f2l;
 import fr.ensimag.ima.pseudocode.instructions.jasmin.fload;
 import fr.ensimag.ima.pseudocode.instructions.jasmin.i2l;
-import fr.ensimag.ima.pseudocode.instructions.jasmin.iadd;
 import fr.ensimag.ima.pseudocode.instructions.jasmin.iload;
 import fr.ensimag.ima.pseudocode.instructions.jasmin.lcmp;
 import fr.ensimag.ima.pseudocode.jasmin.VarID;

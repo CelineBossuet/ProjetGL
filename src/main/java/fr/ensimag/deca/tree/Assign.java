@@ -90,7 +90,7 @@ public class Assign extends AbstractBinaryExpr {
         right.codeGenStack(compiler);
 
         // store result in left identifier
-        if (getType().isInt()) {
+        if (getType().isInt() || getType().isBoolean()) {
             compiler.addInstruction(new istore(((Identifier) left).getExpDefinition().getOperand()));
         } else if (getType().isFloat()) {
             compiler.addInstruction(new fstore(((Identifier) left).getExpDefinition().getOperand()));
