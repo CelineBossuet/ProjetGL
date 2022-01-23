@@ -11,10 +11,8 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.ImmediateInteger;
-import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
-import fr.ensimag.ima.pseudocode.instructions.WINT;
-import fr.ensimag.ima.pseudocode.instructions.jasmin.bipush;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.ldc;
 import fr.ensimag.ima.pseudocode.jasmin.Constant;
 
 import java.io.PrintStream;
@@ -84,6 +82,6 @@ public class IntLiteral extends AbstractExpr {
     @Override
     protected void codeGenStack(DecacCompiler compiler) {
         getLOG().trace("IntLiteral codeGenStack");
-        compiler.addInstruction(new bipush(new Constant(getValue())));
+        compiler.addInstruction(new ldc(new Constant(getValue())));
     }
 }
