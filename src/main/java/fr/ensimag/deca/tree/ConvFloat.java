@@ -33,6 +33,7 @@ public class ConvFloat extends AbstractUnaryExpr {
     @Override
     protected Instruction geneInstru(GPRegister reg) {
         // generation de l'instruction de la conversion d'un entier vers un float
+        System.out.println("aie");
         return new FLOAT(reg, reg);
     }
 

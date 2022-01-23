@@ -70,6 +70,7 @@ public abstract class AbstractUnaryExpr extends AbstractExpr {
     protected GPRegister codeGenReg(DecacCompiler compiler) {
         //redéfini la méthode car il faut pouvoir utiliser geneInstru() pour pouvoir générer les instructions
         //pour les expressions unaires et apres l'ajouter aux instructions du compilateur
+        System.out.println("pourquoi");
         GPRegister reg = getOperand().codeGenReg(compiler);
         compiler.addInstruction(geneInstru(reg));
         return reg;

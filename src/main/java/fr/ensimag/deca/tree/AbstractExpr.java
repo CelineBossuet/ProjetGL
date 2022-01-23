@@ -103,10 +103,8 @@ public abstract class AbstractExpr extends AbstractInst {
             }
 
             return this;
-        } else if (type.isInt() && expectedType.isFloat()) {
-            ConvFloat abs = new ConvFloat(this);
-            abs.verifyExpr(compiler, localEnv, currentClass);
-            return abs;
+        } else if (type.isInt() && expectedType.isFloat() || type.isFloat() && expectedType.isInt()) {
+            return this;
         }
         else {
             throw new ContextualError(this.type.getName().getName() + " isn't a subtype of "

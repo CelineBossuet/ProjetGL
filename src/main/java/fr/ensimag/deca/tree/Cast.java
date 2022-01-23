@@ -23,23 +23,13 @@ public class Cast extends AbstractExpr{
     public Type verifyExpr(DecacCompiler compiler, Environment<ExpDefinition> localEnv, ClassDefinition currentClass) throws ContextualError {
         Type toCast = this.expr.verifyExpr(compiler, localEnv, currentClass);
         Type t = this.typeToCheck.verifyType(compiler);
-        if (toCast.isInt() && t.isFloat()){
-            FloatType newFloat = new FloatType(compiler.getSymbolTable().create("float"));
-            this.expr.setType(newFloat);
-            this.setType(t);
-            return t;
-        }
-        else if(toCast.isFloat() && t.isInt()){
-            IntType newInt = new IntType(compiler.getSymbolTable().create("int"));
-            this.expr.setType(newInt);
-            this.setType(t);
-            return t;
+
+        if(t.sameType(toCast) || t.isInt() && toCast.isFloat() || t.isFloat() && toCast.isInt()){
+            this.setType(toCast);
+            return getType();
         }
 
-        else if(this.expr.getType().sameType(t)){
-            this.setType(toCast);
-            return this.expr.getType();
-        }else if(this.typeToCheck.getDefinition().isClass() && this.expr.getType().isClass()) {
+         else if(this.typeToCheck.getDefinition().isClass() && this.expr.getType().isClass()) {
             ClassType tToCast = toCast.asClassType("Mauvais transtypage", this.getLocation());
             ClassType tt = t.asClassType("Mauvais transtypage", this.getLocation());
             if(tt.isSubClassOf(tToCast)){
@@ -48,9 +38,11 @@ public class Cast extends AbstractExpr{
             }else{
                 throw new ContextualError("Class"+toCast + " and " + t + " are not compatible", this.getLocation());
             }
-        }else{
-            throw new ContextualError("Cast is not possible between " + toCast + " and " + t, this.getLocation());
         }
+         else{
+             throw new ContextualError("Types "+t+" and "+toCast+" are not compatible for cast", this.getLocation());
+        }
+
     }
 
     @Override
