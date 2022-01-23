@@ -5,9 +5,9 @@ import java.io.PrintStream;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.UnaryInstruction;
 
-public class gotoo extends UnaryInstruction {
+public class spaghetti extends UnaryInstruction {
 
-    public gotoo(Label lbl) {
+    public spaghetti(Label lbl) {
         super(lbl);
     }
 
@@ -17,5 +17,13 @@ public class gotoo extends UnaryInstruction {
             super.displayOperands(s);
         }
     }
+
+    // /(\
+    // ¡ !´\
+    // | )\ `.
+    // | `.)  \,-,--
+    // (      / /
+    //  `'-.,;_/
+    //         `----
 
 }

@@ -9,7 +9,7 @@ import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.BRA;
-import fr.ensimag.ima.pseudocode.instructions.jasmin.gotoo;
+import fr.ensimag.ima.pseudocode.instructions.jasmin.spaghetti;
 
 import org.apache.commons.lang.Validate;
 
@@ -102,7 +102,7 @@ public class IfThenElse extends AbstractInst {
 
             condition.codeGenCondJasmin(compiler, startElse, false);
             thenBranch.codeGenListInstJasmin(compiler, returnLabel, endIf);
-            compiler.addInstruction(new gotoo(endIf));
+            compiler.addInstruction(new spaghetti(endIf));
             compiler.addLabel(startElse);
             elseBranch.codeGenListInstJasmin(compiler, returnLabel, endIf);
         } else {
