@@ -170,7 +170,6 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         }
         try {
             if (left.getType().isFloat() && right.getType().isInt()) {
-                System.out.println("hello");
                 compiler.addInstruction(new FLOAT(rightValue, (GPRegister) rightValue));
                 right.setType(left.getType());
             }

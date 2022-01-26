@@ -1,0 +1,28 @@
+class A {
+    protected int x;
+    protected int y =2;
+
+    int getX(){
+        return this.x;
+    }
+
+    void setX(int x){
+        this.x=x;
+    }
+
+    int getY(){
+        return this.x;
+    }
+
+
+
+}
+
+{
+    A a = new A();
+    print("Donnez un entier pour x :");
+    a.setX(readInt());
+    println();
+    println("les attributs de a sont donc : x = ",a.getX(), " et y = ", a.getY());
+
+}

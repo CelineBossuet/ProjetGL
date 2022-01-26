@@ -1,0 +1,9 @@
+{
+    int c=0;
+    println("Comptons jusqu'à 6 :");
+    while (c<=5){
+        print(c, ", ");
+        c=c+1;
+    }
+    println("et ", c, " !");
+}

@@ -1,0 +1,20 @@
+{
+    int a=4;
+    float b=2.3;
+    boolean c=true;
+
+    println("a = ", a);
+    println("b = ", b);
+
+    if(c){
+        println("c est true");
+    }else{
+        println("c est false");
+    }
+
+    println("c'est l'heure d'un petit calcul : a*b+b =", a*b+b);
+    print("et en hexa cela donne :");
+    printlnx(a*b+b);
+
+
+}
