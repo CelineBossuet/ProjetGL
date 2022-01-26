@@ -12,7 +12,7 @@ class A {
 
 class B extends A {
     void method(){
-        println("je suis la méthode de la classe B");
+        println("je suis la méthode de la classe B et x vaut ", this.x);
     }
 }
 
