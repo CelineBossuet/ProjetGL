@@ -1,0 +1,29 @@
+class A {
+    protected int x = 1;
+
+    int getX(){
+        return this.x;
+    }
+
+    void method(){
+        println("je suis la méthode de la classe A");
+    }
+}
+
+class B extends A {
+    void method(){
+        println("je suis la méthode de la classe B et x vaut ", this.x);
+    }
+}
+
+{
+    B b = new B();
+    A a = new A();
+    println("je créé b et a venant des classes B et A ");
+
+    println("j'accède bien à l'attribut x de la classe A avec b ", b.getX(), "=", a.getX());
+    println("mais je peux redéfinir ses méthodes :");
+    b.method();
+    println("est bien différent de ");
+    a.method();
+}

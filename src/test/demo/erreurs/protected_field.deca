@@ -1,0 +1,8 @@
+class A {
+    protected int x;
+}
+
+{
+    A a = new A();
+    println("on accède à x ", a.x);
+}

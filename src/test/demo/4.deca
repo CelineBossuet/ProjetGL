@@ -1,0 +1,10 @@
+{
+boolean b;
+b= false || (true && false) && true;
+if (b || (!b && b)){
+    println("aïe coup dur pour le compilateur");
+}else {
+    println("Notre compilateur est trop fort !");
+}
+
+}

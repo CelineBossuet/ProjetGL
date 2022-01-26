@@ -1,0 +1,5 @@
+{
+    int a;
+    print("Donnez un entier pour a :");
+    a = readInt();
+}

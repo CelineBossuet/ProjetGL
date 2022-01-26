@@ -1,0 +1,13 @@
+{
+    int a;
+    float f;
+
+    print("Donnez un entier pour a : ");
+    a=readInt();
+    print("Donnez un flottant pour f : ");
+    f = readFloat();
+
+    println("a = ", a);
+    println("f = ", f);
+
+}
