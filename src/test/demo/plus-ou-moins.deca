@@ -1,0 +1,18 @@
+{
+    int target = 42;
+    int reponse = -1;
+    int score = 0;
+    while(reponse != target){
+        println("Saisissiez un entier");
+        reponse = readInt();
+        if(reponse > target){
+            println("C'est moins");
+        }else if(target > reponse){
+            println("C'est plus");
+        }
+        score = score+1;
+    }
+    println("Gagné");
+    print("En ", score, "tours gg wp mate !");
+    println("");
+}
